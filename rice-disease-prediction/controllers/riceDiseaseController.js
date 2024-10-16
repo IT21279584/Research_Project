@@ -31,6 +31,21 @@ const riceDiseasePrediction = async (req, res) => {
   }
 };
 
-
+const getPreviousPredictions = async (req, res) => {
+  try {
+    const lastRecords = await Classification.find().sort({ date: -1 }).limit(4);
+    const formattedResults = lastRecords.map((record) => ({
+      images: record.imageUrls || [],
+      predictions: record.predictions || [],
+      date: record.date || null,
+    }));
+    res.json(formattedResults);
+  } catch (err) {
+    console.error("Error fetching previous results:", err.message);
+    res
+      .status(500)
+      .json({ message: "Error fetching previous results", error: err.message });
+  }
+};
 
 module.exports = { riceDiseasePrediction, getPreviousPredictions };
