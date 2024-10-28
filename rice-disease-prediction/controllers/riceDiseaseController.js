@@ -16,7 +16,10 @@ const riceDiseasePrediction = async (req, res) => {
 
     const prediction = await classifyImage(file);
 
-    
+    const record = new Classification({
+      imageUrls: [imageUrl],
+      predictions: [prediction],
+    });
 
     await record.save();
     res.json({ prediction: [prediction] });
