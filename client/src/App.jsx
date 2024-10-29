@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./Footer.jsx";
 import "@fortawesome/fontawesome-free/css/all.css";
 import Header from "./Header.jsx";
+import DiseaseDetection from "./RiceDiseasePrediction.jsx";
 
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
       <Routes>
         <Route path="/footer" element={<Footer />}></Route>
         <Route path="/header" element={<Header />}></Route>
+
+        <Route path="/rice-prediction" element={<DiseaseDetection />}></Route>
       </Routes>
     </BrowserRouter>
   );
