@@ -24,28 +24,23 @@ def preprocess_image(image_bytes):
 @app.route('/classify', methods=['POST'])
 def classify_seed():
     try:
-        # Get the uploaded image file
         if 'file' not in request.files:
             return jsonify({"error": "No file part"}), 400
         
         file = request.files['file']
-        # Read and preprocess the image
         image = file.read()
         img = preprocess_image(image)
         
-        # Make predictions
         prediction = model.predict(img)
-        print("Prediction Raw Output:", prediction)  # Debug line to check raw output
-        
-        # Get the label with the highest confidence score
+        confidence = np.max(prediction)  # Get the highest confidence score
         label_index = np.argmax(prediction, axis=1)[0]
         label = labels[label_index]
         
-        # Return the classification result
-        return jsonify({"classification": label})
+        return jsonify({"classification": label, "confidence": float(confidence)})
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5001)
