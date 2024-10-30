@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import image1 from "./assets/corn.jpg"; // Dummy image 1
 import image2 from "./assets/corn.jpg"; // Dummy image 2
 import backgroundImage from "./assets/corn.jpg";
@@ -11,21 +11,28 @@ function CornSeedsPrediction() {
   const [uploadedImages, setUploadedImages] = useState([]); // Initialize with empty array
   const [classificationResults, setClassificationResults] = useState([]);
   const [filesToUpload, setFilesToUpload] = useState([]); // State to hold files for classification
+  const [previousResults, setPreviousResults] = useState([]); // New state
 
   const onUploadImages = (event) => {
-    const files = Array.from(event.target.files);
+    const newFiles = Array.from(event.target.files);
+    let updatedFilesToUpload = [...filesToUpload];
+    let updatedUploadedImages = [...uploadedImages];
 
-    // Limit to 2 images
-    const imagesToUpload = files.slice(0, 2);
+    // Loop through new files and replace oldest images if exceeding limit
+    newFiles.forEach((file) => {
+      const imageUrl = URL.createObjectURL(file);
 
-    if (imagesToUpload.length) {
-      const imageUrls = imagesToUpload.map((file) => URL.createObjectURL(file));
+      if (updatedFilesToUpload.length >= 2) {
+        updatedFilesToUpload.shift(); // Remove the oldest file
+        updatedUploadedImages.shift(); // Remove the oldest image URL
+      }
 
-      // Update uploaded images
-      setUploadedImages(imageUrls);
-      // Store files for classification
-      setFilesToUpload(imagesToUpload);
-    }
+      updatedFilesToUpload.push(file);
+      updatedUploadedImages.push(imageUrl);
+    });
+
+    setFilesToUpload(updatedFilesToUpload);
+    setUploadedImages(updatedUploadedImages);
   };
 
   const onAnalyze = async () => {
@@ -40,6 +47,7 @@ function CornSeedsPrediction() {
   const uploadImages = async (files) => {
     const formData = new FormData();
     files.forEach((file) => formData.append("images", file));
+
     try {
       const response = await axios.post(
         "http://localhost:5000/classify",
@@ -48,12 +56,39 @@ function CornSeedsPrediction() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setClassificationResults(response.data.classifications);
+
+      console.log("Response received:", response);
+
+      const { classification, confidence } = response.data;
+
+      // Check if classification and confidence are present
+      if (classification && confidence) {
+        setClassificationResults([classification]);
+      } else {
+        console.warn("No valid classifications received");
+        setClassificationResults(["Unknown"]); // Fallback result
+      }
     } catch (error) {
       console.error("Error uploading images:", error);
       alert("Error during classification. Please try again.");
     }
   };
+
+  useEffect(() => {
+    // Fetch previous results on component mount
+    const fetchPreviousResults = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/previous-results"
+        );
+        setPreviousResults(response.data); // Update state with fetched results
+      } catch (error) {
+        console.error("Error fetching previous results:", error);
+      }
+    };
+
+    fetchPreviousResults();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -144,21 +179,25 @@ function CornSeedsPrediction() {
               Previous Results
             </h2>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {Array(4)
-                .fill(0)
-                .map((_, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col items-center p-4 text-2xl font-semibold text-center"
-                  >
+              {previousResults.map((result, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center p-4 text-2xl font-semibold text-center"
+                >
+                  {result.image ? (
                     <img
-                      src={image1}
+                      src={result.image}
                       alt={`Result ${index + 1}`}
                       className="object-cover w-32 h-32"
                     />
-                    <span>Prediction: Good</span>
-                  </div>
-                ))}
+                  ) : (
+                    <div className="flex items-center justify-center w-32 h-32 bg-gray-300">
+                      <span>No Image</span>
+                    </div>
+                  )}
+                  <span>Prediction: {result.classification || "Unknown"}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
