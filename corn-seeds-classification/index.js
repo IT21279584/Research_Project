@@ -2,23 +2,31 @@ const express = require("express");
 const multer = require("multer");
 const axios = require("axios");
 const mongoose = require("mongoose");
-const cors = require("cors"); // Import cors
-const Classification = require("./CornSeedsQualityClassification"); // Ensure the path is correct
+const cors = require("cors");
+const AWS = require("aws-sdk");
+const Classification = require("./CornSeedsQualityClassification"); // Ensure path is correct
 const FormData = require("form-data");
+require("dotenv").config(); // Load environment variables
 
 const app = express();
 const upload = multer();
 const PORT = 5000;
 
-// Middleware to enable CORS
-app.use(cors()); // Allow all origins
-// Or configure CORS with specific origins
-// app.use(cors({ origin: "http://localhost:5173" }));
+// Configure CORS
+app.use(cors());
 
-// MongoDB and FastAPI URLs
-const MONGO_URI =
-  "mongodb+srv://HansakaJS:hansaka123@cluster0.cbz0c3m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const FASTAPI_URL = "http://127.0.0.1:5001/classify";
+// AWS S3 configuration
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+// MongoDB and FastAPI URLs from environment variables
+const MONGO_URI = process.env.MONGO_URI;
+const FASTAPI_URL = process.env.FASTAPI_URL;
+
+console.log(MONGO_URI);
 
 // Connect to MongoDB
 mongoose
@@ -26,47 +34,70 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Endpoint for classification
-app.post("/classify", upload.array("images"), async (req, res) => {
+// Classification endpoint
+app.post("/classify", upload.array("images", 2), async (req, res) => {
   try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "No image files provided" });
+    if (!req.files || req.files.length !== 2) {
+      return res
+        .status(400)
+        .json({ message: "Please upload exactly 2 images" });
     }
 
-    // Prepare to store classification results
+    let highestClassification = "";
+    let highestConfidence = 0.0;
+    const imageUrls = [];
     const classifications = [];
-    const imageNames = [];
-    const imageDatas = [];
 
-    for (const file of req.files) {
-      // Use FormData to create a multipart form with each file
+    for (let i = 0; i < req.files.length; i++) {
+      const file = req.files[i];
+      const imageKey = `image0${i + 1}-${Date.now()}-${file.originalname}`;
+
+      // Upload image to S3
+      const uploadResult = await s3
+        .upload({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: imageKey,
+          Body: file.buffer,
+          ContentType: file.mimetype,
+        })
+        .promise();
+
+      imageUrls.push(uploadResult.Location);
+
+      // Prepare image for FastAPI
       const formData = new FormData();
       formData.append("file", file.buffer, {
         filename: file.originalname,
         contentType: file.mimetype,
       });
 
-      // Send the image to FastAPI server
+      // Send image to FastAPI for classification
       const response = await axios.post(FASTAPI_URL, formData, {
         headers: formData.getHeaders(),
       });
 
-      const classification = response.data.classification;
+      const { classification, confidence } = response.data;
       classifications.push(classification);
-      imageNames.push(file.originalname);
-      imageDatas.push(file.buffer);
+
+      // Track the result with the highest confidence
+      if (confidence > highestConfidence) {
+        highestConfidence = confidence;
+        highestClassification = classification;
+      }
     }
 
-    // Save result to MongoDB with the image buffers
+    // Save classification result to MongoDB
     const record = new Classification({
-      imageNames,
-      classifications,
-      imageDatas,
+      imageUrls: imageUrls,
+      classifications: classifications,
     });
     await record.save();
 
-    // Return the classification results
-    res.json({ classifications });
+    // Send response with the highest confidence classification
+    res.json({
+      classification: highestClassification,
+      confidence: highestConfidence,
+    });
   } catch (error) {
     console.error("Error in /classify:", error);
     res
@@ -74,6 +105,28 @@ app.post("/classify", upload.array("images"), async (req, res) => {
       .json({ message: "Error classifying images", error: error.message });
   }
 });
+
+
+// Endpoint to fetch the last 4 classification records
+// Endpoint to fetch last 4 records for previous results
+app.get("/previous-results", async (req, res) => {
+  try {
+    const lastRecords = await Classification.find().sort({ _id: -1 }).limit(4);
+
+    // Map results to contain only the first image and classification safely
+    const formattedResults = lastRecords.map((record) => ({
+      image: record.imageUrls && record.imageUrls[0] ? record.imageUrls[0] : null, // Use null if no image
+      classification: record.classifications && record.classifications[0] ? record.classifications[0] : "Unknown", // Use "Unknown" if no classification
+    }));
+
+    res.json(formattedResults);
+  } catch (error) {
+    console.error("Error fetching previous results:", error);
+    res.status(500).json({ message: "Error fetching previous results" });
+  }
+});
+
+
 
 // Start Express server
 app.listen(PORT, () => {
