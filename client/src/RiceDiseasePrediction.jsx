@@ -5,6 +5,13 @@ import backgroundImage from "./assets/background.jpg"; // Import the background 
 import Footer from "./Footer"; // Import the Footer component
 import Header from "./Header";
 
+function DiseaseDetection() {
+  const [uploadedImage, setUploadedImage] = useState(null); // To display the uploaded image
+  const [prediction, setPrediction] = useState(""); // Store the prediction result
+  const [previousResults, setPreviousResults] = useState([]);
+  const [imageFile, setImageFile] = useState(null); // Store the uploaded file
 
+  
+}
 
 export default DiseaseDetection;
