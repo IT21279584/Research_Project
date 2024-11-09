@@ -38,7 +38,14 @@ function DiseaseDetection() {
     }
   };
 
-  
+  // Handle analysis when the "Analyze" button is clicked
+  const onAnalyze = async () => {
+    if (!imageFile) {
+      alert("Please upload an image first.");
+      return;
+    }
+
+    
 }
 
 export default DiseaseDetection;
