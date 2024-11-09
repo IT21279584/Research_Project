@@ -11,6 +11,23 @@ function DiseaseDetection() {
   const [previousResults, setPreviousResults] = useState([]);
   const [imageFile, setImageFile] = useState(null); // Store the uploaded file
 
+  // Fetch previous results from the backend
+  useEffect(() => {
+    const fetchPreviousResults = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5008/api/rice-previous-predictions"
+        );
+        console.log("Fetched Previous Results: ", response.data); // Log to verify the data
+        setPreviousResults(response.data);
+      } catch (error) {
+        console.error("Error fetching previous results:", error);
+      }
+    };
+
+    fetchPreviousResults();
+  }, []);
+
   
 }
 
