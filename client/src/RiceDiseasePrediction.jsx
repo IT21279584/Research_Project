@@ -28,6 +28,16 @@ function DiseaseDetection() {
     fetchPreviousResults();
   }, []);
 
+  // Handle image upload and set it as the uploadedImage state
+  const onUploadImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setUploadedImage(imageUrl); // Set the uploaded image to be displayed
+      setImageFile(file); // Store the file for later upload
+    }
+  };
+
   
 }
 
