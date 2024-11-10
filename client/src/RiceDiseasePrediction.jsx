@@ -45,7 +45,25 @@ function DiseaseDetection() {
       return;
     }
 
-    
+    // Create FormData to send the image to the server
+    const formData = new FormData();
+    formData.append("images", imageFile);
+
+    try {
+      // Send image to backend API (Flask or Express)
+      const response = await axios.post(
+        "http://localhost:5008/api/rice-disease-predictions", // Update to the appropriate API URL
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Save Data ", response.data.prediction[0]);
+
+      
 }
 
 export default DiseaseDetection;
