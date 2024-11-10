@@ -21,7 +21,20 @@ def preprocess_image(image_bytes):
     img = np.expand_dims(img, axis=0)  # Add batch dimension
     return img
 
+@app.route('/rice_disease_prediction', methods=['POST'])
+def prediction_rice():
+    try:
+        # Get the uploaded image file
+        if 'file' not in request.files:
+            return jsonify({"error": "No file part"}), 400
+        
+        file = request.files['file']
+        # Read and preprocess the image
+        image = file.read()
+        img = preprocess_image(image)
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5001)
