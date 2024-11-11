@@ -37,6 +37,14 @@ def prediction_rice():
         prediction = model.predict(img)
         print("Prediction Raw Output:", prediction)  # Debug line to check raw output
 
+        # Get the label with the highest confidence score
+        label_index = np.argmax(prediction, axis=1)[0]
+        label = labels[label_index]
+        
+        # Return the prediction result
+        return jsonify({"prediction": label})
+
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
