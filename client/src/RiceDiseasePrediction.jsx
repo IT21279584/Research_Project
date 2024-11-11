@@ -79,7 +79,26 @@ function DiseaseDetection() {
     }
   };
 
-  
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Header />
+      <div className="flex flex-col items-center flex-grow w-full py-10">
+        {/* Banner Section */}
+        <div
+          className="flex items-center justify-center w-full h-56 mb-8 bg-center bg-cover"
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <h2 className="p-4 text-4xl font-bold text-white bg-opacity-50 rounded-lg">
+            Rice Leaf Disease Detection
+          </h2>
+        </div>
+
+        
 }
 
 export default DiseaseDetection;
