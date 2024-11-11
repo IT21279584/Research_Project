@@ -33,6 +33,10 @@ def prediction_rice():
         image = file.read()
         img = preprocess_image(image)
 
+        # Make predictions
+        prediction = model.predict(img)
+        print("Prediction Raw Output:", prediction)  # Debug line to check raw output
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
