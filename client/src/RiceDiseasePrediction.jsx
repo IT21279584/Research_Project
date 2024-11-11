@@ -63,7 +63,23 @@ function DiseaseDetection() {
 
       console.log("Save Data ", response.data.prediction[0]);
 
-      
+      // Set the prediction state with the response data
+      if (
+        response.data &&
+        response.data.prediction &&
+        response.data.prediction[0]
+      ) {
+        setPrediction(response.data.prediction[0]); // Update prediction with the first element of prediction array
+      } else {
+        setPrediction("No prediction available.");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setPrediction("Error in prediction");
+    }
+  };
+
+  
 }
 
 export default DiseaseDetection;
