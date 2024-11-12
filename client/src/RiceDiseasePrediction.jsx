@@ -98,7 +98,33 @@ function DiseaseDetection() {
           </h2>
         </div>
 
-        
+        <div className="w-full p-4 max-w-7xl md:p-2">
+          {/* Analysis Result Section */}
+          <div className="flex flex-col items-center pl-4 mb-8 md:flex-row md:justify-between">
+            <div className="mb-4 text-center md:w-1/2 md:text-left md:mb-0">
+              <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl ">
+                The Plant is Infected with{" "}
+                <span className="leading-10 text-green-700">
+                  {prediction ? prediction : "Waiting for prediction"}
+                </span>
+              </h1>
+              <hr className="mt-10 mb-8 border-t border-gray-800" />
+              <p className="mt-2 text-xl text-gray-600">
+                By analyzing the image you have uploaded, the algorithm has
+                identified that the plant is infected with the disease called
+                Brown Spot.
+              </p>
+            </div>
+            <div className="flex justify-end p-4 md:w-1/2">
+              <img
+                src={uploadedImage || image1} // Use uploadedImage or default image
+                alt="Disease Prediction"
+                className="mb-4 rounded-lg shadow-md h-96 w-96"
+              />
+            </div>
+          </div>
+
+          
 }
 
 export default DiseaseDetection;
