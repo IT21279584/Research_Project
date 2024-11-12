@@ -124,7 +124,24 @@ function DiseaseDetection() {
             </div>
           </div>
 
-          
+          {/* Action Buttons */}
+          <div className="flex flex-col justify-between p-4 mb-10 space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+            <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
+              <button className="w-full px-8 py-2 mb-4 text-white bg-green-600 rounded-lg hover:bg-green-700 md:w-auto">
+                Treatments
+              </button>
+              <button className="w-full px-8 py-2 mb-4 text-gray-800 border border-gray-400 rounded-lg hover:bg-gray-200 md:w-auto">
+                Read more
+              </button>
+            </div>
+            <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
+              <button
+                onClick={onAnalyze}
+                className="w-full px-8 py-2 mb-4 text-white bg-green-600 rounded-lg hover:bg-green-700 md:w-auto"
+              >
+                Analyze
+              </button>
+              
 }
 
 export default DiseaseDetection;
