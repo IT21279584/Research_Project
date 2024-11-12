@@ -4,13 +4,13 @@ const axios = require("axios");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const AWS = require("aws-sdk");
-const Classification = require("./RiceDiseasePrediction"); // Ensure path is correct
+const Classification = require("./models/RiceDiseasePrediction"); // Ensure path is correct
 const FormData = require("form-data");
 require("dotenv").config(); // Load environment variables
 
 const app = express();
 const upload = multer();
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 // Configure CORS
 app.use(cors());
@@ -26,47 +26,55 @@ const s3 = new AWS.S3({
 const MONGO_URI = process.env.MONGO_URI;
 const FASTAPI_URL = process.env.FASTAPI_URL;
 
-console.log(MONGO_URI);
-
 // Connect to MongoDB
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI, {  })
   .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .catch((err) => {
+    console.error("MongoDB connection error:", err.message);
+    process.exit(1); // Exit process if MongoDB connection fails
+  });
 
+// POST endpoint for rice disease prediction
 app.post(
-  "/rice_disease_prediction",
+  "/rice-disease-predictions",
   upload.array("images", 1),
   async (req, res) => {
     try {
+      // Validate file upload
       if (!req.files || req.files.length !== 1) {
         return res
           .status(400)
-          .json({ message: "Please upload exactly 1 image" }); // Updated validation message
+          .json({ message: "Please upload exactly 1 image" });
       }
 
-      console.log("Received image:", req.files); // Log the uploaded file
-
-      const file = req.files[0]; // Only process the first file, since we're expecting one
+      const file = req.files[0];
       const imageKey = `image-${Date.now()}-${file.originalname}`;
 
-      // Log the file being uploaded to S3
-      console.log(`Uploading image to S3:`, imageKey);
+      console.log(`Uploading image to S3: ${imageKey}`);
 
       // Upload image to S3
-      const uploadResult = await s3
-        .upload({
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: imageKey,
-          Body: file.buffer,
-          ContentType: file.mimetype,
-        })
-        .promise();
+      let uploadResult;
+      try {
+        uploadResult = await s3
+          .upload({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: imageKey,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+          })
+          .promise();
+      } catch (err) {
+        console.error("Error uploading image to S3:", err.message);
+        return res.status(500).json({
+          message: "Failed to upload image to S3",
+          error: err.message,
+        });
+      }
 
-      const imageUrl = uploadResult.Location; // S3 URL for the uploaded image
-      console.log(`Image uploaded to S3. URL: ${uploadResult.Location}`);
+      const imageUrl = uploadResult.Location;
 
-      // Prepare image for FastAPI
+      // Prepare formData for FastAPI
       const formData = new FormData();
       formData.append("file", file.buffer, {
         filename: file.originalname,
@@ -74,57 +82,65 @@ app.post(
       });
 
       // Send image to FastAPI for classification
-      console.log(`Sending image to FastAPI for classification.`);
-      const response = await axios.post(FASTAPI_URL, formData, {
-        headers: formData.getHeaders(),
-      });
+      let response;
+      try {
+        response = await axios.post(FASTAPI_URL, formData, {
+          headers: formData.getHeaders(),
+        });
+      } catch (err) {
+        console.error("Error calling FastAPI:", err.message);
+        return res.status(500).json({
+          message: "Failed to classify the image using FastAPI",
+          error: err.message,
+        });
+      }
 
-      console.log(`FastAPI response for image:`, response.data);
-
-      const { prediction } = response.data; // Receive prediction from FastAPI
+      const { prediction } = response.data;
 
       // Save classification result to MongoDB
       const record = new Classification({
-        imageUrls: [imageUrl], // Store a single image URL
-        predictions: [prediction], // Store a single prediction result
+        imageUrls: [imageUrl],
+        predictions: [prediction],
       });
-      await record.save();
 
-      // Log the saved record
-      console.log("Classification result saved to MongoDB:", record);
+      try {
+        await record.save();
+      } catch (err) {
+        console.error("Error saving prediction to MongoDB:", err.message);
+        return res.status(500).json({
+          message: "Failed to save prediction result",
+          error: err.message,
+        });
+      }
 
-      // Send response with the prediction
-      res.json({
-        prediction: [prediction], // Return a single prediction
-      });
-    } catch (error) {
-      console.error("Error in /rice_disease_prediction:", error);
+      // Respond with the prediction
+      res.json({ prediction: [prediction] });
+    } catch (err) {
+      console.error("Error with prediction:", err.message);
       res
         .status(500)
-        .json({ message: "Error classifying image", error: error.message });
+        .json({ message: "Internal server error", error: err.message });
     }
   }
 );
 
-// Endpoint to fetch the last 4 classification records
-app.get("/rice_prediction_previous_results", async (req, res) => {
+// GET endpoint for fetching previous classification results
+app.get("/rice-previous-predictions", async (req, res) => {
   try {
-    // Fetch the last 4 records sorted by date in descending order
-    const lastRecords = await Classification.find()
-      .sort({ date: -1 }) // Sort by date field in descending order
-      .limit(4);
+    const lastRecords = await Classification.find().sort({ date: -1 }).limit(4);
 
-    // Format the response to include all images and predictions for both records
     const formattedResults = lastRecords.map((record) => ({
-      images: record.imageUrls || [], // Include all image URLs
-      predictions: record.predictions || [], // Include all predictions
-      date: record.date || null, // Include date if needed
+      images: record.imageUrls || [],
+      predictions: record.predictions || [],
+      date: record.date || null,
     }));
 
-    res.json(formattedResults); // Return the last 4 records
-  } catch (error) {
-    console.error("Error fetching previous results:", error);
-    res.status(500).json({ message: "Error fetching previous results" });
+    res.json(formattedResults);
+  } catch (err) {
+    console.error("Error fetching previous results:", err.message);
+    res
+      .status(500)
+      .json({ message: "Error fetching previous results", error: err.message });
   }
 });
 
