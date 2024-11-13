@@ -165,7 +165,31 @@ function DiseaseDetection() {
                   key={index}
                   className="flex flex-col items-center p-4 text-2xl font-semibold text-center"
                 >
-                  
+                  {/* Render image */}
+                  <img
+                    src={
+                      result.images && result.images.length > 0
+                        ? result.images[0]
+                        : image1
+                    }
+                    alt="Rice Disease"
+                    className="mb-2 rounded-lg shadow-md w-[100%] max-w-[300px] h-[auto] object-cover"
+                  />
+                  {/* Render prediction */}
+                  <p className="text-gray-700">
+                    {result.predictions && result.predictions.length > 0
+                      ? result.predictions[0]
+                      : "No prediction available"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer className="mt-auto" />
+    </div>
+  );
 }
 
 export default DiseaseDetection;
