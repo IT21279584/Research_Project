@@ -154,7 +154,18 @@ function DiseaseDetection() {
             </div>
           </div>
 
-          
+          {/* Previous Results */}
+          <div className="h-auto">
+            <h2 className="pl-4 mb-4 text-4xl font-bold text-gray-800">
+              Previous Results
+            </h2>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {previousResults.map((result, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center p-4 text-2xl font-semibold text-center"
+                >
+                  
 }
 
 export default DiseaseDetection;
