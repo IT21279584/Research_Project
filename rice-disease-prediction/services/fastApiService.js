@@ -15,7 +15,7 @@ const classifyImage = async (file) => {
     });
     return response.data.prediction;
   } catch (err) {
-    throw new Error("Error calling FastAPI: " + err.message);
+    throw new Error("Errors calling FastAPI: " + err.message);
   }
 };
 
