@@ -141,7 +141,20 @@ function DiseaseDetection() {
               >
                 Analyze
               </button>
-              
+              {/* File input for uploading an image */}
+              <label className="w-full px-6 py-2 mb-4 text-center text-gray-800 border border-gray-400 rounded-lg cursor-pointer hover:bg-gray-200 md:w-auto">
+                Upload an image
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={onUploadImage}
+                />
+              </label>
+            </div>
+          </div>
+
+          
 }
 
 export default DiseaseDetection;
