@@ -12,7 +12,7 @@ model_path = os.path.join("models", "resnet_rice_final_model.keras")
 model = tf.keras.models.load_model(model_path)
 
 # Define your labels in the correct order based on the model's training data
-labels = ["Bacterial Leaf Blight", "Brown Spot", "Healthy","Leaf Blast"]
+labels = ["Bacterial Leaf Blight", "Leaf Blast", "Brown Spot","Healthy"]
 
 def preprocess_image(image_bytes):
     # Preprocess the uploaded image to match model input shape and requirements
