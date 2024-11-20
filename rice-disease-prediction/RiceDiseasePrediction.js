@@ -2,9 +2,9 @@
 const mongoose = require("mongoose");
 
 const RiceDieasePrediction = new mongoose.Schema({
-  imageName: String,
-  classification: String,
-  date: { type: Date, default: Date.now },
+  imageUrls: [String], // Array of image URLs
+  classifications: [String], // Array of classifications for each image
+  date: { type: Date, default: Date.now }, // Date of classification
 });
 
 module.exports = mongoose.model("RiceDieasePrediction", RiceDieasePrediction);
