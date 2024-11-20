@@ -4,7 +4,7 @@ const axios = require("axios");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const AWS = require("aws-sdk");
-const Classification = require("./CornSeedsQualityClassification"); // Ensure path is correct
+const RiceDiseasePrediction = require("./RiceDiseasePrediction"); // Ensure path is correct
 const FormData = require("form-data");
 require("dotenv").config(); // Load environment variables
 
@@ -34,27 +34,24 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-app.post("/classify", upload.array("images", 1), async (req, res) => {
-  try {
-    if (!req.files || req.files.length !== 1) {
-      return res
-        .status(400)
-        .json({ message: "Please upload exactly 1 images" });
-    }
+app.post(
+  "/rice_disease_prediction",
+  upload.array("images", 1),
+  async (req, res) => {
+    try {
+      if (!req.files || req.files.length !== 1) {
+        return res
+          .status(400)
+          .json({ message: "Please upload exactly 1 image" });
+      }
 
-    console.log("Received images:", req.files); // Log the uploaded files
+      console.log("Received images:", req.files); // Log the uploaded files
 
-    let highestClassification = "";
-    let highestConfidence = 0.0;
-    const imageUrls = [];
-    const classifications = [];
-
-    for (let i = 0; i < req.files.length; i++) {
-      const file = req.files[i];
-      const imageKey = `image0${i + 1}-${Date.now()}-${file.originalname}`;
+      const file = req.files[0];
+      const imageKey = `image-${Date.now()}-${file.originalname}`;
 
       // Log the file being uploaded to S3
-      console.log(`Uploading image ${i + 1} to S3:`, imageKey);
+      console.log(`Uploading image to S3:`, imageKey);
 
       // Upload image to S3
       const uploadResult = await s3
@@ -66,12 +63,10 @@ app.post("/classify", upload.array("images", 1), async (req, res) => {
         })
         .promise();
 
-      imageUrls.push(uploadResult.Location);
+      const imageUrl = uploadResult.Location;
 
       // Log the S3 URL for the uploaded image
-      console.log(
-        `Image ${i + 1} uploaded to S3. URL: ${uploadResult.Location}`
-      );
+      console.log(`Image uploaded to S3. URL: ${imageUrl}`);
 
       // Prepare image for FastAPI
       const formData = new FormData();
@@ -80,78 +75,61 @@ app.post("/classify", upload.array("images", 1), async (req, res) => {
         contentType: file.mimetype,
       });
 
-      // Send image to FastAPI for classification
-      console.log(`Sending image ${i + 1} to FastAPI for classification.`);
+      // Send image to FastAPI for prediction
+      console.log(`Sending image to FastAPI for prediction.`);
       const response = await axios.post(FASTAPI_URL, formData, {
         headers: formData.getHeaders(),
       });
 
-      console.log(`FastAPI response for image ${i + 1}:`, response.data);
+      console.log(`FastAPI response:`, response.data);
 
-      const { classification, confidence } = response.data;
-      classifications.push(classification);
+      const { riceDiseasePrediction } = response.data;
 
-      // Track the result with the highest confidence
-      if (confidence > highestConfidence) {
-        highestConfidence = confidence;
-        highestClassification = classification;
-      }
+      // Save prediction result to MongoDB
+      const record = new RiceDiseasePrediction({
+        imageUrls: [imageUrl],
+        riceDiseasePrediction: [riceDiseasePrediction],
+      });
+      await record.save();
+
+      // Log the saved record
+      console.log("Rice Diease Prediction result saved to MongoDB:", record);
+
+      // Send response with riceDiseasePrediction
+      res.json({
+        riceDiseasePrediction: riceDiseasePrediction,
+      });
+    } catch (error) {
+      console.error("Error in /rice_disease_prediction:", error);
+      res
+        .status(500)
+        .json({ message: "Error predicting images", error: error.message });
     }
-
-    // Log the highest classification and confidence result
-    console.log("Highest Classification:", highestClassification);
-    console.log("Highest Confidence:", highestConfidence);
-
-    // Save classification result to MongoDB with highestClassification and highestConfidence
-    const record = new Classification({
-      imageUrls: imageUrls,
-      classifications: classifications,
-      highestClassification: highestClassification,
-      highestConfidence: highestConfidence, // Store the highest classification and confidence
-    });
-    await record.save();
-
-    // Log the saved record
-    console.log("Classification result saved to MongoDB:", record);
-
-    // Send response with the highest confidence classification
-    res.json({
-      classification: highestClassification,
-      confidence: highestConfidence,
-    });
-  } catch (error) {
-    console.error("Error in /classify:", error);
-    res
-      .status(500)
-      .json({ message: "Error classifying images", error: error.message });
   }
-});
+);
 
-// Endpoint to fetch the last 4 classification records
-// Endpoint to fetch last 4 records for previous results
-// Fetch the last 2 records
-// Fetch the last record with all associated images
-app.get("/previous-results", async (req, res) => {
+// Endpoint to fetch the last 4 prediction records
+app.get("/rice_disease_prediction_previous-results", async (req, res) => {
   try {
-    // Fetch the last 2 records sorted by date in descending order
-    const lastRecords = await Classification.find()
+    // Fetch the last 4 records sorted by date in descending order
+    const lastRecords = await RiceDiseasePrediction.find()
       .sort({ date: -1 }) // Sort by date field in descending order
-      .limit(2);
+      .limit(4); // Change the limit to 4
 
-    // Format the response to include all images and classifications for both records
+    // Format the response to include all images and predictions for the records
     const formattedResults = lastRecords.map((record) => ({
       images: record.imageUrls || [], // Include all image URLs
-      classifications: record.classifications || [], // Include all classifications
-      highestClassification: record.highestClassification,
+      riceDiseasePrediction: record.riceDiseasePrediction || [], // Include all predictions
       date: record.date || null, // Include date if needed
     }));
 
-    res.json(formattedResults); // Return the last 2 records
+    res.json(formattedResults); // Return the last 4 records
   } catch (error) {
     console.error("Error fetching previous results:", error);
     res.status(500).json({ message: "Error fetching previous results" });
   }
 });
+
 
 // Start Express server
 app.listen(PORT, () => {
