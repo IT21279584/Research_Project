@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 
-const CornSeedsQualityClassificationSchema = new mongoose.Schema({
-  imageUrls: [String], // Store S3 image URLs
-  classifications: [String], // Store classification results
-  date: { type: Date, default: Date.now }, // Store the timestamp
+const classificationSchema = new mongoose.Schema({
+  imageUrls: [String], // Array of image URLs
+  classifications: [String], // Array of classifications for each image
+  highestClassification: String, // Highest classification with the highest confidence
+  highestConfidence: Number, // Highest confidence value
+  date: { type: Date, default: Date.now }, // Date of classification
 });
 
-module.exports = mongoose.model(
-  "Classification",
-  CornSeedsQualityClassificationSchema
-);
+const Classification = mongoose.model("Classification", classificationSchema);
+
+module.exports = Classification;
