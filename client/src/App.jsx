@@ -3,6 +3,7 @@ import Footer from "./Footer.jsx";
 import "@fortawesome/fontawesome-free/css/all.css";
 import Header from "./Header.jsx";
 import CornSeedsPrediction from "./CornSeedsPrediction.jsx";
+import '../src/App.css'
 
 
 function App() {
