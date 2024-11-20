@@ -21,7 +21,7 @@ def preprocess_image(image_bytes):
     img = np.expand_dims(img, axis=0)  # Add batch dimension
     return img
 
-@app.route('/classify', methods=['POST'])
+@app.route('/rice_disease_prediction', methods=['POST'])
 def prediction_rice():
     try:
         # Get the uploaded image file
@@ -41,8 +41,8 @@ def prediction_rice():
         label_index = np.argmax(prediction, axis=1)[0]
         label = labels[label_index]
         
-        # Return the classification result
-        return jsonify({"classification": label})
+        # Return the prediction result
+        return jsonify({"prediction": label})
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
