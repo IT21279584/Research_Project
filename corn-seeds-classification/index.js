@@ -34,7 +34,6 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Classification endpoint
 app.post("/classify", upload.array("images", 2), async (req, res) => {
   try {
     if (!req.files || req.files.length !== 2) {
@@ -42,6 +41,8 @@ app.post("/classify", upload.array("images", 2), async (req, res) => {
         .status(400)
         .json({ message: "Please upload exactly 2 images" });
     }
+
+    console.log("Received images:", req.files); // Log the uploaded files
 
     let highestClassification = "";
     let highestConfidence = 0.0;
@@ -51,6 +52,9 @@ app.post("/classify", upload.array("images", 2), async (req, res) => {
     for (let i = 0; i < req.files.length; i++) {
       const file = req.files[i];
       const imageKey = `image0${i + 1}-${Date.now()}-${file.originalname}`;
+
+      // Log the file being uploaded to S3
+      console.log(`Uploading image ${i + 1} to S3:`, imageKey);
 
       // Upload image to S3
       const uploadResult = await s3
@@ -64,6 +68,11 @@ app.post("/classify", upload.array("images", 2), async (req, res) => {
 
       imageUrls.push(uploadResult.Location);
 
+      // Log the S3 URL for the uploaded image
+      console.log(
+        `Image ${i + 1} uploaded to S3. URL: ${uploadResult.Location}`
+      );
+
       // Prepare image for FastAPI
       const formData = new FormData();
       formData.append("file", file.buffer, {
@@ -72,9 +81,12 @@ app.post("/classify", upload.array("images", 2), async (req, res) => {
       });
 
       // Send image to FastAPI for classification
+      console.log(`Sending image ${i + 1} to FastAPI for classification.`);
       const response = await axios.post(FASTAPI_URL, formData, {
         headers: formData.getHeaders(),
       });
+
+      console.log(`FastAPI response for image ${i + 1}:`, response.data);
 
       const { classification, confidence } = response.data;
       classifications.push(classification);
@@ -86,12 +98,21 @@ app.post("/classify", upload.array("images", 2), async (req, res) => {
       }
     }
 
-    // Save classification result to MongoDB
+    // Log the highest classification and confidence result
+    console.log("Highest Classification:", highestClassification);
+    console.log("Highest Confidence:", highestConfidence);
+
+    // Save classification result to MongoDB with highestClassification and highestConfidence
     const record = new Classification({
       imageUrls: imageUrls,
       classifications: classifications,
+      highestClassification: highestClassification,
+      highestConfidence: highestConfidence, // Store the highest classification and confidence
     });
     await record.save();
+
+    // Log the saved record
+    console.log("Classification result saved to MongoDB:", record);
 
     // Send response with the highest confidence classification
     res.json({
@@ -107,24 +128,37 @@ app.post("/classify", upload.array("images", 2), async (req, res) => {
 });
 
 
+
+
 // Endpoint to fetch the last 4 classification records
 // Endpoint to fetch last 4 records for previous results
+// Fetch the last 2 records
+// Fetch the last record with all associated images
 app.get("/previous-results", async (req, res) => {
   try {
-    const lastRecords = await Classification.find().sort({ _id: -1 }).limit(4);
+    // Fetch the last 2 records sorted by date in descending order
+    const lastRecords = await Classification.find()
+      .sort({ date: -1 }) // Sort by date field in descending order
+      .limit(2);
 
-    // Map results to contain only the first image and classification safely
+    // Format the response to include all images and classifications for both records
     const formattedResults = lastRecords.map((record) => ({
-      image: record.imageUrls && record.imageUrls[0] ? record.imageUrls[0] : null, // Use null if no image
-      classification: record.classifications && record.classifications[0] ? record.classifications[0] : "Unknown", // Use "Unknown" if no classification
+      images: record.imageUrls || [], // Include all image URLs
+      classifications: record.classifications || [], // Include all classifications
+      highestClassification: record.highestClassification,
+      date: record.date || null, // Include date if needed
     }));
 
-    res.json(formattedResults);
+    res.json(formattedResults); // Return the last 2 records
   } catch (error) {
     console.error("Error fetching previous results:", error);
     res.status(500).json({ message: "Error fetching previous results" });
   }
 });
+
+
+
+
 
 
 
