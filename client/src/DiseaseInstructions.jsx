@@ -46,7 +46,31 @@ const DiseaseInstructions = () => {
     }
   };
 
- 
+  return (
+    <div className="font-archivo">
+      <Header />
+      <div className="p-4 mx-8 md:mx-28 md:p-6">
+        <h1 className="mb-4 text-2xl font-bold md:text-3xl md:mb-6">
+          Edifenphos 50.0% EC
+        </h1>
+        <div className="p-6 bg-white rounded-lg shadow-md md:p-8">
+          <div className="py-6 mt-8 ">
+            <div className="flex items-center space-x-4">
+              <img
+                src={instructions}
+                alt="Dosage Calculator"
+                className="w-10 h-10 md:w-12 md:h-12"
+              />
+              <div>
+                <h3 className="text-lg font-semibold md:text-xl">
+                  Instructions for Application
+                </h3>
+                <p className="text-lg">Spray</p>
+              </div>
+            </div>
+          </div>
+
+          
 };
 
 export default DiseaseInstructions;
