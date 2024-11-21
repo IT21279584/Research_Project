@@ -11,7 +11,7 @@ app = Flask(__name__)
 model_path = os.path.join("models", "rice_disease.keras")
 model = tf.keras.models.load_model(model_path)
 
-# Define your labels in the correct order based on the model's training data
+# Define your labels in the correct order based on the model's training data set
 labels = ["Bacterial Leaf Blight", "Brown Spot", "Healthy","Leaf Blast"]
 
 def preprocess_image(image_bytes):
