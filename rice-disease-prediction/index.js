@@ -4,7 +4,7 @@ const axios = require("axios");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const AWS = require("aws-sdk");
-const RiceDiseasePrediction = require("./RiceDiseasePrediction"); // Ensure path is correct
+const Classification = require("./RiceDiseasePrediction"); // Ensure path is correct
 const FormData = require("form-data");
 require("dotenv").config(); // Load environment variables
 
@@ -42,12 +42,12 @@ app.post(
       if (!req.files || req.files.length !== 1) {
         return res
           .status(400)
-          .json({ message: "Please upload exactly 1 image" });
+          .json({ message: "Please upload exactly 1 image" }); // Updated validation message
       }
 
-      console.log("Received images:", req.files); // Log the uploaded files
+      console.log("Received image:", req.files); // Log the uploaded file
 
-      const file = req.files[0];
+      const file = req.files[0]; // Only process the first file, since we're expecting one
       const imageKey = `image-${Date.now()}-${file.originalname}`;
 
       // Log the file being uploaded to S3
@@ -63,10 +63,8 @@ app.post(
         })
         .promise();
 
-      const imageUrl = uploadResult.Location;
-
-      // Log the S3 URL for the uploaded image
-      console.log(`Image uploaded to S3. URL: ${imageUrl}`);
+      const imageUrl = uploadResult.Location; // S3 URL for the uploaded image
+      console.log(`Image uploaded to S3. URL: ${uploadResult.Location}`);
 
       // Prepare image for FastAPI
       const formData = new FormData();
@@ -75,51 +73,51 @@ app.post(
         contentType: file.mimetype,
       });
 
-      // Send image to FastAPI for prediction
-      console.log(`Sending image to FastAPI for prediction.`);
+      // Send image to FastAPI for classification
+      console.log(`Sending image to FastAPI for classification.`);
       const response = await axios.post(FASTAPI_URL, formData, {
         headers: formData.getHeaders(),
       });
 
-      console.log(`FastAPI response:`, response.data);
+      console.log(`FastAPI response for image:`, response.data);
 
-      const { riceDiseasePrediction } = response.data;
+      const { prediction } = response.data; // Receive prediction from FastAPI
 
-      // Save prediction result to MongoDB
-      const record = new RiceDiseasePrediction({
-        imageUrls: [imageUrl],
-        riceDiseasePrediction: [riceDiseasePrediction],
+      // Save classification result to MongoDB
+      const record = new Classification({
+        imageUrls: [imageUrl], // Store a single image URL
+        predictions: [prediction], // Store a single prediction result
       });
       await record.save();
 
       // Log the saved record
-      console.log("Rice Diease Prediction result saved to MongoDB:", record);
+      console.log("Classification result saved to MongoDB:", record);
 
-      // Send response with riceDiseasePrediction
+      // Send response with the prediction
       res.json({
-        riceDiseasePrediction: riceDiseasePrediction,
+        prediction: [prediction], // Return a single prediction
       });
     } catch (error) {
       console.error("Error in /rice_disease_prediction:", error);
       res
         .status(500)
-        .json({ message: "Error predicting images", error: error.message });
+        .json({ message: "Error classifying image", error: error.message });
     }
   }
 );
 
-// Endpoint to fetch the last 4 prediction records
-app.get("/rice_disease_prediction_previous-results", async (req, res) => {
+// Endpoint to fetch the last 4 classification records
+app.get("/rice_prediction_previous_results", async (req, res) => {
   try {
     // Fetch the last 4 records sorted by date in descending order
-    const lastRecords = await RiceDiseasePrediction.find()
+    const lastRecords = await Classification.find()
       .sort({ date: -1 }) // Sort by date field in descending order
-      .limit(4); // Change the limit to 4
+      .limit(4);
 
-    // Format the response to include all images and predictions for the records
+    // Format the response to include all images and predictions for both records
     const formattedResults = lastRecords.map((record) => ({
       images: record.imageUrls || [], // Include all image URLs
-      riceDiseasePrediction: record.riceDiseasePrediction || [], // Include all predictions
+      predictions: record.predictions || [], // Include all predictions
       date: record.date || null, // Include date if needed
     }));
 
@@ -129,7 +127,6 @@ app.get("/rice_disease_prediction_previous-results", async (req, res) => {
     res.status(500).json({ message: "Error fetching previous results" });
   }
 });
-
 
 // Start Express server
 app.listen(PORT, () => {
