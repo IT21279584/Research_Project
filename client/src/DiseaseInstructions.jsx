@@ -19,7 +19,34 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const DiseaseInstructions = () => {
-  
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [fieldArea, setFieldArea] = useState("");
+  const [dosageRate, setDosageRate] = useState("");
+  const [calculatedDosage, setCalculatedDosage] = useState(null);
+
+    
+      const [areaSize, setAreaSize] = useState(1); // Numeric input for area size
+      const [areaUnit, setAreaUnit] = useState("acre"); // Radio button for area unit
+      const [pumpSize, setPumpSize] = useState("small"); // Radio button for pump size
+
+      // Function to handle numeric input changes
+      const incrementAreaSize = () => setAreaSize((prev) => prev + 1);
+      const decrementAreaSize = () =>
+        setAreaSize((prev) => (prev > 1 ? prev - 1 : 1));
+
+      const handleCalculateDosageClick = () => setShowCalculator(true);
+
+      const closeModal = () => setShowCalculator(false);
+
+
+  const handleDosageCalculation = (e) => {
+    e.preventDefault();
+    if (fieldArea && dosageRate) {
+      setCalculatedDosage(fieldArea * dosageRate);
+    }
+  };
+
+ 
 };
 
 export default DiseaseInstructions;
