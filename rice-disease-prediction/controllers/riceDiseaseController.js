@@ -27,7 +27,7 @@ const riceDiseasePrediction = async (req, res) => {
     console.error("Error with prediction:", err.message);
     res
       .status(500)
-      .json({ message: "Internal server error", error: err.message });
+      .json({ message: "Internal server error detected", error: err.message });
   }
 };
 
