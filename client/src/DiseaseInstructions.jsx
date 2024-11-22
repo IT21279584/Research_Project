@@ -146,6 +146,26 @@ const DiseaseInstructions = () => {
             </div>
           </div>
 
+          {/* Toxicity Section */}
+          <div className="py-6 mt-8 ">
+            <div className="flex items-center space-x-4">
+              <img
+                src={fan}
+                alt="Dosage Calculator"
+                className="w-8 h-8 mr-3 md:w-10 md:h-10"
+              />
+              <div>
+                <h3 className="text-lg font-semibold md:text-xl">Toxicity</h3>
+                <p className="text-lg font-bold text-red-600">Highly toxic</p>
+                <p className="text-lg text-gray-600">
+                  If possible, select a product with a low toxicity level. Make
+                  sure you always stick to safety precautions to mitigate the
+                  risk of dangerous chemical exposures.
+                </p>
+              </div>
+            </div>
+          </div>
+
           
 };
 
