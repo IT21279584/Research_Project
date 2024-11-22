@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-corn-seeds-classification/
+
 dist
 dist-ssr
 *.local
