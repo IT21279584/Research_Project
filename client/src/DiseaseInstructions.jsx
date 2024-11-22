@@ -70,6 +70,44 @@ const DiseaseInstructions = () => {
             </div>
           </div>
 
+          {/* Dosage Calculator Section */}
+          <div className="p-6 mx-auto border rounded-lg shadow-sm max-w-8xl">
+            <h2 className="mb-4 text-xl font-semibold">Dosage Calculator</h2>
+            <p className="mb-6 text-gray-700">
+              Using this calculator you can get the exact dosage, dilution,
+              application frequency, and pre-harvest interval for your plot.
+              Make sure to input the requested details accurately. Incorrect
+              inputs can cause damage to the crop by changing the dosage.
+            </p>
+            <div className="flex items-center justify-center">
+              <button
+                className="flex items-center justify-center gap-2 px-4 py-2 font-semibold text-white bg-green-800 rounded-lg hover:bg-green-900"
+                onClick={handleCalculateDosageClick}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7 2h10a2 2 0 012 2v16a2 2 0 01-2 2H7a2 2 0 01-2-2V4a2 2 0 012-2z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16 6H8m1 10h2m4 0h2m-6 2H9m8 0h-2m-4-4h6m-6 0H9"
+                  />
+                </svg>
+                Calculate Dosage
+              </button>
+            </div>
+          </div>
+
           
 };
 
