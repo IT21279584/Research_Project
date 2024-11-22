@@ -13,7 +13,7 @@ function DiseaseDetection() {
 
   // Fetch previous results from the backend
   useEffect(() => { 
-    const fetchPreviousResults = async () => {
+    const fetchPreviousResults = async () => { 
       try {
         const response = await axios.get(
           "http://localhost:5000/rice_prediction_previous_results"
