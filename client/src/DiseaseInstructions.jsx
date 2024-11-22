@@ -108,6 +108,44 @@ const DiseaseInstructions = () => {
             </div>
           </div>
 
+          {/* Application Method Section */}
+          <div className="py-6 mt-8 ">
+            <div className="flex items-center space-x-4">
+              <img
+                src={spray}
+                alt="Dosage Calculator"
+                className="w-10 h-10 md:w-12 md:h-12"
+              />
+              <div>
+                <h3 className="text-lg font-semibold md:text-xl">
+                  Application Method
+                </h3>
+                <p className="text-lg">Spray</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Weather Conditions Section */}
+
+          <div className="py-6 mt-8 ">
+            <div className="flex items-center space-x-4">
+              <img
+                src={wheather}
+                alt="Dosage Calculator"
+                className="w-8 h-8 mr-3 md:w-10 md:h-10"
+              />
+              <div>
+                <h3 className="text-lg font-semibold md:text-xl">
+                  Weather Conditions
+                </h3>
+                <p className="text-lg">
+                  Do not apply product if it is windy or raining. Avoid
+                  application during the hottest hours of the day.
+                </p>
+              </div>
+            </div>
+          </div>
+
           
 };
 
