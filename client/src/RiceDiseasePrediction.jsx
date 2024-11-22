@@ -16,7 +16,7 @@ function DiseaseDetection() {
     const fetchPreviousResults = async () => { 
       try {
         const response = await axios.get(
-          "http://localhost:5000/rice_prediction_previous_results"
+          "http://localhost:5000/rice_prediction_previous_results" 
         );
         console.log("Fetched Previous Results: ", response.data); // Log to verify the data
         setPreviousResults(response.data);
