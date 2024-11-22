@@ -12,7 +12,7 @@ function DiseaseDetection() {
   const [imageFile, setImageFile] = useState(null); // Store the uploaded file
 
   // Fetch previous results from the backend
-  useEffect(() => {
+  useEffect(() => { 
     const fetchPreviousResults = async () => {
       try {
         const response = await axios.get(
