@@ -49,7 +49,7 @@ function CornSeedsPrediction() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/classify",
+        "http://localhost:5000/api/corn-quality-classification",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -77,7 +77,7 @@ function CornSeedsPrediction() {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await fetch("http://localhost:5000/previous-results");
+        const response = await fetch("http://localhost:5000/api/corn-previous-results");
         const data = await response.json();
         setPreviousResults(data); // Ensure data is an array
       } catch (error) {
@@ -127,7 +127,7 @@ function CornSeedsPrediction() {
         <span className="leading-10 text-green-700">
           {classificationResults.length
             ? classificationResults.join(", ")
-            : "Unknown"}
+            : "Waiting for Prediction"}
         </span>
       </h1>
       <hr className="mt-10 mb-8 border-t border-gray-800" />
