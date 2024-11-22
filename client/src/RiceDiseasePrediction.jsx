@@ -12,11 +12,11 @@ function DiseaseDetection() {
   const [imageFile, setImageFile] = useState(null); // Store the uploaded file
 
   // Fetch previous results from the backend
-  useEffect(() => {
-    const fetchPreviousResults = async () => {
+  useEffect(() => { 
+    const fetchPreviousResults = async () => { 
       try {
         const response = await axios.get(
-          "http://localhost:5000/rice_prediction_previous_results"
+          "http://localhost:5000/api/rice-previous-predictions"
         );
         console.log("Fetched Previous Results: ", response.data); // Log to verify the data
         setPreviousResults(response.data);
@@ -52,7 +52,7 @@ const onAnalyze = async () => {
   try {
     // Send image to backend API (Flask or Express)
     const response = await axios.post(
-      "http://localhost:5000/rice_disease_prediction", // Update to the appropriate API URL
+      "http://localhost:5000/api/rice-disease-predictions", // Update to the appropriate API URL
       formData,
       {
         headers: {
