@@ -239,7 +239,48 @@ const DiseaseInstructions = () => {
         </div>
       </div>
 
-      
+      {/* Dosage Calculator Modal */}
+      {showCalculator && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
+          <div className="relative w-full max-w-lg p-6 bg-white rounded-lg shadow-xl">
+            {/* Close Button with X Sign */}
+            <div className="absolute top-4 right-4">
+              <button
+                onClick={closeModal}
+                className="text-2xl text-gray-600 hover:text-gray-900"
+              >
+                &times; {/* This is the "X" symbol */}
+              </button>
+            </div>
+
+            <h4 className="mb-6 text-2xl font-semibold text-center">
+              Dosage Calculator
+            </h4>
+
+            {/* Your modal content here */}
+            {/* Numeric Input Panel for Area Size */}
+            <div className="flex items-center justify-center mb-6 space-x-4">
+              <button
+                onClick={decrementAreaSize}
+                className="p-2 text-xl bg-gray-200 rounded-full hover:bg-gray-300"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                value={areaSize}
+                readOnly
+                className="w-20 p-2 text-center border border-gray-300 rounded"
+              />
+              <button
+                onClick={incrementAreaSize}
+                className="p-2 text-xl bg-gray-200 rounded-full hover:bg-gray-300"
+              >
+                +
+              </button>
+            </div>
+
+            
 };
 
 export default DiseaseInstructions;
