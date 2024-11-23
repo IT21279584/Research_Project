@@ -166,7 +166,80 @@ const DiseaseInstructions = () => {
             </div>
           </div>
 
-          
+          {/* Safety Precautions Section */}
+          <div className="py-6 mt-8 border-t border-gray-300">
+            <h3 className="mb-8 text-2xl font-semibold">Safety Precautions</h3>
+            <ul className="space-y-4 text-lg list-none">
+              <li className="flex items-center space-x-4">
+                <img
+                  src={lock}
+                  alt="Lock"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Keep it locked away and out of reach of children.</span>
+              </li>
+              <li className="flex items-center space-x-4">
+                <img
+                  src={mask}
+                  alt="Mask"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Wear protection over nose and mouth.</span>
+              </li>
+              <li className="flex items-center space-x-4">
+                <img
+                  src={spec}
+                  alt="Eye Protection"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Wear eye protection.</span>
+              </li>
+              <li className="flex items-center space-x-4">
+                <img
+                  src={leg}
+                  alt="Boots"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Wear long rubber boots.</span>
+              </li>
+              <li className="flex items-center space-x-4">
+                <img
+                  src={hand}
+                  alt="Gloves"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Wear long rubber gloves.</span>
+              </li>
+              <li className="flex items-center space-x-4">
+                <img
+                  src={tap}
+                  alt="Wash Hands"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Wash hands and face with clean water after usage.</span>
+              </li>
+              <li className="flex items-center space-x-4">
+                <img
+                  src={hen}
+                  alt="Harmful to Animals"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Dangerous and harmful to animals.</span>
+              </li>
+              <li className="flex items-center space-x-4">
+                <img
+                  src={fish}
+                  alt="Contaminates Water and Fish"
+                  className="w-16 h-16 md:w-20 md:h-20"
+                />
+                <span>Contaminates water and fish.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      
 };
 
 export default DiseaseInstructions;
