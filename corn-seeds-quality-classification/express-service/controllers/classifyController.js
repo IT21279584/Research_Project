@@ -1,5 +1,5 @@
 const s3 = require("../config/aws");
-const Classification = require("../../models/CornSeedsQualityClassification");
+const Classification = require("../models/CornSeedsQualityClassification");
 const fastapiInstance = require("../config/fastapi");
 const FormData = require("form-data");
 

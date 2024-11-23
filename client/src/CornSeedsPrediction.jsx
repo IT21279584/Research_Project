@@ -49,7 +49,7 @@ const uploadImages = async (files) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:5000/api/soybean-quality-classification",
+      "http://localhost:5002/api/soybean-quality-classification",
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -76,7 +76,7 @@ const uploadImages = async (files) => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/corn-previous-results");
+        const response = await fetch("http://localhost:5002/api/corn-previous-results");
         const data = await response.json();
         setPreviousResults(data); // Ensure data is an array
       } catch (error) {
@@ -129,7 +129,7 @@ const uploadImages = async (files) => {
                     : "Waiting for Prediction"}
                 </span>
               </h1>
-              <hr className="mt-10 mb-8 border-t border-gray-800 w-11/12" />
+              <hr className="w-11/12 mt-10 mb-8 border-t border-gray-800" />
               <p className="mt-2 text-xl text-gray-600">
                 The analysis indicates that the corn seed batch shows signs of{" "}
                 {classificationResults.length

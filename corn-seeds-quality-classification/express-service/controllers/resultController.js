@@ -1,4 +1,4 @@
-const Classification = require("../../models/CornSeedsQualityClassification");
+const Classification = require("../models/CornSeedsQualityClassification");
 
 exports.getPreviousResults = async (req, res) => {
   try {
