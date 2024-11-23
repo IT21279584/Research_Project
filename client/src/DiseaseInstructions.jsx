@@ -280,6 +280,37 @@ const DiseaseInstructions = () => {
               </button>
             </div>
 
+            {/* Radio Buttons for Area Unit */}
+            <div className="mb-6">
+              <p className="mb-2 text-lg font-medium text-gray-700">
+                Select Area Unit:
+              </p>
+              <div className="space-x-4">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="areaUnit"
+                    value="acre"
+                    checked={areaUnit === "acre"}
+                    onChange={(e) => setAreaUnit(e.target.value)}
+                    className="form-radio"
+                  />
+                  <span className="ml-2">Acre</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="areaUnit"
+                    value="hectare"
+                    checked={areaUnit === "hectare"}
+                    onChange={(e) => setAreaUnit(e.target.value)}
+                    className="form-radio"
+                  />
+                  <span className="ml-2">Hectare</span>
+                </label>
+              </div>
+            </div>
+
             
 };
 
