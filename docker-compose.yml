@@ -1,0 +1,48 @@
+services:
+  soybean-express-service:
+    build:
+      context: ./soybean-seeds-quality-classification/express-service
+    ports:
+      - "5000:5000"
+    networks:
+      - backend
+
+  soybean-flask-service:
+    build:
+      context: ./soybean-seeds-quality-classification/flask-service
+    ports:
+      - "5001:5001"
+    networks:
+      - backend
+
+  corn-express-service:
+    build:
+      context: ./corn-seeds-quality-classification/express-service
+    ports:
+      - "5002:5002"
+    networks:
+      - backend
+
+  corn-flask-service:
+    build:
+      context: ./corn-seeds-quality-classification/flask-service
+    ports:
+      - "5003:5003"
+    networks:
+      - backend
+  
+  client:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - soybean-express-service
+      - soybean-flask-service
+      - corn-express-service
+      - corn-flask-service 
+    networks:
+      - backend
+
+networks:
+  backend:
