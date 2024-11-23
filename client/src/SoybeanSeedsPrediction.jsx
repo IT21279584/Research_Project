@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import image1 from "./assets/cornseeds.jpg"; // Default image 1
-import image2 from "./assets/cornseeds.jpg"; // Default image 2
-import backgroundImage from "./assets/corn.jpg";
+import image1 from "./assets/soybean.jpeg"; // Default image 1
+import image2 from "./assets/soybean.jpeg"; // Default image 2
+import backgroundImage from "./assets/R3.jpeg";
 import Footer from "./Footer";
 import Header from "./Header";
 import axios from "axios";
 
-function CornSeedsPrediction() {
+function SoybeanSeedsPrediction() {
   // State to manage uploaded images and classification results
   const [uploadedImages, setUploadedImages] = useState([image1, image2]); // Initialize with default images
   const [classificationResults, setClassificationResults] = useState([]); // Store results of current predictions
@@ -72,11 +72,15 @@ const uploadImages = async (files) => {
   }
 };
 
+
+
   // Fetch previous results every 5 seconds
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/corn-previous-results");
+        const response = await fetch(
+          "http://localhost:5000/api/soybean-previous-results"
+        );
         const data = await response.json();
         setPreviousResults(data); // Ensure data is an array
       } catch (error) {
@@ -113,7 +117,7 @@ const uploadImages = async (files) => {
           }}
         >
           <h2 className="p-4 text-4xl font-bold text-white bg-opacity-50 rounded-lg">
-            Corn Seeds Quality Prediction
+            Soybean Seeds Quality Prediction
           </h2>
         </div>
 
@@ -122,7 +126,7 @@ const uploadImages = async (files) => {
           <div className="flex flex-col items-center pl-4 mb-8 space-y-4 md:flex-row md:space-y-0 md:justify-between">
             <div className="mb-4 text-center md:w-1/2 md:text-left md:mb-0">
               <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl">
-                The Corn Seeds are Classified as{" "}
+                The Soybean Seeds are Classified as{" "}
                 <span className="leading-10 text-green-700">
                   {classificationResults.length
                     ? classificationResults[0] // Display only the first (highest) result
@@ -131,13 +135,15 @@ const uploadImages = async (files) => {
               </h1>
               <hr className="mt-10 mb-8 border-t border-gray-800 w-11/12" />
               <p className="mt-2 text-xl text-gray-600">
-                The analysis indicates that the corn seed batch shows signs of{" "}
+                The analysis indicates that the soybean seed batch shows signs
+                of{" "}
                 {classificationResults.length
-                  ? classificationResults.join(", ")
+                  ? classificationResults[0] // Display only the first (highest) result
                   : "unknown condition"}
                 , which may affect seed quality.
               </p>
             </div>
+
             {/* Responsive Image Section */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:w-1/2">
               {uploadedImages.map((imageUrl, index) => (
@@ -147,7 +153,7 @@ const uploadImages = async (files) => {
                 >
                   <img
                     src={imageUrl}
-                    alt={`Uploaded Corn Seed ${index + 1}`}
+                    alt={`Uploaded Soybean Seed ${index + 1}`}
                     className="object-cover w-full h-full"
                   />
                 </div>
@@ -228,4 +234,4 @@ const uploadImages = async (files) => {
   );
 }
 
-export default CornSeedsPrediction;
+export default SoybeanSeedsPrediction;
