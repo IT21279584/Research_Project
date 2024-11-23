@@ -1,4 +1,4 @@
-const Classification = require("../models/CornSeedsQualityClassification");
+const Classification = require("../../models/CornSeedsQualityClassification");
 
 exports.getPreviousResults = async (req, res) => {
   try {
@@ -14,11 +14,9 @@ exports.getPreviousResults = async (req, res) => {
     res.json(formattedResults);
   } catch (error) {
     console.error("Error fetching previous results:", error);
-    res
-      .status(500)
-      .json({
-        message: "Error fetching previous results",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error fetching previous results",
+      error: error.message,
+    });
   }
 };
