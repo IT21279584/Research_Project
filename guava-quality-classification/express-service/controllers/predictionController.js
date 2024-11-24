@@ -9,7 +9,7 @@ exports.processPrediction = async (req, res) => {
         if (!req.files.file1 || !req.files.file2) {
             return res.status(400).json({ error: 'Two image files are required' });
         }
-
+//
         // Get file paths of uploaded files
         const file1Path = req.files.file1[0].path;
         const file2Path = req.files.file2[0].path;
