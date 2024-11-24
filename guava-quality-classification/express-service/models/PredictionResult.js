@@ -14,3 +14,6 @@ const predictionResultSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('PredictionResultGuava', predictionResultSchema);
+
+
+//
