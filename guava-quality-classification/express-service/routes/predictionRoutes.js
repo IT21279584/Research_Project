@@ -26,5 +26,3 @@ router.post('/upload', upload.fields([{ name: 'file1' }, { name: 'file2' }]), pr
 router.get('/predictions', getAllPredictions);
 
 module.exports = router;
-
-//
