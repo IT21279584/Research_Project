@@ -311,7 +311,68 @@ const DiseaseInstructions = () => {
               </div>
             </div>
 
-            
+            {/* Radio Buttons for Pump Size */}
+            <div className="mb-6">
+              <p className="mb-2 text-lg font-medium text-gray-700">
+                Select Pump Size:
+              </p>
+              <div className="space-x-4">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="pumpSize"
+                    value="small"
+                    checked={pumpSize === "small"}
+                    onChange={(e) => setPumpSize(e.target.value)}
+                    className="form-radio"
+                  />
+                  <span className="ml-2">Small</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="pumpSize"
+                    value="medium"
+                    checked={pumpSize === "medium"}
+                    onChange={(e) => setPumpSize(e.target.value)}
+                    className="form-radio"
+                  />
+                  <span className="ml-2">Medium</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="pumpSize"
+                    value="large"
+                    checked={pumpSize === "large"}
+                    onChange={(e) => setPumpSize(e.target.value)}
+                    className="form-radio"
+                  />
+                  <span className="ml-2">Large</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Calculate Dosage Button */}
+            <div className="text-center">
+              <button
+                onClick={() =>
+                  alert(
+                    `Calculating dosage for ${areaSize} ${areaUnit} using ${pumpSize} pump size`
+                  )
+                }
+                className="px-6 py-3 text-lg text-white bg-green-600 rounded shadow-md md:px-8 md:py-4 hover:bg-green-700"
+              >
+                Calculate Dosage
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Footer />
+    </div>
+  );
 };
 
 export default DiseaseInstructions;
