@@ -68,4 +68,3 @@ exports.getAllPredictions = async (req, res) => {
     }
 };
 
-//
