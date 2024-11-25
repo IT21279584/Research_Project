@@ -28,4 +28,3 @@ router.get('/predictions', getAllPredictions);
 module.exports = router;
 
 
-//
