@@ -49,7 +49,7 @@ const uploadImages = async (files) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:5002/api/soybean-quality-classification",
+      "http://localhost:5002/api/corn-quality-classification",
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
