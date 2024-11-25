@@ -1,18 +1,24 @@
-# Use Python base image
-FROM python:3.10-alpine
+# Stage 1: Build
+FROM python:3.10-slim AS builder
 
-# Set the working directory
-WORKDIR /usr/src/app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libopenblas-dev \
+    liblapack-dev \
+    libx11-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file and install dependencies
+WORKDIR /app
+
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# Copy the service code
+# Stage 2: Runtime
+FROM python:3.10-slim
+
+COPY --from=builder /install /usr/local
+WORKDIR /app
 COPY . .
 
-# Expose the service's port
 EXPOSE 5003
-
-# Run the service
 CMD ["python", "app.py"]

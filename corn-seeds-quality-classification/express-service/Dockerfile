@@ -6,7 +6,10 @@ WORKDIR /usr/src/app
 
 # Copy package.json and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm install --no-cache
+
+# Install bash
+RUN apk add --no-cache bash
 
 # Copy the service code
 COPY . .
