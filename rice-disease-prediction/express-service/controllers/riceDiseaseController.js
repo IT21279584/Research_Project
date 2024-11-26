@@ -21,6 +21,17 @@ const riceDiseasePrediction = async (req, res) => {
       predictions: [prediction],
     });
 
-   
+    await record.save();
+    res.json({ prediction: [prediction] });
+  } catch (err) {
+    console.error("Error with prediction:", err.message);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
+  }
+};
+
+
+};
 
 module.exports = { riceDiseasePrediction, getPreviousPredictions };
