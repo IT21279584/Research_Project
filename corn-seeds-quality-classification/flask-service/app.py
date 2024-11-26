@@ -21,7 +21,7 @@ def preprocess_image(image_bytes):
     img = np.expand_dims(img, axis=0)  # Add batch dimension
     return img
 
-@app.route('/classify/', methods=['POST'])
+@app.route('/classify/', methods=['POST'], strict_slashes=False)
 def classify_seed():
     try:
         if 'file' not in request.files:
@@ -43,4 +43,4 @@ def classify_seed():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5003)

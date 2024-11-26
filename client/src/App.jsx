@@ -8,6 +8,7 @@ import '../src/App.css'
 
 import DiseaseDetection from "./RiceDiseasePrediction.jsx";
 import SoybeanSeedsPrediction from "./SoybeanSeedsPrediction.jsx";
+import Home from "./Home.jsx";
 
 
 
@@ -28,6 +29,8 @@ function App() {
         ></Route>
 
         <Route path="/rice-prediction" element={<DiseaseDetection />}></Route>
+
+        <Route path="/" element={<Home />}></Route>
       </Routes>
     </BrowserRouter>
   );
