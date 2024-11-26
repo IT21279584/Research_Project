@@ -8,7 +8,19 @@ const riceDiseasePrediction = async (req, res) => {
       return res.status(400).json({ message: "Please upload exactly 1 image" });
     }
 
-    
-};
+    const file = req.files[0];
+    const imageKey = `image-${Date.now()}-${file.originalname}`;
+    console.log(`Uploading image to S3: ${imageKey}`);
+
+    const imageUrl = await uploadToS3(file, imageKey);
+
+    const prediction = await classifyImage(file);
+
+    const record = new Classification({
+      imageUrls: [imageUrl],
+      predictions: [prediction],
+    });
+
+   
 
 module.exports = { riceDiseasePrediction, getPreviousPredictions };
