@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import Header from "./Header";
-import Footer from "./Footer";
-
-
 export default function GuavaClassification() {
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
@@ -38,8 +34,7 @@ export default function GuavaClassification() {
     }
 
     try {
-
-      const response = await fetch("http://localhost:5004/api/upload", {
+      const response = await fetch("http://localhost:3001/api/upload", {
         method: "POST",
         body: formData,
       });
@@ -53,9 +48,7 @@ export default function GuavaClassification() {
 
   const fetchPreviousResults = async () => {
     try {
-
-      const response = await fetch("http://localhost:5004/api/predictions");
-
+      const response = await fetch("http://localhost:3001/api/predictions");
       const results = await response.json();
       setPreviousResults(results);
     } catch (error) {
@@ -65,59 +58,44 @@ export default function GuavaClassification() {
 
   return (
     <div>
-      <Header/>
       <div
-        className="relative flex items-center justify-center w-full bg-center bg-cover h-36"
-        style={{ backgroundImage: "url('/images/Guava-1.jpg')" }}
+        className="relative w-full h-36 bg-cover bg-center flex items-center justify-center"
+        style={{ backgroundImage: "url('/images/Brown-eggs.jpg.webp')" }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <h1 className="relative z-10 text-4xl font-bold text-center text-white">
+        <h1 className="relative text-4xl font-bold text-white z-10 text-center">
           Guava Quality Classification
         </h1>
       </div>
 
-      <div className="flex flex-col justify-between px-4 mt-8 md:flex-row md:px-16">
-        <div className="flex-1 mb-8 text-left md:mb-0">
-
-          <h2 className="text-3xl font-bold">
-            The Plant is Infected with -{" "}
-            {response?.predictionResult?.predicted_class?.toUpperCase()}
-          </h2>
-          <p className="mt-4 text-sm md:text-base">
-            By analyzing the image you have uploaded, the algorithm has
-            identified that the plant is infected with the disease called Brown
-            Spot.
-          </p>
-
-          <div className="flex flex-col mt-6 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-            <button className="px-6 py-2 font-bold text-white bg-green-500 rounded-md hover:bg-green-600">
-              Treatments
-            </button>
-            <button className="px-6 py-2 font-bold bg-white border border-gray-400 rounded-md">
-              Read more
-            </button>
-          </div>
+      <div className="flex flex-col md:flex-row justify-around mt-8 px-4 md:px-8 lg:px-12 max-w-screen-xl mx-auto">
+        <div className="flex-1 text-left mb-8 md:mb-0">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold">
+            The Guava is Classified as <br />
+            <span className="text-green-600">
+              {response?.predictionResult?.predicted_class?.toUpperCase() ??
+                "Waiting for Prediction"}
+            </span>
+          </h1>
         </div>
 
-
-        <div className="flex flex-col items-center justify-center flex-1 space-y-4">
-          <div className="flex flex-col items-center justify-center space-x-0 sm:flex-row sm:space-x-8">
-
+        <div className="flex flex-1 flex-col space-y-4 items-center justify-center">
+          <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-6 md:space-x-8 items-center justify-center">
             <div className="flex flex-col items-center mx-auto">
               {image1 ? (
                 <img
                   src={image1}
                   alt="Uploaded Image 1"
-
-                  className="border border-red-500 w-72 h-72 object-cover mb-4 sm:mb-2"
+                  className="border w-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 h-64 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72 object-cover mb-4 sm:mb-2"
                 />
               ) : (
-                <div className="w-72 h-72 border border-gray-300 flex items-center justify-center text-gray-400 mb-4 sm:mb-2">
-                  No Image
-                </div>
+                <img
+                  src="/images/not_damaged_7.jpg"
+                  alt="Uploaded Image 1"
+                  className="border w-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 h-64 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72 object-cover mb-4 sm:mb-2"
+                />
               )}
               <label className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold cursor-pointer text-center">
-
                 <input
                   type="file"
                   accept="image/*"
@@ -129,23 +107,21 @@ export default function GuavaClassification() {
                 Upload Image
               </label>
             </div>
-
             <div className="flex flex-col items-center mt-4 sm:mt-0 mx-auto">
-
               {image2 ? (
                 <img
                   src={image2}
                   alt="Uploaded Image 2"
-
-                  className="border border-red-500 w-72 h-72 object-cover mb-4 sm:mb-2"
+                  className="border w-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 h-64 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72 object-cover mb-4 sm:mb-2"
                 />
               ) : (
-                <div className="w-72 h-72 border border-gray-300 flex items-center justify-center text-gray-400 mb-4 sm:mb-2">
-                  No Image
-                </div>
+                <img
+                  src="/images/thumb (10).jpg"
+                  alt="Uploaded Image 1"
+                  className="border w-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 h-64 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72 object-cover mb-4 sm:mb-2"
+                />
               )}
               <label className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold cursor-pointer text-center">
-
                 <input
                   type="file"
                   accept="image/*"
@@ -161,40 +137,42 @@ export default function GuavaClassification() {
           <button
             onClick={handleAnalyzeClick}
             className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold mt-4 mx-auto"
-
           >
             Analyze
           </button>
         </div>
       </div>
 
-      <div className="ml-4 md:ml-10 mt-10 mb-6">
-        <h2 className="text-3xl font-semibold">Previous Results</h2>
+      <div className="mt-10 mb-6 max-w-screen-xl mx-auto px-4 md:px-8 lg:px-12 xl:px-12 ">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold ml-1">
+          Previous Results
+        </h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 justify-center mb-8 px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 justify-center mb-8 px-4 md:px-8 lg:px-12 max-w-screen-xl mx-auto">
         {previousResults.map((result) => (
-          <div key={result._id} className="text-center p-4">
-            <div className="flex flex-col sm:flex-row justify-around mb-4 space-y-4 sm:space-y-0">
+          <div
+            key={result._id}
+            className="text-center p-4 border rounded-md shadow-md"
+          >
+            <div className="flex flex-col sm:flex-row justify-around items-center mb-4 space-y-4 sm:space-y-0">
               <img
                 src={result.image1}
                 alt="Previous Result Image 1"
-                className="w-full sm:w-72 h-72 object-cover rounded-md shadow"
-
+                className="w-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 h-64 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72 object-cover rounded-md shadow"
               />
               <img
                 src={result.image2}
                 alt="Previous Result Image 2"
-
-                className="w-full sm:w-72 h-72 object-cover rounded-md shadow"
+                className="w-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 h-64 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72 object-cover rounded-md shadow"
               />
             </div>
-            <p className="font-bold text-lg">{result.predicted_class}</p>
+            <p className="font-bold text-sm sm:text-base md:text-lg">
+              {result.result}
+            </p>
           </div>
         ))}
       </div>
-
     </div>
   );
 }
-
