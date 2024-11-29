@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 
+import Header from "./Header";
+import Footer from "./Footer";
+
+
 export default function GuavaClassification() {
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
@@ -34,7 +38,8 @@ export default function GuavaClassification() {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/api/upload", {
+
+      const response = await fetch("http://localhost:5004/api/upload", {
         method: "POST",
         body: formData,
       });
@@ -48,7 +53,9 @@ export default function GuavaClassification() {
 
   const fetchPreviousResults = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/predictions");
+
+      const response = await fetch("http://localhost:5004/api/predictions");
+
       const results = await response.json();
       setPreviousResults(results);
     } catch (error) {
@@ -58,18 +65,20 @@ export default function GuavaClassification() {
 
   return (
     <div>
+      <Header/>
       <div
-        className="relative w-full h-36 bg-cover bg-center flex items-center justify-center"
+        className="relative flex items-center justify-center w-full bg-center bg-cover h-36"
         style={{ backgroundImage: "url('/images/Guava-1.jpg')" }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <h1 className="relative text-4xl font-bold text-white z-10 text-center">
-          Rice Leaf Disease Detection
+        <h1 className="relative z-10 text-4xl font-bold text-center text-white">
+          Guava Quality Classification
         </h1>
       </div>
 
-      <div className="flex flex-col md:flex-row  justify-between mt-8 px-4 md:px-16">
-        <div className="flex-1 text-left mb-8 md:mb-0">
+      <div className="flex flex-col justify-between px-4 mt-8 md:flex-row md:px-16">
+        <div className="flex-1 mb-8 text-left md:mb-0">
+
           <h2 className="text-3xl font-bold">
             The Plant is Infected with -{" "}
             {response?.predictionResult?.predicted_class?.toUpperCase()}
@@ -79,23 +88,27 @@ export default function GuavaClassification() {
             identified that the plant is infected with the disease called Brown
             Spot.
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <button className="px-6 py-2 bg-green-500 text-white rounded-md font-bold hover:bg-green-600">
+
+          <div className="flex flex-col mt-6 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+            <button className="px-6 py-2 font-bold text-white bg-green-500 rounded-md hover:bg-green-600">
               Treatments
             </button>
-            <button className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold">
+            <button className="px-6 py-2 font-bold bg-white border border-gray-400 rounded-md">
               Read more
             </button>
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col space-y-4 items-center justify-center">
-          <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-8 items-center justify-center">
+
+        <div className="flex flex-col items-center justify-center flex-1 space-y-4">
+          <div className="flex flex-col items-center justify-center space-x-0 sm:flex-row sm:space-x-8">
+
             <div className="flex flex-col items-center mx-auto">
               {image1 ? (
                 <img
                   src={image1}
                   alt="Uploaded Image 1"
+
                   className="border border-red-500 w-72 h-72 object-cover mb-4 sm:mb-2"
                 />
               ) : (
@@ -104,6 +117,7 @@ export default function GuavaClassification() {
                 </div>
               )}
               <label className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold cursor-pointer text-center">
+
                 <input
                   type="file"
                   accept="image/*"
@@ -115,11 +129,14 @@ export default function GuavaClassification() {
                 Upload Image
               </label>
             </div>
+
             <div className="flex flex-col items-center mt-4 sm:mt-0 mx-auto">
+
               {image2 ? (
                 <img
                   src={image2}
                   alt="Uploaded Image 2"
+
                   className="border border-red-500 w-72 h-72 object-cover mb-4 sm:mb-2"
                 />
               ) : (
@@ -128,6 +145,7 @@ export default function GuavaClassification() {
                 </div>
               )}
               <label className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold cursor-pointer text-center">
+
                 <input
                   type="file"
                   accept="image/*"
@@ -143,6 +161,7 @@ export default function GuavaClassification() {
           <button
             onClick={handleAnalyzeClick}
             className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold mt-4 mx-auto"
+
           >
             Analyze
           </button>
@@ -161,10 +180,12 @@ export default function GuavaClassification() {
                 src={result.image1}
                 alt="Previous Result Image 1"
                 className="w-full sm:w-72 h-72 object-cover rounded-md shadow"
+
               />
               <img
                 src={result.image2}
                 alt="Previous Result Image 2"
+
                 className="w-full sm:w-72 h-72 object-cover rounded-md shadow"
               />
             </div>
@@ -172,8 +193,8 @@ export default function GuavaClassification() {
           </div>
         ))}
       </div>
+
     </div>
   );
 }
-
 

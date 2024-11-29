@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 
 # Load the pre-trained model once when the app starts
-model_path = os.path.join("models", "efficientnet_soybean_final_model.keras")
+model_path = os.path.join("models", "corn_model.keras")
 model = tf.keras.models.load_model(model_path)
 
 # Define your labels in the correct order based on the model's training data
@@ -21,7 +21,7 @@ def preprocess_image(image_bytes):
     img = np.expand_dims(img, axis=0)  # Add batch dimension
     return img
 
-@app.route('/classify', methods=['POST'])
+@app.route('/classify/', methods=['POST'], strict_slashes=False)
 def classify_seed():
     try:
         if 'file' not in request.files:
@@ -43,4 +43,4 @@ def classify_seed():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5003)

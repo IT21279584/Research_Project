@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import image1 from "./assets/corn.jpg"; // Default image 1
-import image2 from "./assets/corn.jpg"; // Default image 2
+import image1 from "./assets/cornseeds.jpg"; // Default image 1
+import image2 from "./assets/cornseeds.jpg"; // Default image 2
 import backgroundImage from "./assets/corn.jpg";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -43,41 +43,40 @@ function CornSeedsPrediction() {
     await uploadImages(filesToUpload);
   };
 
-  const uploadImages = async (files) => {
-    const formData = new FormData();
-    files.forEach((file) => formData.append("images", file));
+const uploadImages = async (files) => {
+  const formData = new FormData();
+  files.forEach((file) => formData.append("images", file));
 
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/classify",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      console.log("Response received:", response);
-
-      const { classification, confidence } = response.data;
-
-      // Check if classification and confidence are present
-      if (classification && confidence) {
-        setClassificationResults([...classificationResults, classification]); // Add to existing results
-      } else {
-        console.warn("No valid classifications received");
-        setClassificationResults([...classificationResults, "Unknown"]); // Fallback result
+  try {
+    const response = await axios.post(
+      "http://localhost:5002/api/corn-quality-classification",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
       }
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      alert("Error during classification. Please try again.");
+    );
+
+    console.log("Response received:", response);
+
+    const { classification } = response.data; // Correct key here
+
+    if (classification) {
+      setClassificationResults([classification]); // Replace state with the classification
+    } else {
+      console.warn("No valid classifications received");
+      setClassificationResults(["Unknown"]); // Fallback for unknown results
     }
-  };
+  } catch (error) {
+    console.error("Error uploading images:", error);
+    alert("Error during classification. Please try again.");
+  }
+};
 
   // Fetch previous results every 5 seconds
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await fetch("http://localhost:5000/previous-results");
+        const response = await fetch("http://localhost:5002/api/corn-previous-results");
         const data = await response.json();
         setPreviousResults(data); // Ensure data is an array
       } catch (error) {
@@ -118,44 +117,43 @@ function CornSeedsPrediction() {
           </h2>
         </div>
 
-  <div className="w-full p-4 max-w-7xl md:p-2">
-  {/* Analysis Result Section */}
-  <div className="flex flex-col items-center pl-4 mb-8 space-y-4 md:flex-row md:space-y-0 md:justify-between">
-    <div className="mb-4 text-center md:w-1/2 md:text-left md:mb-0">
-      <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl">
-        The Corn Seeds are Classified as{" "}
-        <span className="leading-10 text-green-700">
-          {classificationResults.length
-            ? classificationResults.join(", ")
-            : "Unknown"}
-        </span>
-      </h1>
-      <hr className="mt-10 mb-8 border-t border-gray-800" />
-      <p className="mt-2 text-xl text-gray-600">
-        The analysis indicates that the corn seed batch shows signs of{" "}
-        {classificationResults.length
-          ? classificationResults.join(", ")
-          : "unknown condition"}
-        , which may affect seed quality.
-      </p>
-    </div>
-    {/* Responsive Image Section */}
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:w-1/2">
-      {uploadedImages.map((imageUrl, index) => (
-        <div
-          key={index}
-          className="flex items-center justify-center w-full overflow-hidden bg-white border border-gray-300 rounded-lg aspect-square"
-        >
-          <img
-            src={imageUrl}
-            alt={`Uploaded Corn Seed ${index + 1}`}
-            className="object-cover w-full h-full"
-          />
-        </div>
-      ))}
-    </div>
-  </div>
-
+        <div className="w-full p-4 max-w-7xl md:p-2">
+          {/* Analysis Result Section */}
+          <div className="flex flex-col items-center pl-4 mb-8 space-y-4 md:flex-row md:space-y-0 md:justify-between">
+            <div className="mb-4 text-center md:w-1/2 md:text-left md:mb-0">
+              <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl">
+                The Corn Seeds are Classified as{" "}
+                <span className="leading-10 text-green-700">
+                  {classificationResults.length
+                    ? classificationResults[0] // Display only the first (highest) result
+                    : "Waiting for Prediction"}
+                </span>
+              </h1>
+              <hr className="w-11/12 mt-10 mb-8 border-t border-gray-800" />
+              <p className="mt-2 text-xl text-gray-600">
+                The analysis indicates that the corn seed batch shows signs of{" "}
+                {classificationResults.length
+                  ? classificationResults.join(", ")
+                  : "unknown condition"}
+                , which may affect seed quality.
+              </p>
+            </div>
+            {/* Responsive Image Section */}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:w-1/2">
+              {uploadedImages.map((imageUrl, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-center w-full overflow-hidden bg-white border border-gray-300 rounded-lg aspect-square"
+                >
+                  <img
+                    src={imageUrl}
+                    alt={`Uploaded Corn Seed ${index + 1}`}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Action Buttons and Upload Section */}
           <div className="flex flex-col justify-between p-4 mb-10 space-y-4 md:flex-row md:space-y-0 md:space-x-4">
