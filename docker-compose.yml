@@ -23,6 +23,22 @@ services:
     networks:
       - backend
 
+  guava-flask-service:
+      build:
+        context: ./guava-quality-classification/flask-service
+      ports:
+        - "5005:5005"
+      networks:
+        - backend
+  
+  tomato-flask-service:
+      build:
+        context: ./tomato-quality-classification/flask-service
+      ports:
+        - "5007:5007"
+      networks:
+        - backend
+
   soybean-express-service:
     build:
       context: ./soybean-seeds-quality-classification/express-service
@@ -53,6 +69,26 @@ services:
     depends_on:
       - rice-flask-service
 
+  guava-express-service:
+    build:
+      context: ./guava-quality-classification/express-service
+    ports:
+      - "5004:5004"
+    networks:
+      - backend
+    depends_on:
+      - guava-flask-service
+
+  tomato-express-service:
+    build:
+      context: ./tomato-quality-classification/express-service
+    ports:
+      - "5006:5006"
+    networks:
+      - backend
+    depends_on:
+      - tomato-flask-service
+
   client:
     build:
       context: ./client
@@ -62,6 +98,8 @@ services:
       - soybean-express-service
       - corn-express-service
       - rice-express-service
+      - guava-express-service
+      - tomato-express-service
     networks:
       - backend
 
