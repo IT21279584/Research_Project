@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 
 # Load the pre-trained model once when the app starts
-model_path = os.path.join("models", "efficientnet_soybean_final_model.keras")
+model_path = os.path.join("models", "corn_model.keras")
 model = tf.keras.models.load_model(model_path)
 
 # Define your labels in the correct order based on the model's training data
