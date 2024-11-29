@@ -10,14 +10,7 @@ const classifyImage = async (file) => {
     contentType: file.mimetype,
   });
 
-  try {
-    const response = await axios.post(FASTAPI_URL, formData, {
-      headers: formData.getHeaders(),
-    });
-    return response.data.prediction;
-  } catch (err) {
-    throw new Error("Error calling FastAPI: " + err.message);
-  }
+  
 };
 
 module.exports = classifyImage;
