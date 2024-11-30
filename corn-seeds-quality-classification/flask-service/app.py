@@ -12,7 +12,7 @@ model_path = os.path.join("models", "corn_model.keras")
 model = tf.keras.models.load_model(model_path)
 
 # Define your labels in the correct order based on the model's training data
-labels = [ "Broken soybeans", "Immature soybeans", "Skin-damaged soybeans","Spotted soybeans", "Pure soybeans"]
+labels = [ "Silkcut", "broken", "discolored", "pure"]
 
 def preprocess_image(image_bytes):
     # Preprocess the uploaded image to match model input shape and requirements
