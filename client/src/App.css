@@ -6,7 +6,16 @@ body {
   padding: 0;
   overflow-x: hidden;
 }
+/* Ensure the font is applied correctly for the Home page */
+.font-archivo {
+  font-family: 'Archivo', sans-serif;
+}
 
+.archivo-black-regular {
+  font-family: "Archivo Black", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
 .logo {
   height: 6em;
@@ -42,4 +51,8 @@ body {
 
 .read-the-docs {
   color: #888;
+}
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
 }

@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-rice-disease-prediction/
+
 dist
 dist-ssr
 *.local
