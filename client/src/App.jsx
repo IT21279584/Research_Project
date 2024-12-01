@@ -10,6 +10,8 @@ import DiseaseDetection from "./RiceDiseasePrediction.jsx";
 import SoybeanSeedsPrediction from "./SoybeanSeedsPrediction.jsx";
 import Home from "./Home.jsx";
 import GuavaClassification from "./GuavaClassification.jsx";
+import DiagnosisResult from "./DiagnosisResult.jsx";
+import DiseaseInstructions from "./DiseaseInstructions.jsx";
 
 
 
@@ -32,7 +34,12 @@ function App() {
         <Route path="/rice-prediction" element={<DiseaseDetection />}></Route>
 
         <Route path="/" element={<Home />}></Route>
-        <Route path="/guava-classification" element={<GuavaClassification />}></Route>
+        <Route
+          path="/guava-classification"
+          element={<GuavaClassification />}
+        ></Route>
+        <Route path="/diagnosis-result" element={<DiagnosisResult />}></Route>
+        <Route path="/diagnosis-instructions" element={<DiseaseInstructions />}></Route>
       </Routes>
     </BrowserRouter>
   );
