@@ -35,5 +35,23 @@ mongoose
     process.exit(1); // Exit process if MongoDB connection fails
   });
 
+// POST endpoint for rice disease prediction
+app.post(
+  "/api/rice-disease-predictions",
+  upload.array("images", 1),
+  async (req, res) => {
+    try {
+      // Validate file upload
+      if (!req.files || req.files.length !== 1) {
+        return res
+          .status(400)
+          .json({ message: "Please upload exactly 1 image" });
+      }
 
+      const file = req.files[0];
+      const imageKey = `image-${Date.now()}-${file.originalname}`;
+
+      console.log(`Uploading image to S3: ${imageKey}`);
+
+      
 });
