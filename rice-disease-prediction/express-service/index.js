@@ -53,5 +53,26 @@ app.post(
 
       console.log(`Uploading image to S3: ${imageKey}`);
 
-      
+      // Upload image to S3
+      let uploadResult;
+      try {
+        uploadResult = await s3
+          .upload({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: imageKey,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+          })
+          .promise();
+      } catch (err) {
+        console.error("Error uploading image to S3:", err.message);
+        return res.status(500).json({
+          message: "Failed to upload image to S3",
+          error: err.message,
+        });
+      }
+
+      const imageUrl = uploadResult.Location;
+
+     
 });
