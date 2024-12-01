@@ -38,6 +38,14 @@ services:
         - "5007:5007"
       networks:
         - backend
+  
+  egg-flask-service:
+    build:
+      context: ./egg-quality-classification/flask-service
+    ports:
+      - "5011:5011"
+    networks:
+      - backend
 
   soybean-express-service:
     build:
@@ -89,6 +97,16 @@ services:
     depends_on:
       - tomato-flask-service
 
+  egg-express-service:
+    build:
+      context: ./egg-quality-classification/express-service
+    ports:
+      - "5010:5010"
+    networks:
+      - backend
+    depends_on:
+      - egg-flask-service
+
   client:
     build:
       context: ./client
@@ -100,6 +118,7 @@ services:
       - rice-express-service
       - guava-express-service
       - tomato-express-service
+      - egg-express-service
     networks:
       - backend
 
