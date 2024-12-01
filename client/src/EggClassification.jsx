@@ -34,7 +34,7 @@ export default function EggClassification() {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/upload', {
+      const response = await fetch('http://localhost:5010/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -48,7 +48,7 @@ export default function EggClassification() {
 
   const fetchPreviousResults = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/predictions');
+      const response = await fetch('http://localhost:5010/api/predictions');
       const results = await response.json();
       setPreviousResults(results);
     } catch (error) {
@@ -58,67 +58,67 @@ export default function EggClassification() {
 
   return (
     <div>
-      <div className="relative w-full h-36 bg-cover bg-center flex items-center justify-center" style={{ backgroundImage: "url('/images/Brown-eggs.jpg.webp')" }}>
+      <div className="relative flex items-center justify-center w-full bg-center bg-cover h-36" style={{ backgroundImage: "url('/images/Brown-eggs.jpg.webp')" }}>
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <h1 className="relative text-4xl font-bold text-white z-10 text-center">Egg Quality Detection</h1>
+        <h1 className="relative z-10 text-4xl font-bold text-center text-white">Egg Quality Detection</h1>
       </div>
       
-      <div className="flex flex-col md:flex-row  justify-between mt-8 px-4 md:px-16">
-        <div className="flex-1 text-left mb-8 md:mb-0">
+      <div className="flex flex-col justify-between px-4 mt-8 md:flex-row md:px-16">
+        <div className="flex-1 mb-8 text-left md:mb-0">
           <h2 className="text-3xl font-bold">
             The Egg Quality is - {response?.predictionResult?.result?.toUpperCase()}
           </h2>
           <p className="mt-4 text-sm md:text-base">
           By analyzing the image you have uploaded, the algorithm has detected signs of potential disease affecting your tomato fruit.
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <button className="px-6 py-2 bg-green-500 text-white rounded-md font-bold hover:bg-green-600">Treatments</button>
-            <button className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold">Read more</button>
+          <div className="flex flex-col mt-6 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+            <button className="px-6 py-2 font-bold text-white bg-green-500 rounded-md hover:bg-green-600">Treatments</button>
+            <button className="px-6 py-2 font-bold bg-white border border-gray-400 rounded-md">Read more</button>
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col space-y-4 items-center justify-center">
-          <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-8 items-center justify-center">
+        <div className="flex flex-col items-center justify-center flex-1 space-y-4">
+          <div className="flex flex-col items-center justify-center space-x-0 sm:flex-row sm:space-x-8">
             <div className="flex flex-col items-center mx-auto">
               {image1 ? (
-                <img src={image1} alt="Uploaded Image 1" className="border border-red-500 w-72 h-72 object-cover mb-4 sm:mb-2"/>
+                <img src={image1} alt="Uploaded Image 1" className="object-cover mb-4 border border-red-500 w-72 h-72 sm:mb-2"/>
               ) : (
-                <div className="w-72 h-72 border border-gray-300 flex items-center justify-center text-gray-400 mb-4 sm:mb-2">No Image</div>
+                <div className="flex items-center justify-center mb-4 text-gray-400 border border-gray-300 w-72 h-72 sm:mb-2">No Image</div>
               )}
-              <label className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold cursor-pointer text-center">
+              <label className="px-6 py-2 font-bold text-center bg-white border border-gray-400 rounded-md cursor-pointer">
                 <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, setImage1, setImage1File)} className="hidden"/>
                 Upload Image
               </label>
             </div>
-            <div className="flex flex-col items-center mt-4 sm:mt-0 mx-auto">
+            <div className="flex flex-col items-center mx-auto mt-4 sm:mt-0">
               {image2 ? (
-                <img src={image2} alt="Uploaded Image 2" className="border border-red-500 w-72 h-72 object-cover mb-4 sm:mb-2"/>
+                <img src={image2} alt="Uploaded Image 2" className="object-cover mb-4 border border-red-500 w-72 h-72 sm:mb-2"/>
               ) : (
-                <div className="w-72 h-72 border border-gray-300 flex items-center justify-center text-gray-400 mb-4 sm:mb-2">No Image</div>
+                <div className="flex items-center justify-center mb-4 text-gray-400 border border-gray-300 w-72 h-72 sm:mb-2">No Image</div>
               )}
-              <label className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold cursor-pointer text-center">
+              <label className="px-6 py-2 font-bold text-center bg-white border border-gray-400 rounded-md cursor-pointer">
                 <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, setImage2, setImage2File)} className="hidden"/>
                 Upload Image
               </label>
             </div>
           </div>
-          <button onClick={handleAnalyzeClick} className="px-6 py-2 bg-white border border-gray-400 rounded-md font-bold mt-4 mx-auto">Analyze</button>
+          <button onClick={handleAnalyzeClick} className="px-6 py-2 mx-auto mt-4 font-bold bg-white border border-gray-400 rounded-md">Analyze</button>
         </div>
 
       </div>
 
-      <div className="ml-4 md:ml-10 mt-10 mb-6">
+      <div className="mt-10 mb-6 ml-4 md:ml-10">
         <h2 className="text-3xl font-semibold">Previous Results</h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 justify-center mb-8 px-4">
+      <div className="grid justify-center grid-cols-1 gap-4 px-4 mb-8 sm:grid-cols-2 md:grid-cols-2">
         {previousResults.map(result => (
-          <div key={result._id} className="text-center p-4">
-            <div className="flex flex-col sm:flex-row justify-around mb-4 space-y-4 sm:space-y-0">
-              <img src={result.image1} alt="Previous Result Image 1" className="w-full sm:w-72 h-72 object-cover rounded-md shadow"/>
-              <img src={result.image2} alt="Previous Result Image 2" className="w-full sm:w-72 h-72 object-cover rounded-md shadow"/>
+          <div key={result._id} className="p-4 text-center">
+            <div className="flex flex-col justify-around mb-4 space-y-4 sm:flex-row sm:space-y-0">
+              <img src={result.image1} alt="Previous Result Image 1" className="object-cover w-full rounded-md shadow sm:w-72 h-72"/>
+              <img src={result.image2} alt="Previous Result Image 2" className="object-cover w-full rounded-md shadow sm:w-72 h-72"/>
             </div>
-            <p className="font-bold text-lg">{result.result}</p>
+            <p className="text-lg font-bold">{result.result}</p>
           </div>
         ))}
       </div>
