@@ -22,5 +22,18 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
 
+// MongoDB and FastAPI URLs from environment variables
+const MONGO_URI = process.env.MONGO_URI;
+const FASTAPI_URL = process.env.FASTAPI_URL;
+
+// Connect to MongoDB
+mongoose
+  .connect(MONGO_URI, {})
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => {
+    console.error("MongoDB connection error:", err.message);
+    process.exit(1); // Exit process if MongoDB connection fails
+  });
+
 
 });
