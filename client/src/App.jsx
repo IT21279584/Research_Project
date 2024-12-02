@@ -13,8 +13,10 @@ import Home from "./Home.jsx";
 import GuavaClassification from "./GuavaClassification.jsx";
 import TomatoClassification from "./TomatoClassification.jsx";
 
+
 import DiagnosisResult from "./DiagnosisResult.jsx";
 import DiseaseInstructions from "./DiseaseInstructions.jsx";
+
 
 
 
@@ -46,6 +48,7 @@ function App() {
           path="/guava-classification"
           element={<GuavaClassification />}
         ></Route>
+
         <Route path="/diagnosis-result" element={<DiagnosisResult />}></Route>
         <Route
           path="/diagnosis-instructions"
@@ -54,6 +57,11 @@ function App() {
         <Route
           path="/tomato-classification"
           element={<TomatoClassification />}
+
+        <Route
+          path="/tomato-classification"
+          element={<TomatoClassification/>}
+
         ></Route>
       </Routes>
     </BrowserRouter>
