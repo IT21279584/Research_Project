@@ -16,7 +16,7 @@ function DiseaseDetection() {
     const fetchPreviousResults = async () => { 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/rice-previous-predictions"
+          "http://localhost:5008/api/rice-previous-predictions"
         );
         console.log("Fetched Previous Results: ", response.data); // Log to verify the data
         setPreviousResults(response.data);
@@ -52,7 +52,7 @@ const onAnalyze = async () => {
   try {
     // Send image to backend API (Flask or Express)
     const response = await axios.post(
-      "http://localhost:5000/api/rice-disease-predictions", // Update to the appropriate API URL
+      "http://localhost:5008/api/rice-disease-predictions", // Update to the appropriate API URL
       formData,
       {
         headers: {

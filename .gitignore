@@ -7,9 +7,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+
 corn-seeds-classification/
 corn-seeds-quality-classification/
 soybean-seeds-quality-classification/
+
 dist
 dist-ssr
 *.local
