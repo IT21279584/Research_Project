@@ -18,7 +18,7 @@ def preprocess_image(image_bytes):
     # Preprocess the uploaded image to match model input shape and requirements
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     img = img.resize((224, 224))  # Resize to match model's expected input size
-    img = np.expand_dims(img, axis=0)  # Add batch dimension
+    img = np.expand_dims(img, axis=0)  # Adding batch dimension
     return img
 
 @app.route('/rice_disease_prediction', methods=['POST'])
