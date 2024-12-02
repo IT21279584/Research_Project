@@ -97,5 +97,21 @@ app.post(
 
       const { prediction } = response.data;
 
+      // Save classification result to MongoDB
+      const record = new Classification({
+        imageUrls: [imageUrl],
+        predictions: [prediction],
+      });
+
+      try {
+        await record.save();
+      } catch (err) {
+        console.error("Error saving prediction to MongoDB:", err.message);
+        return res.status(500).json({
+          message: "Failed to save prediction result",
+          error: err.message,
+        });
+      }
+
       
 });
