@@ -63,10 +63,6 @@ function App() {
           path="/tomato-classification"
           element={<TomatoClassification />}
 
-        <Route
-          path="/tomato-classification"
-          element={<TomatoClassification/>}
-
         ></Route>
 
       </Routes>
