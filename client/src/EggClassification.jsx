@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Header from "./Header.jsx";
-import Footer from "./Footer.jsx";
-
+import Header from './Header.jsx'
+import Footer from './Footer.jsx'
 export default function EggClassification() {
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
@@ -52,6 +51,8 @@ export default function EggClassification() {
     try {
       const response = await fetch("http://localhost:5010/api/predictions");
       const results = await response.json();
+      console.log(results);
+
       setPreviousResults(results);
     } catch (error) {
       console.error("Failed to fetch previous results:", error);
@@ -60,14 +61,14 @@ export default function EggClassification() {
 
   return (
     <div>
-      <Header />
+      <Header/>
       <div
         className="relative flex items-center justify-center w-full h-64 bg-center bg-cover"
         style={{ backgroundImage: "url('/images/egg.jpg')" }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <h1 className="relative z-10 text-4xl font-bold text-center text-white">
-          Egg Quality Classification
+          Egg Quality Detection
         </h1>
       </div>
 
@@ -152,22 +153,22 @@ export default function EggClassification() {
         </h2>
       </div>
 
-      <div className="grid justify-center max-w-screen-xl grid-cols-1 gap-4 px-4 mx-auto mb-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 sm:gap-6 md:gap-8 md:px-8 lg:px-12">
+      <div className="grid justify-center max-w-screen-xl grid-cols-1 gap-4 px-4 pb-8 mx-auto mb-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 sm:gap-6 md:gap-8 md:px-8 lg:px-12">
         {previousResults.map((result) => (
           <div
             key={result._id}
-            className="p-4 text-center border rounded-md shadow-md"
+            className="text-center" // Minimal styling for layout
           >
-            <div className="flex flex-col items-center justify-around mb-4 space-y-4 sm:flex-row sm:space-y-0">
+            <div className="flex flex-col items-center justify-around mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
               <img
                 src={result.image1}
                 alt="Previous Result Image 1"
-                className="object-cover w-64 h-64 rounded-md shadow sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
+                className="object-cover w-64 h-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
               />
               <img
                 src={result.image2}
                 alt="Previous Result Image 2"
-                className="object-cover w-64 h-64 rounded-md shadow sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
+                className="object-cover w-64 h-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
               />
             </div>
             <p className="text-sm font-bold sm:text-base md:text-lg">
@@ -176,7 +177,7 @@ export default function EggClassification() {
           </div>
         ))}
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 }

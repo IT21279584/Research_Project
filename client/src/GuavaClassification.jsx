@@ -60,7 +60,7 @@ export default function GuavaClassification() {
 
   return (
     <div>
-      <Header/>
+      <Header />
       <div
         className="relative flex items-center justify-center w-full h-64 bg-center bg-cover"
         style={{ backgroundImage: "url('/images/guava-header.jpg')" }}
@@ -152,31 +152,32 @@ export default function GuavaClassification() {
         </h2>
       </div>
 
-      <div className="grid justify-center max-w-screen-xl grid-cols-1 gap-4 px-4 mx-auto mb-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 sm:gap-6 md:gap-8 md:px-8 lg:px-12">
+      <div className="grid justify-center max-w-screen-xl grid-cols-1 gap-4 px-4 pb-8 mx-auto mb-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 sm:gap-6 md:gap-8 md:px-8 lg:px-12">
         {previousResults.map((result) => (
           <div
             key={result._id}
-            className="p-4 text-center border rounded-md shadow-md"
+            className="text-center" // Minimal styling for layout
           >
-            <div className="flex flex-col items-center justify-around mb-4 space-y-4 sm:flex-row sm:space-y-0">
+            <div className="flex flex-col items-center justify-around mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
               <img
                 src={result.image1}
                 alt="Previous Result Image 1"
-                className="object-cover w-64 h-64 rounded-md shadow sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
+                className="object-cover w-64 h-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
               />
               <img
                 src={result.image2}
                 alt="Previous Result Image 2"
-                className="object-cover w-64 h-64 rounded-md shadow sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
+                className="object-cover w-64 h-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
               />
             </div>
             <p className="text-sm font-bold sm:text-base md:text-lg">
-              {result.result}
+              {result.predicted_class}
             </p>
           </div>
         ))}
       </div>
-      <Footer/>
+
+      <Footer />
     </div>
   );
 }
