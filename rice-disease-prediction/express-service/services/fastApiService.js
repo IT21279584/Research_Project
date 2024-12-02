@@ -1,6 +1,7 @@
 const axios = require("axios");
 const FormData = require("form-data");
-const { FASTAPI_URL } = require("../config/fastApiConfig");
+
+const FASTAPI_URL = process.env.FASTAPI_URL;
 
 const classifyImage = async (file) => {
   const formData = new FormData();

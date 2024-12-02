@@ -1,22 +1,24 @@
 const express = require("express");
 const cors = require("cors");
-const connectMongoDB = require("./config/mongooseConfig");
+require("dotenv").config();
+
+const mongooseConfig = require("./config/mongooseConfig");
 const riceDiseaseRoutes = require("./routes/riceDiseaseRoutes");
-require("dotenv").config(); // Load environment variables
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
+// Configure Middleware
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
-connectMongoDB();
+// MongoDB Configuration
+mongooseConfig();
 
-// Set up routes
+// API Routes
 app.use("/api", riceDiseaseRoutes);
 
-// Start Express server
+// Start Express Server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
