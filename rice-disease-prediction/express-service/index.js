@@ -74,5 +74,28 @@ app.post(
 
       const imageUrl = uploadResult.Location;
 
-     
+      // Prepare formData for FastAPI
+      const formData = new FormData();
+      formData.append("file", file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+
+      // Send image to FastAPI for classification
+      let response;
+      try {
+        response = await axios.post(FASTAPI_URL, formData, {
+          headers: formData.getHeaders(),
+        });
+      } catch (err) {
+        console.error("Error calling FastAPI:", err.message);
+        return res.status(500).json({
+          message: "Failed to classify the image using FastAPI",
+          error: err.message,
+        });
+      }
+
+      const { prediction } = response.data;
+
+      
 });
