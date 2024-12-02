@@ -6,7 +6,7 @@ const connectDB = require('./config/db');
 const predictionRoutes = require('./routes/predictionRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Enable CORS
 app.use(cors());

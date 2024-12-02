@@ -20,5 +20,5 @@ COPY --from=builder /install /usr/local
 WORKDIR /app
 COPY . .
 
-EXPOSE 5007
-CMD ["python", "app.py"]
+EXPOSE 5011
+CMD ["python", "app.py", "--host=0.0.0.0"]

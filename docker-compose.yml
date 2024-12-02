@@ -7,13 +7,13 @@ services:
     networks:
       - backend
 
-  # corn-flask-service:
-  #   build:
-  #     context: ./corn-seeds-quality-classification/flask-service
-  #   ports:
-  #     - "5003:5003"
-  #   networks:
-  #     - backend
+  corn-flask-service:
+    build:
+      context: ./corn-seeds-quality-classification/flask-service
+    ports:
+      - "5003:5003"
+    networks:
+      - backend
   
   rice-flask-service:
     build:
@@ -38,6 +38,14 @@ services:
         - "5007:5007"
       networks:
         - backend
+  
+  egg-flask-service:
+    build:
+      context: ./egg-quality-classification/flask-service
+    ports:
+      - "5011:5011"
+    networks:
+      - backend
 
   soybean-express-service:
     build:
@@ -49,15 +57,15 @@ services:
     depends_on:
       - soybean-flask-service
 
-  # corn-express-service:
-  #   build:
-  #     context: ./corn-seeds-quality-classification/express-service
-  #   ports:
-  #     - "5002:5002"
-  #   networks:
-  #     - backend
-  #   depends_on:
-  #     - corn-flask-service
+  corn-express-service:
+    build:
+      context: ./corn-seeds-quality-classification/express-service
+    ports:
+      - "5002:5002"
+    networks:
+      - backend
+    depends_on:
+      - corn-flask-service
   
   rice-express-service:
     build:
@@ -89,6 +97,16 @@ services:
     depends_on:
       - tomato-flask-service
 
+  egg-express-service:
+    build:
+      context: ./egg-quality-classification/express-service
+    ports:
+      - "5010:5010"
+    networks:
+      - backend
+    depends_on:
+      - egg-flask-service
+
   client:
     build:
       context: ./client
@@ -96,10 +114,11 @@ services:
       - "5173:5173"
     depends_on:
       - soybean-express-service
-      # - corn-express-service
+      - corn-express-service
       - rice-express-service
       - guava-express-service
       - tomato-express-service
+      - egg-express-service
     networks:
       - backend
 

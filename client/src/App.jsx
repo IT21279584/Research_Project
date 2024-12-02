@@ -11,8 +11,12 @@ import DiseaseDetection from "./RiceDiseasePrediction.jsx";
 import SoybeanSeedsPrediction from "./SoybeanSeedsPrediction.jsx";
 import Home from "./Home.jsx";
 import GuavaClassification from "./GuavaClassification.jsx";
+import TomatoClassification from "./TomatoClassification.jsx";
+
+
 import DiagnosisResult from "./DiagnosisResult.jsx";
 import DiseaseInstructions from "./DiseaseInstructions.jsx";
+
 
 
 
@@ -23,15 +27,17 @@ function App() {
         <Route path="/footer" element={<Footer />}></Route>
         <Route path="/header" element={<Header />}></Route>
 
-        <Route path="/egg-Classification" element={<EggClassification/>}></Route>
-
+        <Route
+          path="/egg-classification"
+          element={<EggClassification />}
+        ></Route>
 
         <Route
-          path="/corn-prediction"
+          path="/corn-classification"
           element={<CornSeedsPrediction />}
         ></Route>
         <Route
-          path="/soybean-prediction"
+          path="/soybean-classification"
           element={<SoybeanSeedsPrediction />}
         ></Route>
 
@@ -42,9 +48,21 @@ function App() {
           path="/guava-classification"
           element={<GuavaClassification />}
         ></Route>
-        <Route path="/diagnosis-result" element={<DiagnosisResult />}></Route>
-        <Route path="/diagnosis-instructions" element={<DiseaseInstructions />}></Route>
 
+        <Route path="/diagnosis-result" element={<DiagnosisResult />}></Route>
+        <Route
+          path="/diagnosis-instructions"
+          element={<DiseaseInstructions />}
+        ></Route>
+        <Route
+          path="/tomato-classification"
+          element={<TomatoClassification />}
+
+        <Route
+          path="/tomato-classification"
+          element={<TomatoClassification/>}
+
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
