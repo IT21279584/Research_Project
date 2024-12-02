@@ -14,6 +14,7 @@ services:
       - "5003:5003"
     networks:
       - backend
+
   
   rice-flask-service:
     build:
@@ -107,6 +108,7 @@ services:
     depends_on:
       - egg-flask-service
 
+
   client:
     build:
       context: ./client
@@ -119,6 +121,7 @@ services:
       - guava-express-service
       - tomato-express-service
       - egg-express-service
+
     networks:
       - backend
 

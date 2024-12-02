@@ -5,11 +5,14 @@ import Header from "./Header.jsx";
 
 import CornSeedsPrediction from "./CornSeedsPrediction.jsx";
 import '../src/App.css'
+
 import EggClassification from "./EggClassification.jsx";
+
 
 import DiseaseDetection from "./RiceDiseasePrediction.jsx";
 import SoybeanSeedsPrediction from "./SoybeanSeedsPrediction.jsx";
 import Home from "./Home.jsx";
+
 import GuavaClassification from "./GuavaClassification.jsx";
 import TomatoClassification from "./TomatoClassification.jsx";
 
@@ -28,6 +31,7 @@ function App() {
         <Route path="/header" element={<Header />}></Route>
 
         <Route
+
           path="/egg-classification"
           element={<EggClassification />}
         ></Route>
@@ -38,6 +42,7 @@ function App() {
         ></Route>
         <Route
           path="/soybean-classification"
+
           element={<SoybeanSeedsPrediction />}
         ></Route>
 
@@ -63,6 +68,7 @@ function App() {
           element={<TomatoClassification/>}
 
         ></Route>
+
       </Routes>
     </BrowserRouter>
   );
