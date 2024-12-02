@@ -113,5 +113,38 @@ app.post(
         });
       }
 
-      
+      // Respond with the prediction
+      res.json({ prediction: [prediction] });
+    } catch (err) {
+      console.error("Error with prediction:", err.message);
+      res
+        .status(500)
+        .json({ message: "Internal server error", error: err.message });
+    }
+  }
+);
+
+// GET endpoint for fetching previous classification results
+app.get("/api/rice-previous-predictions", async (req, res) => {
+  try {
+    const lastRecords = await Classification.find().sort({ date: -1 }).limit(4);
+
+    const formattedResults = lastRecords.map((record) => ({
+      images: record.imageUrls || [],
+      predictions: record.predictions || [],
+      date: record.date || null,
+    }));
+
+    res.json(formattedResults);
+  } catch (err) {
+    console.error("Error fetching previous results:", err.message);
+    res
+      .status(500)
+      .json({ message: "Error fetching previous results", error: err.message });
+  }
+});
+
+// Start Express server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
