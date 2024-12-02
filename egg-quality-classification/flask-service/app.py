@@ -15,11 +15,7 @@ CORS(app)
 # Load the trained model
 model = load_model('egg_classification_model.h5')
 
-# Load class labels from the saved JSON file
-with open('class_labels.json', 'r') as f:
-    class_labels = json.load(f)
-
-# Mapping from label index to label name
+# Mapping from label index to label name (directly integrated)
 label_names = {
     0: "Brown - cracked egg",
     1: "Brown - good egg",
@@ -40,17 +36,16 @@ def predict():
         return jsonify({'error': 'No selected file'}), 400
     
     try:
-        # Load and preprocess the first image
-        img1 = Image.open(io.BytesIO(file1.read()))
-        img1 = img1.resize((224, 224))
-        img_array1 = np.array(img1) / 255.0
-        img_array1 = np.expand_dims(img_array1, axis=0)  # Add batch dimension
+        # Helper function to preprocess the image
+        def preprocess_image(file):
+            img = Image.open(io.BytesIO(file.read()))
+            img = img.resize((224, 224))
+            img_array = np.array(img) / 255.0
+            return np.expand_dims(img_array, axis=0)  # Add batch dimension
         
-        # Load and preprocess the second image
-        img2 = Image.open(io.BytesIO(file2.read()))
-        img2 = img2.resize((224, 224))
-        img_array2 = np.array(img2) / 255.0
-        img_array2 = np.expand_dims(img_array2, axis=0)  # Add batch dimension
+        # Preprocess both images
+        img_array1 = preprocess_image(file1)
+        img_array2 = preprocess_image(file2)
         
         # Make the predictions for both images
         prediction1 = model.predict(img_array1)
@@ -69,6 +64,8 @@ def predict():
             return jsonify({"Result": label_names[0]})
         elif (predicted_class_idx1 == 3 and predicted_class_idx2 == 4) or (predicted_class_idx1 == 4 and predicted_class_idx2 == 3):
             return jsonify({"Result": label_names[3]})
+        elif predicted_class_idx1 == 2 or predicted_class_idx2 == 2:
+            return jsonify({"Result": label_names[2]})
         elif predicted_class_idx1 == 0 and predicted_class_idx2 == 0:
             return jsonify({"Result": label_names[0]})
         elif predicted_class_idx1 == 1 and predicted_class_idx2 == 1:
@@ -77,8 +74,6 @@ def predict():
             return jsonify({"Result": label_names[3]})
         elif predicted_class_idx1 == 4 and predicted_class_idx2 == 4:
             return jsonify({"Result": label_names[4]})
-        elif predicted_class_idx1 == 2 or predicted_class_idx2 == 2:
-            return jsonify({"Result": label_names[2]})
         else:
             return jsonify({"Result": "Invalid inputs"})
         
@@ -86,4 +81,4 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5011, debug=True)
