@@ -18,4 +18,7 @@ mongooseConfig();
 // API Routes
 app.use("/api", riceDiseaseRoutes);
 
-
+// Start Express Server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
