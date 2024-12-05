@@ -22,3 +22,4 @@ COPY . .
 
 EXPOSE 5001
 CMD ["python", "app.py", "--host=0.0.0.0"]
+

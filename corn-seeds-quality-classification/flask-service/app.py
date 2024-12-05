@@ -8,6 +8,7 @@ import os
 app = Flask(__name__)
 
 # Load the pre-trained model once when the app starts
+
 model_path = os.path.join("models", "corn_model.keras")
 model = tf.keras.models.load_model(model_path)
 
@@ -22,6 +23,7 @@ def preprocess_image(image_bytes):
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     img = img.resize((224, 224))  # Resize to match EfficientNetB0 input size
     img = np.array(img) / 255.0  # Normalize pixel values to [0, 1]
+
     img = np.expand_dims(img, axis=0)  # Add batch dimension
     return img
 
@@ -34,7 +36,7 @@ def classify_seed():
         file = request.files['file']
         image = file.read()
         img = preprocess_image(image)
-        
+
         # Make predictions using the loaded model
         prediction = model.predict(img)
         
@@ -47,6 +49,7 @@ def classify_seed():
         
         print("Predicted label:", label, "| Confidence:", confidence)
         
+
         return jsonify({"classification": label, "confidence": float(confidence)})
     
     except Exception as e:
