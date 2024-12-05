@@ -321,35 +321,36 @@ const DiseaseInstructions = () => {
                   <input
                     type="radio"
                     name="pumpSize"
-                    value="small"
-                    checked={pumpSize === "small"}
+                    value="No pump"
+                    checked={pumpSize === "NoPump"}
                     onChange={(e) => setPumpSize(e.target.value)}
                     className="form-radio"
                   />
-                  <span className="ml-2">Small</span>
+                  <span className="ml-2">No pump</span>
                 </label>
                 <label className="inline-flex items-center">
                   <input
                     type="radio"
                     name="pumpSize"
-                    value="medium"
-                    checked={pumpSize === "medium"}
+                    value="15liters"
+                    checked={pumpSize === "15liters"}
                     onChange={(e) => setPumpSize(e.target.value)}
                     className="form-radio"
                   />
-                  <span className="ml-2">Medium</span>
+                  <span className="ml-2">15 Liters</span>
                 </label>
                 <label className="inline-flex items-center">
                   <input
                     type="radio"
                     name="pumpSize"
-                    value="large"
-                    checked={pumpSize === "large"}
+                    value="20liters"
+                    checked={pumpSize === "20liters"}
                     onChange={(e) => setPumpSize(e.target.value)}
                     className="form-radio"
                   />
-                  <span className="ml-2">Large</span>
+                  <span className="ml-2">20 Liters</span>
                 </label>
+                
               </div>
             </div>
 
