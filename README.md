@@ -157,13 +157,25 @@ The docker-compose.yml file allows you to run all services simultaneously in a c
 
 ## Endpoints
 
-Each service exposes RESTful APIs for interaction. Below is an example for the **Corn Seeds Quality Classification** service:
+Each service exposes RESTful APIs for interaction. Below is a list of endpoints for all agricultural product services:
 
-### Example for Corn Seeds Quality Classification (Flask Service)
+### **All Endpoints Table with Last Prediction Result (No Status Endpoint)**
 
-| Method | Endpoint   | Description                                |
-|--------|------------|--------------------------------------------|
-| POST   | `/predict` | Predict the quality of corn seeds.         |
+| Product                         | Method | Endpoint            | Description                                      |
+|----------------------------------|--------|---------------------|--------------------------------------------------|
+| **Corn Seeds Quality Classification** | POST   | `/api/corn-quality-classification`          | Predict the quality of corn seeds.               |
+|                                  | GET    | `/api/corn-previous-results`  | Get the last prediction results for corn seeds.  |
+| **Egg Quality Classification**   | POST   | `/api/upload`          | Predict the quality of eggs.                     |
+|                                  | GET    | `/api/predictions`  | Get the last prediction results for eggs.        |
+| **Guava Quality Classification** | POST   | `/api/upload`          | Predict the quality of guavas.                   |
+|                                  | GET    | `/api/predictions`  | Get the last prediction results for guavas.      |
+| **Rice Disease Prediction**      | POST   | `/api/rice-previous-predictions`          | Predict rice diseases based on leaf images.      |
+|                                  | GET    | `/api/rice-disease-predictions`  | Get the last prediction results for rice disease.|
+| **Soybean Seeds Quality Classification** | POST   | `/api/soybean-quality-classification`          | Predict the quality of soybean seeds.            |
+|                                  | GET    | `/api/soybean-previous-results`  | Get the last prediction results for soybean seeds.|
+| **Tomato Quality Classification** | POST   | `/api/upload`          | Predict the quality of tomatoes.                 |
+|                                  | GET    | `/api/predictions`  | Get the last prediction results for tomatoes.    |
+
 
 ---
 
