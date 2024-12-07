@@ -7,6 +7,7 @@ This repository contains multiple services and machine learning models for quali
 - [Project Overview](#project-overview)
 - [Services](#services)
 - [Folder Structure](#folder-structure)
+- [High-Level Architecture](#high-level-architecture)
 - [Prerequisites](#prerequisites)
 - [Setup and Usage](#setup-and-usage)
   - [Running a Single Service](#running-a-single-service)
@@ -91,6 +92,11 @@ Each folder corresponds to a specific agricultural product and contains the foll
 | **Tomatoes**                    | Classifies tomato quality.       |
 
 ---
+
+## High-Level Architecture
+
+![HighLevel Digram drawio](https://github.com/user-attachments/assets/fee427d3-de7e-480c-a25d-71914d7c7186)
+
 
 ## Prerequisites
 
