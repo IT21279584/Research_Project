@@ -7,6 +7,7 @@ This repository contains multiple services and machine learning models for quali
 - [Project Overview](#project-overview)
 - [Services](#services)
 - [Folder Structure](#folder-structure)
+- [High-Level Architecture](#high-level-architecture)
 - [Prerequisites](#prerequisites)
 - [Setup and Usage](#setup-and-usage)
   - [Running a Single Service](#running-a-single-service)
@@ -47,27 +48,27 @@ Each agricultural product has two service options:
 
 ```plaintext
 RESEARCH_PROJECT/
-├── client/                             # Frontend client (if any)
-├── corn-seeds-quality-classification/  # Microservice for corn seeds
+├── client/                             
+├── corn-seeds-quality-classification/  
 │   ├── express-service/
 │   ├── flask-service/
-├── egg-quality-classification/         # Microservice for egg quality
+├── egg-quality-classification/         
 │   ├── express-service/
 │   ├── flask-service/
-├── guava-quality-classification/       # Microservice for guava quality
+├── guava-quality-classification/       
 │   ├── express-service/
 │   ├── flask-service/
-├── rice-disease-prediction/            # Microservice for rice disease
+├── rice-disease-prediction/            
 │   ├── express-service/
 │   ├── flask-service/
 ├── soybean-seeds-quality-classification/
 │   ├── express-service/
 │   ├── flask-service/
-├── tomato-quality-classification/      # Microservice for tomato quality
+├── tomato-quality-classification/      
 │   ├── express-service/
 │   ├── flask-service/
-├── docker-compose.yml                  # Docker configuration
-├── .gitignore                          # Files to ignore in version control
+├── docker-compose.yml                  
+├── .gitignore                          
 
 ```
 
@@ -91,6 +92,11 @@ Each folder corresponds to a specific agricultural product and contains the foll
 | **Tomatoes**                    | Classifies tomato quality.       |
 
 ---
+
+## High-Level Architecture
+
+![HighLevel Digram drawio](https://github.com/user-attachments/assets/fee427d3-de7e-480c-a25d-71914d7c7186)
+
 
 ## Prerequisites
 
@@ -151,13 +157,25 @@ The docker-compose.yml file allows you to run all services simultaneously in a c
 
 ## Endpoints
 
-Each service exposes RESTful APIs for interaction. Below is an example for the **Corn Seeds Quality Classification** service:
+Each service exposes RESTful APIs for interaction. Below is a list of endpoints for all agricultural product services:
 
-### Example for Corn Seeds Quality Classification (Flask Service)
+### **All Endpoints Table with Last Prediction Result (No Status Endpoint)**
 
-| Method | Endpoint   | Description                                |
-|--------|------------|--------------------------------------------|
-| POST   | `/predict` | Predict the quality of corn seeds.         |
+| Product                         | Method | Endpoint            | Description                                      |
+|----------------------------------|--------|---------------------|--------------------------------------------------|
+| **Corn Seeds Quality Classification** | POST   | `/api/corn-quality-classification`          | Predict the quality of corn seeds.               |
+|                                  | GET    | `/api/corn-previous-results`  | Get the last prediction results for corn seeds.  |
+| **Egg Quality Classification**   | POST   | `/api/upload`          | Predict the quality of eggs.                     |
+|                                  | GET    | `/api/predictions`  | Get the last prediction results for eggs.        |
+| **Guava Quality Classification** | POST   | `/api/upload`          | Predict the quality of guavas.                   |
+|                                  | GET    | `/api/predictions`  | Get the last prediction results for guavas.      |
+| **Rice Disease Prediction**      | POST   | `/api/rice-previous-predictions`          | Predict rice diseases based on leaf images.      |
+|                                  | GET    | `/api/rice-disease-predictions`  | Get the last prediction results for rice disease.|
+| **Soybean Seeds Quality Classification** | POST   | `/api/soybean-quality-classification`          | Predict the quality of soybean seeds.            |
+|                                  | GET    | `/api/soybean-previous-results`  | Get the last prediction results for soybean seeds.|
+| **Tomato Quality Classification** | POST   | `/api/upload`          | Predict the quality of tomatoes.                 |
+|                                  | GET    | `/api/predictions`  | Get the last prediction results for tomatoes.    |
+
 
 ---
 
@@ -168,16 +186,136 @@ The `docker-compose.yml` file facilitates running all services simultaneously in
 ### Example Configuration
 
 ```yaml
-version: "3.8"
 services:
-  corn-express:
-    build: ./corn-seeds-quality-classification/express-service
-    ports:
-      - "3001:3001"
-  corn-flask:
-    build: ./corn-seeds-quality-classification/flask-service
+  soybean-flask-service:
+    build:
+      context: ./soybean-seeds-quality-classification/flask-service
     ports:
       - "5001:5001"
+    networks:
+      - backend
+
+  corn-flask-service:
+    build:
+      context: ./corn-seeds-quality-classification/flask-service
+    ports:
+      - "5003:5003"
+    networks:
+      - backend
+
+  
+  rice-flask-service:
+    build:
+      context: ./rice-disease-prediction/flask-service
+    ports:
+      - "5009:5009"
+    networks:
+      - backend
+
+  guava-flask-service:
+      build:
+        context: ./guava-quality-classification/flask-service
+      ports:
+        - "5005:5005"
+      networks:
+        - backend
+  
+  tomato-flask-service:
+      build:
+        context: ./tomato-quality-classification/flask-service
+      ports:
+        - "5007:5007"
+      networks:
+        - backend
+  
+  egg-flask-service:
+    build:
+      context: ./egg-quality-classification/flask-service
+    ports:
+      - "5011:5011"
+    networks:
+      - backend
+
+  soybean-express-service:
+    build:
+      context: ./soybean-seeds-quality-classification/express-service
+    ports:
+      - "5000:5000"
+    networks:
+      - backend
+    depends_on:
+      - soybean-flask-service
+
+  corn-express-service:
+    build:
+      context: ./corn-seeds-quality-classification/express-service
+    ports:
+      - "5002:5002"
+    networks:
+      - backend
+    depends_on:
+      - corn-flask-service
+  
+  rice-express-service:
+    build:
+      context: ./rice-disease-prediction/express-service
+    ports:
+      - "5008:5008"
+    networks:
+      - backend
+    depends_on:
+      - rice-flask-service
+
+  guava-express-service:
+    build:
+      context: ./guava-quality-classification/express-service
+    ports:
+      - "5004:5004"
+    networks:
+      - backend
+    depends_on:
+      - guava-flask-service
+
+  tomato-express-service:
+    build:
+      context: ./tomato-quality-classification/express-service
+    ports:
+      - "5006:5006"
+    networks:
+      - backend
+    depends_on:
+      - tomato-flask-service
+
+  egg-express-service:
+    build:
+      context: ./egg-quality-classification/express-service
+    ports:
+      - "5010:5010"
+    networks:
+      - backend
+    depends_on:
+      - egg-flask-service
+
+
+  client:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - soybean-express-service
+      - corn-express-service
+      - rice-express-service
+      - guava-express-service
+      - tomato-express-service
+      - egg-express-service
+
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
   ```
 
 ### Stopping the Services
