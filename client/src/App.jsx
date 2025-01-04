@@ -17,8 +17,15 @@ import GuavaClassification from "./GuavaClassification.jsx";
 import TomatoClassification from "./TomatoClassification.jsx";
 
 
-import DiagnosisResult from "./DiagnosisResult.jsx";
+import BrownSpotDiagnosisResult from "./BrownSpotDiagnosisResult.jsx";
+import BacterialLeafBlightDiagnosisResult from "./BacterialLeafBlightDiagnosisResult.jsx";
+import LeafBlastDiagnosisResult from "./LeafBlastDiagnosisResult.jsx";
 import DiseaseInstructions from "./DiseaseInstructions.jsx";
+
+
+import BrownSpot from "./BrownSpot.jsx";
+import LeafBlast from "./LeafBlast.jsx";
+import BacterialLeafBlight from "./BacterialLeafBlight.jsx";
 
 
 
@@ -31,7 +38,6 @@ function App() {
         <Route path="/header" element={<Header />}></Route>
 
         <Route
-
           path="/egg-classification"
           element={<EggClassification />}
         ></Route>
@@ -42,7 +48,6 @@ function App() {
         ></Route>
         <Route
           path="/soybean-classification"
-
           element={<SoybeanSeedsPrediction />}
         ></Route>
 
@@ -54,7 +59,18 @@ function App() {
           element={<GuavaClassification />}
         ></Route>
 
-        <Route path="/diagnosis-result" element={<DiagnosisResult />}></Route>
+        <Route
+          path="/brownspot-diagnosis-result"
+          element={<BrownSpotDiagnosisResult />}
+        ></Route>
+        <Route
+          path="/bacterial-diagnosis-result"
+          element={<BacterialLeafBlightDiagnosisResult />}
+        ></Route>
+        <Route
+          path="/leaf-blast-result"
+          element={<LeafBlastDiagnosisResult />}
+        ></Route>
         <Route
           path="/diagnosis-instructions"
           element={<DiseaseInstructions />}
@@ -62,9 +78,15 @@ function App() {
         <Route
           path="/tomato-classification"
           element={<TomatoClassification />}
-
         ></Route>
 
+        <Route path="/brownspot" element={<BrownSpot />}></Route>
+
+        <Route path="/leafblast" element={<LeafBlast />}></Route>
+        <Route
+          path="/bacterialleafblight"
+          element={<BacterialLeafBlight />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
