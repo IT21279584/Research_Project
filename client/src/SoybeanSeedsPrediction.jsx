@@ -7,31 +7,25 @@ import Header from "./Header";
 import axios from "axios";
 
 function SoybeanSeedsPrediction() {
-  // State to manage uploaded images and classification results
-  const [uploadedImages, setUploadedImages] = useState([image1, image2]); // Initialize with default images
-  const [classificationResults, setClassificationResults] = useState([]); // Store results of current predictions
-  const [filesToUpload, setFilesToUpload] = useState([]); // State to hold files for classification
-  const [previousResults, setPreviousResults] = useState([]); // Store previous results
+  const [uploadedImages, setUploadedImages] = useState([image1, image2]);
+  const [classificationResults, setClassificationResults] = useState([]);
+  const [filesToUpload, setFilesToUpload] = useState([]);
+  const [previousResults, setPreviousResults] = useState([]);
 
   const onUploadImages = (event) => {
     const newFiles = Array.from(event.target.files);
-    let updatedFilesToUpload = [...filesToUpload];
-    let updatedUploadedImages = []; // Clear default images on upload
 
-    // Loop through new files and update the uploadedImages array
-    newFiles.forEach((file) => {
-      const imageUrl = URL.createObjectURL(file);
+    if (newFiles.length === 0) {
+      return;
+    }
 
-      if (updatedFilesToUpload.length >= 2) {
-        updatedFilesToUpload.shift(); // Remove the oldest file
-      }
-
-      updatedFilesToUpload.push(file);
-      updatedUploadedImages.push(imageUrl); // Update uploaded images
-    });
+    const updatedFilesToUpload = [...filesToUpload, ...newFiles].slice(-2);
+    const updatedUploadedImages = updatedFilesToUpload.map((file) =>
+      URL.createObjectURL(file)
+    );
 
     setFilesToUpload(updatedFilesToUpload);
-    setUploadedImages(updatedUploadedImages); // Set the uploaded images (empty default images)
+    setUploadedImages(updatedUploadedImages);
   };
 
   const onAnalyze = async () => {
@@ -43,38 +37,42 @@ function SoybeanSeedsPrediction() {
     await uploadImages(filesToUpload);
   };
 
-const uploadImages = async (files) => {
-  const formData = new FormData();
-  files.forEach((file) => formData.append("images", file));
+  const uploadImages = async (files) => {
+    const formData = new FormData();
+    files.forEach((file) => formData.append("file", file));
 
-  try {
-    const response = await axios.post(
-      "http://localhost:5000/api/soybean-quality-classification",
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/soybean-quality-classification",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      const { finalPrediction, results } = response.data;
+      console.log("Data:", response.data);
+
+      if (finalPrediction) {
+        setClassificationResults({
+          label: finalPrediction.label,
+          confidence: finalPrediction.confidence,
+          results,
+        });
+      } else {
+        console.warn("No valid classifications received");
+        setClassificationResults({
+          label: "Unknown",
+          confidence: 0,
+          results: [],
+        });
       }
-    );
-
-    console.log("Response received:", response);
-
-    const { classification } = response.data; // Correct key here
-
-    if (classification) {
-      setClassificationResults([classification]); // Replace state with the classification
-    } else {
-      console.warn("No valid classifications received");
-      setClassificationResults(["Unknown"]); // Fallback for unknown results
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      alert("Error during classification. Please try again.");
     }
-  } catch (error) {
-    console.error("Error uploading images:", error);
-    alert("Error during classification. Please try again.");
-  }
-};
+  };
 
-
-
-  // Fetch previous results every 5 seconds
   useEffect(() => {
     const fetchResults = async () => {
       try {
@@ -88,15 +86,11 @@ const uploadImages = async (files) => {
       }
     };
 
-    // Initial fetch
     fetchResults();
-
-    // Set an interval to refresh the data every 3 seconds
     const intervalId = setInterval(fetchResults, 3000);
 
-    // Cleanup the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, []); // Empty dependency array to run this effect only once
+  }, []);
 
   useEffect(() => {
     console.log("Updated Previous Results:", previousResults);
@@ -128,23 +122,20 @@ const uploadImages = async (files) => {
               <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl">
                 The Soybean Seeds are Classified as{" "}
                 <span className="leading-10 text-green-700">
-                  {classificationResults.length
-                    ? classificationResults[0] // Display only the first (highest) result
-                    : "Waiting for Prediction"}
+                  {classificationResults.label || "Waiting for Result"}
                 </span>
               </h1>
-              <hr className="mt-10 mb-8 border-t border-gray-800 w-11/12" />
+              <hr className="w-11/12 mt-10 mb-8 border-t border-gray-800" />
               <p className="mt-2 text-xl text-gray-600">
-                The analysis indicates that the soybean seed batch shows signs
+                The analysis indicates that the Soybean seed batch shows signs
                 of{" "}
-                {classificationResults.length
-                  ? classificationResults[0] // Display only the first (highest) result
-                  : "unknown condition"}
+                <span className="">
+                  {classificationResults.label || "unknown prediction"}
+                </span>
                 , which may affect seed quality.
               </p>
             </div>
 
-            {/* Responsive Image Section */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:w-1/2">
               {uploadedImages.map((imageUrl, index) => (
                 <div
@@ -161,7 +152,6 @@ const uploadImages = async (files) => {
             </div>
           </div>
 
-          {/* Action Buttons and Upload Section */}
           <div className="flex flex-col justify-between p-4 mb-10 space-y-4 md:flex-row md:space-y-0 md:space-x-4">
             <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
               <button
@@ -180,7 +170,7 @@ const uploadImages = async (files) => {
                 <input
                   type="file"
                   accept="image/*"
-                  multiple // Allow multiple files to be selected
+                  multiple
                   className="hidden"
                   onChange={onUploadImages}
                 />
@@ -188,43 +178,34 @@ const uploadImages = async (files) => {
             </div>
           </div>
 
-          {/* Previous Results */}
           <div className="h-auto">
             <h2 className="pl-4 mb-4 text-4xl font-bold text-gray-800">
               Previous Results
             </h2>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-2 sm:grid-cols-2">
-              {/* Check if `previousResults` contains the required structure */}
-              {Array.isArray(previousResults) &&
-                previousResults.map((record, recordIndex) => (
-                  <div
-                    key={recordIndex}
-                    className="flex flex-col items-center p-4 text-2xl font-semibold text-center"
-                  >
-                    <div className="flex flex-wrap justify-center gap-4">
-                      {/* Render all images for a single record */}
-                      {Array.isArray(record.images) &&
-                        record.images.map((image, index) => (
-                          <img
-                            key={index}
-                            src={image}
-                            alt={`Record ${recordIndex + 1} - Image ${
-                              index + 1
-                            }`}
-                            className="object-cover w-48 h-48 sm:h-64 sm:w-64 md:h-72 md:w-72 lg:h-72 lg:w-72"
-                          />
-                        ))}
-                    </div>
-                    <div className="mt-4">
-                      <span>
-                        {" "}
-                        {record.highestClassification
-                          ? record.highestClassification
-                          : "Unknown"}
-                      </span>
-                    </div>
+              {previousResults.map((result, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center p-4 text-2xl font-semibold text-center"
+                >
+                  <div className="flex flex-wrap justify-center gap-4">
+                    {result.images.map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={img}
+                        alt={`Result ${index + 1} Image ${idx + 1}`}
+                        className="object-cover w-48 h-48 rounded-lg sm:h-64 sm:w-64 md:h-72 md:w-72 lg:h-72 lg:w-72"
+                      />
+                    ))}
                   </div>
-                ))}
+                  <p className="pt-4 text-gray-600">
+                    {result.finalPrediction.label &&
+                      result.finalPrediction.label.charAt(0).toUpperCase() +
+                        result.finalPrediction.label.slice(1)}{" "}
+                    Seed
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
