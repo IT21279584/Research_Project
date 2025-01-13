@@ -72,9 +72,10 @@ function App() {
           element={<LeafBlastDiagnosisResult />}
         ></Route>
         <Route
-          path="/diagnosis-instructions"
+          path="/instructions/:treatmentName"
           element={<DiseaseInstructions />}
-        ></Route>
+        />
+
         <Route
           path="/tomato-classification"
           element={<TomatoClassification />}
