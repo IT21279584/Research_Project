@@ -2,9 +2,18 @@ const mongoose = require("mongoose");
 
 const classificationSchema = new mongoose.Schema({
   imageUrls: [String], // Array of image URLs
-  classifications: [String], // Array of classifications for each image
-  highestClassification: String, // Highest classification with the highest confidence
-  highestConfidence: Number, // Highest confidence value
+  results: [
+    {
+      file: String, // File name
+      classification: String, // Classification label
+      confidence: Number, // Confidence score
+      details: [Number], // Array of confidence scores for all classes
+    },
+  ],
+  finalPrediction: {
+    label: String, // Highest confidence label
+    confidence: Number, // Highest confidence value
+  },
   date: { type: Date, default: Date.now }, // Date of classification
 });
 

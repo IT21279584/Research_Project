@@ -7,7 +7,10 @@ from PIL import Image
 import numpy as np
 import os
 import io  # For handling in-memory file operations
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 
 # Load the trained PyTorch model once when the app starts
@@ -65,26 +68,74 @@ def preprocess_image(image_bytes):
 @app.route('/classify/', methods=['POST'], strict_slashes=False)
 def classify_seed():
     try:
+        # Confidence threshold for classification
+        CONFIDENCE_THRESHOLD = 0.6
+
         # Check if files are provided
         if 'file' not in request.files:
             return jsonify({"error": "No file part"}), 400
-        
-        file = request.files['file']
-        image = file.read()
-        img = preprocess_image(image)
 
-        # Perform prediction
-        with torch.no_grad():
-            outputs = model(img)
-            confidence = torch.nn.functional.softmax(outputs, dim=1).numpy()
-            label_index = np.argmax(confidence, axis=1)[0]
-            confidence_score = confidence[0][label_index]
-            label = labels[label_index]
+        files = request.files.getlist('file')  # Retrieve all uploaded files
+        if not files:
+            return jsonify({"error": "No files uploaded"}), 400
 
-        return jsonify({"classification": label, "confidence": float(confidence_score)})
+        results = []  # To store results for all images
+        final_prediction = {"label": None, "confidence": 0.0}  # Track highest confidence
+        unknown_detected = False  # Flag to detect if any image is "unknown"
+
+        for file in files:
+            image = file.read()
+            img = preprocess_image(image)
+
+            # Perform prediction
+            with torch.no_grad():
+                outputs = model(img)
+                confidence = torch.nn.functional.softmax(outputs, dim=1).numpy()
+                label_index = np.argmax(confidence, axis=1)[0]
+                confidence_score = float(confidence[0][label_index])  # Convert to Python float
+
+                # Determine the label based on confidence threshold
+                if confidence_score >= CONFIDENCE_THRESHOLD:
+                    label = labels[label_index]
+                else:
+                    label = "unknown"
+                    unknown_detected = True  # Mark that an unknown classification occurred
+
+                # Log confidence scores to the console for each image
+                logging.info(f"File: {file.filename}")
+                logging.info(f"Confidence scores: {confidence[0]}")
+                logging.info(f"Predicted label: {label}, Confidence: {confidence_score}")
+
+                # Add results for each image
+                results.append({
+                    "file": file.filename,
+                    "classification": label,
+                    "confidence": confidence_score,  # Ensure Python float
+                    "details": [float(val) for val in confidence[0]]  # Convert all confidence values to float
+                })
+
+                # Update final prediction if the current image has a higher confidence score
+                if not unknown_detected and confidence_score > final_prediction["confidence"]:
+                    final_prediction["label"] = label
+                    final_prediction["confidence"] = confidence_score
+
+        # If any image is "unknown," set the final prediction to "unknown"
+        if unknown_detected:
+            final_prediction = {"label": "unknown", "confidence": 0.0}
+
+        # Include final prediction in the response
+        return jsonify({
+            "final_prediction": {
+                "label": final_prediction["label"],
+                "confidence": float(final_prediction["confidence"])  # Convert to Python float
+            },
+            "results": results  # Detailed results for all images
+        })
 
     except Exception as e:
+        logging.error(f"Error occurred: {e}")
         return jsonify({"error": str(e)}), 500
+
 
 
 if __name__ == '__main__':
