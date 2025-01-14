@@ -10,7 +10,7 @@ const Header = () => {
   };
 
   return (
-    <header className="py-4 bg-white shadow-sm">
+    <header className="py-4 bg-white shadow-sm font-archivo">
       <div className="container flex items-center justify-between px-4 mx-auto">
         {/* Logo (Hidden on small screens, visible on md and larger) */}
         <div className="hidden text-xl font-bold md:block">
@@ -40,7 +40,7 @@ const Header = () => {
           } md:block absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent z-20`}
         >
           <a
-            href="#"
+            href="/"
             className="block py-2 text-gray-600 md:inline hover:text-black md:py-0"
           >
             Home

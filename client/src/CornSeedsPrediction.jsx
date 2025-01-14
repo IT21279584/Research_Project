@@ -98,7 +98,7 @@ const uploadImages = async (files) => {
   }, [previousResults]); // This will log whenever previousResults state is updated
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 font-archivo">
       <Header />
       <div className="flex flex-col items-center flex-grow w-full py-10">
         {/* Banner Section */}

@@ -6,7 +6,7 @@ import { faPhone, faEnvelope, faMapMarkerAlt, faPaperPlane } from '@fortawesome/
 
 const Footer = () => {
   return (
-    <footer className="pt-12 pb-6 text-gray-400 bg-gray-900">
+    <footer className="pt-12 pb-6 text-gray-400 bg-gray-900 font-archivo">
       <div className="container grid grid-cols-1 gap-8 px-6 mx-auto md:px-12 md:grid-cols-4">
         {/* Logo & Description */}
         <div>
