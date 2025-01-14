@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import follow from "./assets/follow.png";
 import rice from "./assets/rice.jpg";
 import soybean from "./assets/soybean-corn.jpg";
@@ -42,6 +43,7 @@ const Home = () => {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -172,8 +174,8 @@ const prevFeedback = () => {
 };
 
   return (
-      <div className="font-archivo">
-          <Header/>
+    <div className="font-archivo">
+      <Header />
       {/* Hero Section - Slideshow */}
       <section className="relative bg-cover bg-center h-[80vh]">
         <div
@@ -206,7 +208,6 @@ const prevFeedback = () => {
             ></div>
           ))}
         </div>
-              
       </section>
       <section className="py-8 bg-gray-100">
         <div className="max-w-full px-4 mx-auto sm:px-6 lg:px-24">
@@ -227,7 +228,10 @@ const prevFeedback = () => {
                 guidance.
               </p>
               <div className="p-6 mt-auto">
-                <button className="w-full px-4 py-2 mt-6 text-green-800 bg-white border-2 border-green-800 rounded-lg">
+                <button
+                  className="w-full px-4 py-2 mt-12 text-green-800 bg-white border-2 border-green-800 rounded-lg"
+                  onClick={() => navigate("/rice-prediction")}
+                >
                   Get Started
                 </button>
               </div>
@@ -268,7 +272,7 @@ const prevFeedback = () => {
                 crop classification.
               </p>
               <div className="p-6 mt-auto">
-                <button className="w-full px-4 py-2 text-green-800 bg-white border-2 border-green-800 rounded-lg">
+                <button className="w-full px-4 py-2 mt-6 text-green-800 bg-white border-2 border-green-800 rounded-lg">
                   Get Started
                 </button>
               </div>
@@ -288,7 +292,10 @@ const prevFeedback = () => {
                 marketing purposes.
               </p>
               <div className="p-6 mt-auto">
-                <button className="w-full px-4 py-2 text-green-800 bg-white border-2 border-green-800 rounded-lg">
+                <button
+                  className="w-full px-4 py-2 text-green-800 bg-white border-2 border-green-800 rounded-lg"
+                  onClick={() => navigate("/egg-classification")}
+                >
                   Get Started
                 </button>
               </div>
@@ -521,8 +528,8 @@ const prevFeedback = () => {
             />
           </div>
         </div>
-          </section>
-          <Footer/>
+      </section>
+      <Footer />
     </div>
   );
 };
