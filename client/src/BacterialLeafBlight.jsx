@@ -6,7 +6,7 @@ import backgroundImage from "./assets/background.jpg"; // Import the background 
 
 const BacterialLeafBlight = () => {
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen font-archivo">
       <Header />
       <div
         className="flex items-center justify-center w-full h-56 mb-8 bg-center bg-cover"

@@ -18,12 +18,12 @@ const BrownSpotDiagnosisResult = () => {
 
   const navigate = useNavigate();
 
-  const handleTreatmentClick = (treatment) => {
-    navigate(`/instructions/${encodeURIComponent(treatment)}`);
-  };
+const handleTreatmentClick = (treatment) => {
+  navigate(`/instructions`, { state: { treatment } });
+};
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen font-archivo">
       <Header />
       <div className="container px-10 mx-auto my-10 sm:px-12 lg:px-20">
         <div className="p-6 mb-8 bg-white rounded-lg shadow-md">
