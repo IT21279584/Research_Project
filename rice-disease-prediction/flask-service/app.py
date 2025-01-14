@@ -12,7 +12,10 @@ model_path = os.path.join("models", "rice_disease.keras")
 model = tf.keras.models.load_model(model_path)
 
 # Define your labels in the correct order based on the model's training data set
-labels = ["Bacterial Leaf Blight", "Brown Spot", "Healthy","Leaf Blast"]
+labels = ["Bacterial Leaf Blight", "Brown Spot", "Healthy", "Leaf Blast"]
+
+# Define a threshold value
+CONFIDENCE_THRESHOLD = 0.7  # Adjust this value as needed
 
 def preprocess_image(image_bytes):
     # Preprocess the uploaded image to match model input shape and requirements
@@ -37,12 +40,25 @@ def prediction_rice():
         prediction = model.predict(img)
         print("Prediction Raw Output:", prediction)  # Debug line to check raw output
         
-        # Get the label with the highest confidence score
-        label_index = np.argmax(prediction, axis=1)[0]
+        # Get the highest confidence score and corresponding label
+        confidence_scores = prediction[0]
+        label_index = np.argmax(confidence_scores)
         label = labels[label_index]
+        confidence_score = confidence_scores[label_index]
         
-        # Return the prediction result
-        return jsonify({"prediction": label})
+        # Check if the confidence score meets the threshold
+        if confidence_score < CONFIDENCE_THRESHOLD:
+            return jsonify({
+                "prediction": "Uncertain",
+                "confidence_score": float(confidence_score),
+                "message": f"Confidence score below threshold ({CONFIDENCE_THRESHOLD})."
+            }), 200
+        
+        # Return the prediction result with the confidence score
+        return jsonify({
+            "prediction": label,
+            "confidence_score": float(confidence_score)
+        }), 200
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
