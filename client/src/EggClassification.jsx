@@ -60,8 +60,8 @@ export default function EggClassification() {
   };
 
   return (
-    <div>
-      <Header/>
+    <div className="font-archivo">
+      <Header />
       <div
         className="relative flex items-center justify-center w-full h-64 bg-center bg-cover"
         style={{ backgroundImage: "url('/images/egg.jpg')" }}
@@ -177,7 +177,7 @@ export default function EggClassification() {
           </div>
         ))}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
