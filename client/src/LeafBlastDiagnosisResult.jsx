@@ -2,10 +2,17 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import rice from "./assets/rice.png";
+import { useNavigate } from "react-router-dom";
 
 const DiagnosisResult = () => {
+
+      const navigate = useNavigate();
+    
+    const handleTreatmentClick = (treatment) => {
+      navigate(`/instructions`, { state: { treatment } });
+    };
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen font-archivo">
       <Header />
       <div className="container px-10 mx-auto my-10 sm:px-12 lg:px-20">
         {/* Diagnosis Result Section */}
@@ -48,6 +55,7 @@ const DiagnosisResult = () => {
               <div
                 key={index}
                 className="flex items-center p-6 transition bg-gray-100 rounded-lg shadow-md hover:bg-gray-200"
+                onClick={() => handleTreatmentClick(treatment)}
               >
                 <div className="flex items-center justify-center w-16 h-16 bg-gray-300 rounded-full">
                   <span className="text-lg font-semibold">🧴</span>

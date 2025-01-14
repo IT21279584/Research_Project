@@ -6,7 +6,7 @@ import backgroundImage from "./assets/background.jpg"; // Import the background 
 
 const LeafBlast = () => {
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen font-archivo">
       <Header />
       <div
         className="flex items-center justify-center w-full h-56 mb-8 bg-center bg-cover"
@@ -100,7 +100,8 @@ const LeafBlast = () => {
               Lesions can enlarge and coalesce, growing together, to kill the
               entire leaves.
             </li>
-          </ul><br></br>
+          </ul>
+          <br></br>
           <p>Blast lesions can commonly be confused with Brown Spot lesions.</p>
           <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
             <img
