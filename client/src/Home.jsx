@@ -252,7 +252,10 @@ const prevFeedback = () => {
               </p>
 
               <div className="p-6 mt-auto">
-                <button className="w-full px-4 py-2 mt-6 text-green-800 bg-white border-2 border-green-800 rounded-lg">
+                <button
+                  className="w-full px-4 py-2 mt-6 text-green-800 bg-white border-2 border-green-800 rounded-lg"
+                  onClick={() => navigate("/corn-soybean")}
+                >
                   Get Started
                 </button>
               </div>
@@ -272,7 +275,10 @@ const prevFeedback = () => {
                 crop classification.
               </p>
               <div className="p-6 mt-auto">
-                <button className="w-full px-4 py-2 mt-6 text-green-800 bg-white border-2 border-green-800 rounded-lg">
+                <button
+                  className="w-full px-4 py-2 mt-6 text-green-800 bg-white border-2 border-green-800 rounded-lg"
+                  onClick={() => navigate("/tomato-guawa")}
+                >
                   Get Started
                 </button>
               </div>
