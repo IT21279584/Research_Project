@@ -23,6 +23,8 @@ import DiseaseInstructions from "./DiseaseInstructions.jsx";
 import BrownSpot from "./BrownSpot.jsx";
 import LeafBlast from "./LeafBlast.jsx";
 import BacterialLeafBlight from "./BacterialLeafBlight.jsx";
+import CornSoybean from "./CornSoybean.jsx";
+import TomatoGuawa from "./TomatoGuawa.jsx";
 
 function App() {
   return (
@@ -36,12 +38,18 @@ function App() {
         <Route path="/" element={<Home />}></Route>
 
         {/* Classification Routes */}
-        <Route path="/egg-classification" element={<EggClassification />}/>
-        <Route path="/corn-classification"  element={<CornSeedsPrediction />}/>
-        <Route path="/soybean-classification" element={<SoybeanSeedsPrediction />}/>
-        <Route path="/rice-prediction" element={<DiseaseDetection />}/>
-        <Route path="/guava-classification" element={<GuavaClassification />}/>
-        <Route path="/tomato-classification" element={<TomatoClassification />}/>
+        <Route path="/egg-classification" element={<EggClassification />} />
+        <Route path="/corn-classification" element={<CornSeedsPrediction />} />
+        <Route
+          path="/soybean-classification"
+          element={<SoybeanSeedsPrediction />}
+        />
+        <Route path="/rice-prediction" element={<DiseaseDetection />} />
+        <Route path="/guava-classification" element={<GuavaClassification />} />
+        <Route
+          path="/tomato-classification"
+          element={<TomatoClassification />}
+        />
 
         <Route
           path="/brownspot-diagnosis-result"
@@ -56,11 +64,7 @@ function App() {
           element={<LeafBlastDiagnosisResult />}
         ></Route>
 
-        
-        <Route
-          path="/instructions"
-          element={<DiseaseInstructions />}
-        />
+        <Route path="/instructions" element={<DiseaseInstructions />} />
 
         <Route path="/brownspot" element={<BrownSpot />}></Route>
 
@@ -69,6 +73,10 @@ function App() {
           path="/bacterialleafblight"
           element={<BacterialLeafBlight />}
         ></Route>
+
+        {/* Banner Routes */}
+        <Route path="/corn-soybean" element={<CornSoybean />} />
+        <Route path="/tomato-guawa" element={<TomatoGuawa />} />
       </Routes>
     </BrowserRouter>
   );
