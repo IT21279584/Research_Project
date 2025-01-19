@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
 import image1 from "./assets/rice.png";
 import backgroundImage from "./assets/background.jpg"; // Import the background image
@@ -26,6 +27,11 @@ function DiseaseDetection() {
     };
 
     fetchPreviousResults();
+
+    const intervalId = setInterval(() => {
+      fetchPreviousResults();
+    }, 3000);
+    return () => clearInterval(intervalId);
   }, []);
 
   // Handle image upload and set it as the uploadedImage state
@@ -79,6 +85,30 @@ function DiseaseDetection() {
     }
   };
 
+  const navigate = useNavigate();
+
+  // Function to handle "Treatments" button click
+  const onTreatmentClick = () => {
+    if (prediction === "Brown Spot") {
+      navigate("/brownspot-diagnosis-result");
+    } else if (prediction === "Leaf Blast") {
+      navigate("/leaf-blast-result");
+    } else if (prediction === "Bacterial Leaf Blight") {
+      navigate("/bacterial-diagnosis-result");
+    }
+  };
+
+  // Function to handle "ReadMore" button click
+  const onReadMoreClick = () => {
+    if (prediction === "Brown Spot") {
+      navigate("/brownspot");
+    } else if (prediction === "Leaf Blast") {
+      navigate("/leafblast");
+    } else if (prediction === "Bacterial Leaf Blight") {
+      navigate("/bacterialleafblight");
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 font-archivo">
       <Header />
@@ -105,14 +135,14 @@ function DiseaseDetection() {
               <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl ">
                 The Plant is Infected with{" "}
                 <span className="leading-10 text-green-700">
-                  {prediction ? prediction : "Waiting for prediction"}
+                  {prediction ? prediction : "Waiting for Result"}
                 </span>
               </h1>
               <hr className="mt-10 mb-8 border-t border-gray-800" />
               <p className="mt-2 text-xl text-gray-600">
                 By analyzing the image you have uploaded, the algorithm has
-                identified that the plant is infected with the disease called
-                Brown Spot.
+                identified that the plant is infected with the disease called{" "}
+                <span>{prediction ? prediction : "Waiting for result"}</span>
               </p>
             </div>
             <div className="flex justify-end p-4 md:w-1/2">
@@ -127,10 +157,30 @@ function DiseaseDetection() {
           {/* Action Buttons */}
           <div className="flex flex-col justify-between p-4 mb-10 space-y-4 md:flex-row md:space-y-0 md:space-x-4">
             <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
-              <button className="w-full px-8 py-2 mb-4 text-white bg-green-600 rounded-lg hover:bg-green-700 md:w-auto">
+              <button
+                onClick={onTreatmentClick}
+                className={`w-full px-8 py-2 mb-4 text-white bg-green-600 rounded-lg hover:bg-green-700 md:w-auto ${
+                  !prediction ||
+                  (prediction !== "Brown Spot" &&
+                    prediction !== "Leaf Blast" &&
+                    prediction !== "Bacterial Leaf Blight")
+                    ? "hidden"
+                    : ""
+                }`}
+              >
                 Treatments
               </button>
-              <button className="w-full px-8 py-2 mb-4 text-gray-800 border border-gray-400 rounded-lg hover:bg-gray-200 md:w-auto">
+              <button
+                onClick={onTreatmentClick}
+                className={`w-full px-8 py-2 mb-4 text-gray-800 border border-gray-400 rounded-lg hover:bg-gray-200 md:w-auto ${
+                  !prediction ||
+                  (prediction !== "Brown Spot" &&
+                    prediction !== "Leaf Blast" &&
+                    prediction !== "Bacterial Leaf Blight")
+                    ? "hidden"
+                    : ""
+                }`}
+              >
                 Read more
               </button>
             </div>
