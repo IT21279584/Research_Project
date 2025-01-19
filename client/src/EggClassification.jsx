@@ -78,7 +78,7 @@ export default function EggClassification() {
             The Egg is Classified as <br />
             <span className="text-green-600">
               {response?.predictionResult?.result?.toUpperCase() ??
-                "Waiting for Prediction"}
+                "Waiting for Result"}
             </span>
           </h1>
         </div>

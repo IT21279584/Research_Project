@@ -77,7 +77,7 @@ export default function TomatoClassification() {
             The Tomato is Classified as <br />
             <span className="text-green-600">
               {response?.predictionResult?.predicted_class?.toUpperCase() ??
-                "Waiting for Prediction"}
+                "Waiting for Result"}
             </span>
           </h1>
         </div>
