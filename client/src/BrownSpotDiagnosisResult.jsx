@@ -6,21 +6,69 @@ import rice from "./assets/rice.png";
 
 const BrownSpotDiagnosisResult = () => {
   const treatments = [
-    "Edifenphos 50.0% EC",
-    "Tebuconazole 14.4%, Tricyclazole 18.0% SC",
-    "Azoxystrobin 16.7%, Tricyclazole 33.3% SC",
-    "Azoxystrobin 6.8%, Tricyclazole 20.4% SC",
-    "Tebuconazole 50.0%, Trifloxystrobin 25.0% WG",
-    "Hexaconazole 4.0%, Zineb 68.0% WP",
-    "Picoystrobin 7.05%, Propiconazole 11.7% SC",
-    "Fluopyram 17.7%, Tebuconazole 17.7% SC",
+    {
+      name: "Edifenphos 50.0% EC",
+      toxic: "Highly",
+      typeFertilizer: "ml",
+      AcreDosage: 202,
+      HectarDosage: 500,
+    },
+    {
+      name: "Tebuconazole 14.4%, Tricyclazole 18.0% SC",
+      toxic: "Highly",
+      typeFertilizer: "ml",
+      AcreDosage: 405,
+      HectarDosage: 1000,
+    },
+    {
+      name: "Azoxystrobin 16.7%, Tricyclazole 33.3% SC",
+      toxic: "Highly",
+      typeFertilizer: "ml",
+      AcreDosage: 202,
+      HectarDosage: 500,
+    },
+    {
+      name: "Azoxystrobin 6.8%, Fipronil 20.4% SC",
+      toxic: "Highly",
+      typeFertilizer: "g",
+      AcreDosage: 202,
+      HectarDosage: 500,
+    },
+    {
+      name: "Tebuconazole 50.0%, Trifloxystrobin 25.0% WG",
+      toxic: "Moderately ",
+      typeFertilizer: "g",
+      AcreDosage: 81,
+      HectarDosage: 200,
+    },
+    {
+      name: "Hexaconazole 4.0%, Zineb 68.0% WP",
+      toxic: "Moderately ",
+      typeFertilizer: "g",
+      AcreDosage: 405,
+      HectarDosage: 1100,
+    },
+    {
+      name: "Picoystrobin 7.05%, Propiconazole 11.7% SC",
+      toxic: "Moderately ",
+      typeFertilizer: "ml",
+      AcreDosage: 405,
+      HectarDosage: 1000,
+    },
+    {
+      name: "Fluopyram 17.7%, Tebuconazole 17.7% SC",
+      toxic: "Moderately ",
+      typeFertilizer: "ml",
+      AcreDosage: 223,
+      HectarDosage: 500,
+    },
   ];
 
   const navigate = useNavigate();
 
-const handleTreatmentClick = (treatment) => {
-  navigate(`/instructions`, { state: { treatment } });
-};
+  const handleTreatmentClick = (treatment) => {
+    navigate(`/instructions`, { state: { treatment } });
+  };
 
   return (
     <div className="min-h-screen font-archivo">
@@ -62,7 +110,7 @@ const handleTreatmentClick = (treatment) => {
                 </div>
                 <div className="ml-6">
                   <p className="text-sm text-gray-500">Fungicide</p>
-                  <h3 className="font-medium text-md">{treatment}</h3>
+                  <h3 className="font-medium text-md">{treatment.name}</h3>
                 </div>
                 <button className="ml-auto text-2xl font-semibold text-green-500">
                   &gt;
