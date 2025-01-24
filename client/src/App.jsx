@@ -25,6 +25,7 @@ import LeafBlast from "./LeafBlast.jsx";
 import BacterialLeafBlight from "./BacterialLeafBlight.jsx";
 import CornSoybean from "./CornSoybean.jsx";
 import TomatoGuawa from "./TomatoGuawa.jsx";
+import Signup from "./Signup.jsx";
 
 function App() {
   return (
@@ -77,6 +78,8 @@ function App() {
         {/* Banner Routes */}
         <Route path="/corn-soybean" element={<CornSoybean />} />
         <Route path="/tomato-guawa" element={<TomatoGuawa />} />
+
+        <Route path="/sign-up" element={<Signup/>}/>
       </Routes>
     </BrowserRouter>
   );
