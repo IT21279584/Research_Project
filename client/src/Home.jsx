@@ -209,7 +209,7 @@ const prevFeedback = () => {
           ))}
         </div>
       </section>
-      <section className="py-8 bg-gray-100">
+      <section className="py-8 bg-gray-100" id="services">
         <div className="max-w-full px-4 mx-auto sm:px-6 lg:px-24">
           <h1 className="mb-8 text-4xl font-bold text-left">Our Services</h1>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -311,7 +311,7 @@ const prevFeedback = () => {
       </section>
 
       {/* Latest News and Stories Section */}
-      <section className="px-24 py-12 bg-gray-100">
+      <section className="px-24 py-12 bg-gray-100" id="news">
         <div className="flex items-center justify-between gap-8">
           {/* Left side: Title */}
           <h2 className="text-4xl font-bold">Latest News & Stories</h2>
@@ -319,7 +319,7 @@ const prevFeedback = () => {
           {/* Arrows on the right, aligned with the title */}
           <div className="flex mx-8 space-x-4">
             <button
-              className="flex items-center justify-center w-10 h-10 text-green-500 border border-green-500 rounded-full hover:bg-green-100"
+              className="flex items-center justify-center w-10 h-10 text-green-800 border border-green-800 rounded-full hover:bg-green-100"
               onClick={prevNews}
             >
               <svg
@@ -338,7 +338,7 @@ const prevFeedback = () => {
               </svg>
             </button>
             <button
-              className="flex items-center justify-center w-10 h-10 text-white bg-green-500 rounded-full hover:bg-green-600"
+              className="flex items-center justify-center w-10 h-10 text-white bg-green-800 rounded-full hover:bg-green-600"
               onClick={nextNews}
             >
               <svg
@@ -394,7 +394,7 @@ const prevFeedback = () => {
                   ref={cardRefs.current[index]}
                   className={`transition-all duration-300 ease-in-out flex-shrink-0 ${
                     index === newsIndex
-                      ? "border-4 border-green-500" // Highlight the active news
+                      ? "border-4 border-green-800" // Highlight the active news
                       : "border"
                   }`}
                   onClick={() => setNewsIndex(index)} // Set clicked item as active
@@ -425,14 +425,14 @@ const prevFeedback = () => {
       </section>
 
       {/* What Farmers Are Saying Section */}
-      <section className="py-16">
+      <section className="py-16" id="community">
         <h1 className="mb-12 text-4xl font-bold text-center">
           What Farmers Are Saying
         </h1>
         <div className="relative flex items-center justify-center">
           {/* Left Arrow */}
           <button
-            className="flex items-center justify-center w-10 h-10 text-green-500 border border-green-500 rounded-full hover:bg-green-100"
+            className="flex items-center justify-center w-10 h-10 text-green-800 border border-green-800 rounded-full hover:bg-green-100"
             onClick={prevFeedback}
           >
             <svg
@@ -475,7 +475,7 @@ const prevFeedback = () => {
 
           {/* Right Arrow */}
           <button
-            className="flex items-center justify-center w-10 h-10 text-white bg-green-500 rounded-full hover:bg-green-600"
+            className="flex items-center justify-center w-10 h-10 text-white bg-green-800 rounded-full hover:bg-green-600"
             onClick={nextFeedback}
           >
             <svg
