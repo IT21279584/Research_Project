@@ -27,6 +27,7 @@ import CornSoybean from "./CornSoybean.jsx";
 import TomatoGuawa from "./TomatoGuawa.jsx";
 import Signup from "./Signup.jsx";
 import Signin from "./Signin.jsx";
+import Profile from "./Profile.jsx";
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
 
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/sign-in" element={<Signin />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
