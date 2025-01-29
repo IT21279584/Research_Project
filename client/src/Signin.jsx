@@ -10,36 +10,40 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSignIn = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+const handleSignIn = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
-      const response = await fetch("http://localhost:5012/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const response = await fetch("http://localhost:5012/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to sign in.");
-      }
-
-      // Handle successful login (e.g., store token, redirect)
-      console.log("Login successful:", data);
-      // Redirect to home
-      window.location.href = "/";
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to sign in.");
     }
-  };
+
+    // Store the token in localStorage
+    localStorage.setItem("token", data.token);
+
+    // Handle successful login (e.g., store token, redirect)
+    console.log("Login successful:", data);
+    // Redirect to home
+    window.location.href = "/";
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div>
