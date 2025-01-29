@@ -1,6 +1,6 @@
+// middlewares/authMiddleware.js
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
 const protect = async (req, res, next) => {
   let token;
   if (
@@ -19,5 +19,4 @@ const protect = async (req, res, next) => {
     res.status(401).json({ message: "Not authorized, no token" });
   }
 };
-
 module.exports = { protect };
