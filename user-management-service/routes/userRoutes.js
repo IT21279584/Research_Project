@@ -1,7 +1,9 @@
 const express = require("express");
 const { viewProfile, updateProfile } = require("../controllers/userController");
 const { protect } = require("../middlewares/authMiddleware");
-const upload = require("../config/s3");
+
+const multer = require("multer");
+const upload = multer();
 
 const router = express.Router();
 
