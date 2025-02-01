@@ -4,6 +4,7 @@ import axios from "axios";
 import Footer from "./Footer";
 import profile from "./assets/profile.png";
 import Header from "./Header";
+import { BASE_URL_USER } from "./constants";
 
 export default function Profile() {
   const [user, setUser] = useState({
@@ -27,7 +28,7 @@ export default function Profile() {
       }
       try {
         const response = await axios.get(
-          "http://localhost:5012/api/users/profile",
+          `${BASE_URL_USER}/api/users/profile`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -81,7 +82,7 @@ export default function Profile() {
 
     try {
       const response = await axios.put(
-        "http://localhost:5012/api/users/profile",
+       `${BASE_URL_USER}/api/users/profile`,
         formData,
         {
           headers: {
@@ -108,7 +109,7 @@ export default function Profile() {
       }
 
       await axios.put(
-        "http://localhost:5012/api/users/profile",
+       `${BASE_URL_USER}/api/users/profile`,
         {
           name: user.name,
           email: user.email,
