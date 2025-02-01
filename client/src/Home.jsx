@@ -18,6 +18,7 @@ import news_four from "./assets/news-four.jpg";
 import news_five from "./assets/news-five.jpg";
 import Footer from "./Footer";
 import Header from "./Header";
+import { Link as ScrollLink } from "react-scroll";
 
 
 const Home = () => {
@@ -190,9 +191,14 @@ const prevFeedback = () => {
                 {slides[currentSlide].title}
               </h1>
               <p className="mb-6 text-lg">{slides[currentSlide].description}</p>
-              <button className="px-4 py-2 text-black bg-white rounded-lg shadow-md">
+              <ScrollLink
+                to="services"
+                smooth={true}
+                duration={500}
+                className="px-6 py-4 text-black bg-white rounded-lg shadow-md cursor-pointer"
+              >
                 Get Started
-              </button>
+              </ScrollLink>
             </div>
           </div>
         </div>
