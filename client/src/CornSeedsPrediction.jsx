@@ -102,18 +102,27 @@ const uploadImages = async (files) => {
       <Header />
       <div className="flex flex-col items-center flex-grow w-full py-10">
         {/* Banner Section */}
-        <div
-          className="flex items-center justify-center w-full h-56 mb-8 bg-center bg-cover"
-          style={{
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          <h2 className="p-4 text-4xl font-bold text-white bg-opacity-50 rounded-lg">
-            Corn Seeds Quality Prediction
-          </h2>
+        <div className="relative w-full h-56 mb-8">
+          {/* Background Image with Dark Overlay */}
+          <div
+            className="absolute inset-0 bg-center bg-cover"
+            style={{
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="absolute inset-0 bg-black opacity-50"></div>{" "}
+            {/* Dark Overlay */}
+          </div>
+
+          {/* Text Content */}
+          <div className="relative flex items-center justify-center h-full">
+            <h2 className="p-4 text-4xl font-bold text-white">
+              Corn Seeds Quality Classification
+            </h2>
+          </div>
         </div>
 
         <div className="w-full p-4 max-w-7xl md:p-2">
