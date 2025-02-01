@@ -98,6 +98,8 @@ const Signup = () => {
           confirmPassword: "",
           termsAccepted: false,
         });
+       window.location.href = "/sign-in";
+
         setValue(null);
       } else {
         setError(data.message || "Signup failed. Please try again.");
