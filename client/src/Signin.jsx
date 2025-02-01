@@ -136,7 +136,7 @@ const Signin = () => {
               <p className="mt-8 text-sm text-center text-gray-600">
                 Do not have an account?{" "}
                 <a
-                  href="/signup"
+                  href="/sign-up"
                   className="font-bold text-blue-500 hover:underline"
                 >
                   Sign up
