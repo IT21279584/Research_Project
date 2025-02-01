@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
+import { BASE_URL_TOMATO } from "./constants";
 
 export default function TomatoClassification() {
   const [image1, setImage1] = useState(null);
@@ -36,7 +37,7 @@ export default function TomatoClassification() {
     }
 
     try {
-      const response = await fetch("http://localhost:5006/api/upload", {
+      const response = await fetch(`${BASE_URL_TOMATO}/api/upload`, {
         method: "POST",
         body: formData,
       });
@@ -50,7 +51,7 @@ export default function TomatoClassification() {
 
   const fetchPreviousResults = async () => {
     try {
-      const response = await fetch("http://localhost:5006/api/predictions");
+      const response = await fetch(`${BASE_URL_TOMATO}/api/predictions`);
       const results = await response.json();
       setPreviousResults(results);
     } catch (error) {
