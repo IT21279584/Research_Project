@@ -5,6 +5,7 @@ import image1 from "./assets/rice.png";
 import backgroundImage from "./assets/background.jpg"; // Import the background image
 import Footer from "./Footer"; // Import the Footer component
 import Header from "./Header";
+import { BASE_URL_RICE } from "./constants";
 
 function DiseaseDetection() {
   const [uploadedImage, setUploadedImage] = useState(null); // To display the uploaded image
@@ -17,7 +18,7 @@ function DiseaseDetection() {
     const fetchPreviousResults = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5008/api/rice-previous-predictions"
+          `${BASE_URL_RICE}/api/rice-previous-predictions`
         );
         console.log("Fetched Previous Results: ", response.data); // Log to verify the data
         setPreviousResults(response.data);
@@ -58,7 +59,7 @@ function DiseaseDetection() {
     try {
       // Send image to backend API (Flask or Express)
       const response = await axios.post(
-        "http://localhost:5008/api/rice-disease-predictions", // Update to the appropriate API URL
+        `${BASE_URL_RICE}/api/rice-disease-predictions`, // Update to the appropriate API URL
         formData,
         {
           headers: {
