@@ -5,6 +5,7 @@ import backgroundImage from "./assets/R3.jpeg";
 import Footer from "./Footer";
 import Header from "./Header";
 import axios from "axios";
+import { BASE_URL_SOYBEAN } from "./constants";
 
 function SoybeanSeedsPrediction() {
   const [uploadedImages, setUploadedImages] = useState([image1, image2]);
@@ -43,7 +44,7 @@ function SoybeanSeedsPrediction() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/soybean-quality-classification",
+        `${BASE_URL_SOYBEAN}/api/soybean-quality-classification`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -77,7 +78,7 @@ function SoybeanSeedsPrediction() {
     const fetchResults = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/soybean-previous-results"
+         `${BASE_URL_SOYBEAN}/api/soybean-previous-results`
         );
         const data = await response.json();
         setPreviousResults(data); // Ensure data is an array
