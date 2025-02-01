@@ -158,139 +158,138 @@ export default function Profile() {
     }),
   };
 
+  return (
+    <div>
+      <Header />
+      <div className="flex flex-col items-center min-h-screen p-4 font-archivo">
+        {/* Profile Title */}
+        <div className="w-full mb-4 text-left sm:w-3/4">
+          <h1 className="text-4xl font-bold">Profile</h1>
+        </div>
 
- return (
-   <div>
-     <Header />
-     <div className="flex flex-col items-center min-h-screen p-4 font-archivo">
-       {/* Profile Title */}
-       <div className="w-full mb-4 text-left sm:w-3/4">
-         <h1 className="text-4xl font-bold">Profile</h1>
-       </div>
+        <div className="flex flex-col w-full gap-4 p-6 rounded-lg md:flex-row sm:w-3/4 md:gap-6">
+          {/* Profile Info Card */}
+          <div className="flex flex-col items-center w-full h-auto p-4 bg-white border border-gray-300 rounded-lg sm:w-1/3 sm:h-96">
+            <div className="relative">
+              <img
+                src={selectedFilePreview || user.profilePicture || profile}
+                alt="Profile"
+                className="w-32 h-32 border-white rounded-full shadow-md sm:w-40 sm:h-40"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+                id="profileUpload"
+              />
+              <label
+                htmlFor="profileUpload"
+                className="absolute bottom-0 right-0 p-1 bg-gray-200 rounded-full shadow-md cursor-pointer"
+              >
+                <i className="text-xs text-gray-700 fas fa-edit"></i>
+              </label>
+            </div>
+            <div className="mt-2 text-center">
+              <h3 className="text-xl font-semibold text-green-800">
+                {user.name}
+              </h3>
+              <p className="pb-4 text-gray-600">{user.country}</p>
+            </div>
+            <hr className="w-full py-2 border-t-2" />
+            <div className="mt-2 text-center">
+              <p className="text-gray-600">{user.email}</p>
+            </div>
+          </div>
 
-       <div className="flex flex-col w-full gap-4 p-6 rounded-lg md:flex-row sm:w-3/4 md:gap-6">
-         {/* Profile Info Card */}
-         <div className="flex flex-col items-center w-full h-auto p-4 bg-white border border-gray-300 rounded-lg sm:w-1/3 sm:h-96">
-           <div className="relative">
-             <img
-               src={selectedFilePreview || user.profilePicture || profile}
-               alt="Profile"
-               className="w-32 h-32 border-white rounded-full shadow-md sm:w-40 sm:h-40"
-             />
-             <input
-               type="file"
-               accept="image/*"
-               onChange={handleFileChange}
-               className="hidden"
-               id="profileUpload"
-             />
-             <label
-               htmlFor="profileUpload"
-               className="absolute bottom-0 right-0 p-1 bg-gray-200 rounded-full shadow-md cursor-pointer"
-             >
-               <i className="text-xs text-gray-700 fas fa-edit"></i>
-             </label>
-           </div>
-           <div className="mt-2 text-center">
-             <h3 className="text-xl font-semibold text-green-800">
-               {user.name}
-             </h3>
-             <p className="pb-4 text-gray-600">{user.country}</p>
-           </div>
-           <hr className="w-full py-2 border-t-2" />
-           <div className="mt-2 text-center">
-             <p className="text-gray-600">{user.email}</p>
-           </div>
-         </div>
+          {/* Edit Profile Section */}
+          <div className="w-full p-6 bg-white border border-gray-300 rounded-lg sm:w-2/3">
+            <h2 className="mb-4 text-3xl font-bold">Edit Profile</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={user.name}
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
+                  className="w-full p-2 bg-gray-100 border-none rounded-md outline-none focus:ring-2 focus:ring-green-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="country" className="block text-sm font-medium">
+                  Country
+                </label>
+                <Select
+                  options={countries}
+                  value={countries.find(
+                    (country) => country.value === user.country
+                  )}
+                  onChange={(selectedOption) =>
+                    setUser({ ...user, country: selectedOption.value })
+                  }
+                  placeholder="Select a country"
+                  styles={customStyles}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={user.email}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  className="w-full p-2 bg-gray-100 border-none rounded-md outline-none focus:ring-2 focus:ring-green-500"
+                  required
+                />
+              </div>
 
-         {/* Edit Profile Section */}
-         <div className="w-full p-6 bg-white border border-gray-300 rounded-lg sm:w-2/3">
-           <h2 className="mb-4 text-3xl font-bold">Edit Profile</h2>
-           <form onSubmit={handleSubmit}>
-             <div className="mb-4">
-               <label htmlFor="name" className="block text-sm font-medium">
-                 Name
-               </label>
-               <input
-                 type="text"
-                 id="name"
-                 value={user.name}
-                 onChange={(e) => setUser({ ...user, name: e.target.value })}
-                 className="w-full p-2 bg-gray-100 border-none rounded-md outline-none focus:ring-2 focus:ring-green-500"
-                 required
-               />
-             </div>
-             <div className="mb-4">
-               <label htmlFor="country" className="block text-sm font-medium">
-                 Country
-               </label>
-               <Select
-                 options={countries}
-                 value={countries.find(
-                   (country) => country.value === user.country
-                 )}
-                 onChange={(selectedOption) =>
-                   setUser({ ...user, country: selectedOption.value })
-                 }
-                 placeholder="Select a country"
-                 styles={customStyles}
-               />
-             </div>
-             <div className="mb-4">
-               <label htmlFor="email" className="block text-sm font-medium">
-                 Email
-               </label>
-               <input
-                 type="email"
-                 id="email"
-                 value={user.email}
-                 onChange={(e) => setUser({ ...user, email: e.target.value })}
-                 className="w-full p-2 bg-gray-100 border-none rounded-md outline-none focus:ring-2 focus:ring-green-500"
-                 required
-               />
-             </div>
+              <div className="mb-4">
+                <label htmlFor="password" className="block text-sm font-medium">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  value={user.password}
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                  className="w-full p-2 bg-gray-100 border-none rounded-md outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+              <hr className="w-full py-2 border-t-2" />
 
-             <div className="mb-4">
-               <label htmlFor="password" className="block text-sm font-medium">
-                 Password
-               </label>
-               <input
-                 type="password"
-                 id="password"
-                 value={user.password}
-                 onChange={(e) =>
-                   setUser({ ...user, password: e.target.value })
-                 }
-                 className="w-full p-2 bg-gray-100 border-none rounded-md outline-none focus:ring-2 focus:ring-green-500"
-               />
-             </div>
-             <hr className="w-full py-2 border-t-2" />
-
-             {/* Buttons Row */}
-             <div className="flex flex-col justify-between gap-4 mt-6 sm:flex-row">
-               <button
-                 type="button"
-                 onClick={() => {
-                   localStorage.removeItem("token");
-                   window.location.href = "/login"; // Redirect to login
-                 }}
-                 className="w-full px-4 py-2 text-green-800 border border-green-600 rounded-lg sm:w-auto hover:bg-green-700 hover:text-white"
-               >
-                 Logout
-               </button>
-               <button
-                 type="submit"
-                 className="w-full px-4 py-2 text-white bg-green-700 rounded-lg sm:w-auto hover:bg-green-800"
-               >
-                 Save Changes
-               </button>
-             </div>
-           </form>
-         </div>
-       </div>
-     </div>
-     <Footer />
-   </div>
- );
-
+              {/* Buttons Row */}
+              <div className="flex flex-col justify-between gap-4 mt-6 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.setItem("isLogin", "false");
+                    window.location.href = "/"; // Redirect to Home
+                  }}
+                  className="w-full px-4 py-2 text-green-800 border border-green-600 rounded-lg sm:w-auto hover:bg-green-700 hover:text-white"
+                >
+                  Logout
+                </button>
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 text-white bg-green-700 rounded-lg sm:w-auto hover:bg-green-800"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 }
