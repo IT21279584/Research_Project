@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom"; // For internal navigation
-import corn from "./assets/cornbanner.jpg";
-import soybean from "./assets/soybeanbanner.jpg";
+import tomato from "./assets/tomato.jpg";
+import guava from "./assets/guava.jpg";
 import seedsbanner from "./assets/seedbanner.jpg";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -26,14 +26,13 @@ function TomatoGuawa() {
           <div className="my-10">
             <Link to="/tomato-classification">
               {" "}
-             
               <div
                 className="relative flex items-center justify-center overflow-hidden transition-transform duration-300 transform rounded-lg shadow-lg hover:scale-105"
                 style={{ width: "100%", height: "300px" }}
               >
                 <img
-                  src={corn}
-                  alt="Corn"
+                  src={tomato}
+                  alt="Tomato"
                   className="absolute inset-0 object-cover w-full h-full"
                 />
                 <h2 className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-white bg-black bg-opacity-50">
@@ -52,8 +51,8 @@ function TomatoGuawa() {
                 style={{ width: "100%", height: "300px" }}
               >
                 <img
-                  src={soybean}
-                  alt="Soya Beans"
+                  src={guava}
+                  alt="Gava"
                   className="absolute inset-0 object-cover w-full h-full"
                 />
                 <h2 className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-white bg-black bg-opacity-50">
