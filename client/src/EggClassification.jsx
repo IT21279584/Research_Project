@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
+import { BASE_URL_EGG } from "./constants";
+
+
 export default function EggClassification() {
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
@@ -35,7 +38,7 @@ export default function EggClassification() {
     }
 
     try {
-      const response = await fetch("http://localhost:5010/api/upload", {
+      const response = await fetch( `${BASE_URL_EGG}/api/upload`, {
         method: "POST",
         body: formData,
       });
@@ -49,7 +52,7 @@ export default function EggClassification() {
 
   const fetchPreviousResults = async () => {
     try {
-      const response = await fetch("http://localhost:5010/api/predictions");
+      const response = await fetch( `${BASE_URL_EGG}/api/predictions`);
       const results = await response.json();
       console.log(results);
 
