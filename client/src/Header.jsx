@@ -11,6 +11,7 @@ import {
 import profile from "./assets/profile.png";
 import { Link as ScrollLink } from "react-scroll";
 import logo from "./assets/logo.png";
+import { BASE_URL_USER } from "./constants";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,7 +46,7 @@ const Header = () => {
         }
         try {
           const response = await axios.get(
-            "http://localhost:5012/api/users/profile",
+             `${BASE_URL_USER}/api/users/profile`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
