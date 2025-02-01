@@ -12,13 +12,28 @@ function CornSoybean() {
       <Header />
       <div className="bg-gray-100">
         {/* Banner */}
-        <div
-          className="flex items-center justify-center w-full h-56 text-white bg-center bg-cover"
-          style={{
-            backgroundImage: `url(${seedsbanner})`,
-          }}
-        >
-          <h1 className="text-4xl font-bold">Seed Quality Assessment</h1>
+        
+        <div className="relative w-full h-56 mb-8">
+          {/* Background Image with Dark Overlay */}
+          <div
+            className="absolute inset-0 bg-center bg-cover"
+            style={{
+              backgroundImage: `url(${seedsbanner})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="absolute inset-0 bg-black opacity-50"></div>{" "}
+            {/* Dark Overlay */}
+          </div>
+
+          {/* Text Content */}
+          <div className="relative flex items-center justify-center h-full">
+            <h2 className="p-4 text-4xl font-bold text-white">
+              Seed Quality Assessment{" "}
+            </h2>
+          </div>
         </div>
 
         <div className="max-w-screen-xl px-6 mx-auto">
@@ -26,7 +41,6 @@ function CornSoybean() {
           <div className="my-10">
             <Link to="/corn-classification">
               {" "}
-            
               <div
                 className="relative flex items-center justify-center overflow-hidden transition-transform duration-300 transform rounded-lg shadow-lg hover:scale-105"
                 style={{ width: "100%", height: "300px" }}
@@ -47,7 +61,6 @@ function CornSoybean() {
           <div className="my-10">
             <Link to="/soybean-classification">
               {" "}
-              
               <div
                 className="relative flex items-center justify-center overflow-hidden transition-transform duration-300 transform rounded-lg shadow-lg hover:scale-105"
                 style={{ width: "100%", height: "300px" }}
