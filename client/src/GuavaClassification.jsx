@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Header from "./Header";
 import Footer from "./Footer";
+import { BASE_URL_GUAVA } from "./constants";
 
 
 export default function GuavaClassification() {
@@ -39,7 +40,7 @@ export default function GuavaClassification() {
 
     try {
 
-      const response = await fetch("http://localhost:5004/api/upload", {
+      const response = await fetch(`${BASE_URL_GUAVA}/api/upload`, {
 
         method: "POST",
         body: formData,
@@ -55,7 +56,7 @@ export default function GuavaClassification() {
   const fetchPreviousResults = async () => {
     try {
 
-      const response = await fetch("http://localhost:5004/api/predictions");
+      const response = await fetch(`${BASE_URL_GUAVA}/api/predictions`);
 
       const results = await response.json();
       setPreviousResults(results);
