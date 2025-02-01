@@ -3,6 +3,7 @@ import sigin from "./assets/sign-in.jpg";
 import logo from "./assets/logo.png";
 import Footer from "./Footer";
 import Header from "./Header";
+import { BASE_URL_USER } from "./constants";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const Signin = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5012/api/auth/login", {
+      const response = await fetch(`${BASE_URL_USER}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
