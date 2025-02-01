@@ -4,6 +4,7 @@ import signup from "./assets/sign-up.png";
 import logo from "./assets/logo.png";
 import Footer from "./Footer";
 import Header from "./Header";
+import { BASE_URL_USER } from "./constants";
 
 const Signup = () => {
   const [value, setValue] = useState(null); // Selected country
@@ -74,7 +75,7 @@ const Signup = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5012/api/auth/register", {
+      const response = await fetch(`${BASE_URL_USER}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
