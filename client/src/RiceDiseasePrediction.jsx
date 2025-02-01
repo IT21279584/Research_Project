@@ -223,8 +223,9 @@ function DiseaseDetection() {
                         : image1
                     }
                     alt="Rice Disease"
-                    className="mb-2 rounded-lg shadow-md w-[100%] max-w-[300px] h-[auto] object-cover"
+                    className="mb-2 rounded-lg shadow-md w-full h-[300px] object-cover"
                   />
+
                   {/* Render prediction */}
                   <p className="text-gray-700">
                     {result.predictions && result.predictions.length > 0
