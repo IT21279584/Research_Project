@@ -5,6 +5,7 @@ import backgroundImage from "./assets/corn.jpg";
 import Footer from "./Footer";
 import Header from "./Header";
 import axios from "axios";
+import { BASE_URL_CORN } from "./constants";
 
 function CornSeedsPrediction() {
   const [uploadedImages, setUploadedImages] = useState([image1, image2]);
@@ -43,7 +44,7 @@ const uploadImages = async (files) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:5002/api/corn-quality-classification",
+      `${BASE_URL_CORN}/api/corn-quality-classification`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -78,7 +79,7 @@ const uploadImages = async (files) => {
     const fetchResults = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5002/api/corn-previous-results"
+          `${BASE_URL_CORN}/api/corn-previous-results`
         );
         const data = await response.json();
         setPreviousResults(data); // Ensure data is an array
