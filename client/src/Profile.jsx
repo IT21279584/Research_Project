@@ -283,6 +283,7 @@ export default function Profile() {
                     setUser({ ...user, password: e.target.value })
                   }
                   className="w-full p-2 bg-gray-100 border-none rounded-md outline-none focus:ring-2 focus:ring-green-500"
+                  required
                 />
               </div>
               <hr className="w-full py-2 border-t-2" />
