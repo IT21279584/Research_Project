@@ -4,6 +4,8 @@ import axios from "axios";
 import Footer from "./Footer";
 import profile from "./assets/profile.png";
 import Header from "./Header";
+import Swal from "sweetalert2";
+
 import { BASE_URL_USER } from "./constants";
 
 export default function Profile() {
@@ -27,12 +29,9 @@ export default function Profile() {
         return;
       }
       try {
-        const response = await axios.get(
-          `${BASE_URL_USER}/api/users/profile`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.get(`${BASE_URL_USER}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setUser({
           name: response.data.name,
           email: response.data.email,
@@ -82,7 +81,7 @@ export default function Profile() {
 
     try {
       const response = await axios.put(
-       `${BASE_URL_USER}/api/users/profile`,
+        `${BASE_URL_USER}/api/users/profile`,
         formData,
         {
           headers: {
@@ -109,7 +108,7 @@ export default function Profile() {
       }
 
       await axios.put(
-       `${BASE_URL_USER}/api/users/profile`,
+        `${BASE_URL_USER}/api/users/profile`,
         {
           name: user.name,
           email: user.email,
@@ -119,10 +118,32 @@ export default function Profile() {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Profile updated successfully!");
+      await Swal.fire({
+        title: "Profile Updated!",
+        text: "Your profile has been successfully updated.",
+        icon: "success", // Success icon
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for cleaner interaction
+        padding: "20px"
+      });
     } catch (error) {
       console.error("Error updating profile:", error);
       setError("Failed to update profile.");
+      await Swal.fire({
+        title: "Error!",
+        text: "Failed to update profile.",
+        icon: "error",
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
+      });
+      
     }
   };
 
