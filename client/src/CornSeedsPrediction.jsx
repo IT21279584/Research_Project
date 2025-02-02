@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import axios from "axios";
 import { BASE_URL_CORN } from "./constants";
+import Swal from "sweetalert2";
 
 function CornSeedsPrediction() {
   const [uploadedImages, setUploadedImages] = useState([image1, image2]);
@@ -31,49 +32,69 @@ function CornSeedsPrediction() {
 
   const onAnalyze = async () => {
     if (filesToUpload.length === 0) {
-      alert("Please upload images before analysis.");
+      // Show a colorful modal alert
+      await Swal.fire({
+        title: "No Images Uploaded",
+        text: "Please upload images before proceeding with analysis.",
+        icon: "info", // Use 'info' for a more neutral tone
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
+      });
       return;
     }
 
     await uploadImages(filesToUpload);
   };
+  const uploadImages = async (files) => {
+    const formData = new FormData();
+    files.forEach((file) => formData.append("file", file));
 
-const uploadImages = async (files) => {
-  const formData = new FormData();
-  files.forEach((file) => formData.append("file", file));
+    try {
+      const response = await axios.post(
+        `${BASE_URL_CORN}/api/corn-quality-classification`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
-  try {
-    const response = await axios.post(
-      `${BASE_URL_CORN}/api/corn-quality-classification`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
+      const { finalPrediction, results } = response.data;
+      console.log("Data:", response.data);
+
+      if (finalPrediction) {
+        setClassificationResults({
+          label: finalPrediction.label,
+          confidence: finalPrediction.confidence,
+          results,
+        });
+      } else {
+        console.warn("No valid classifications received");
+        setClassificationResults({
+          label: "Unknown",
+          confidence: 0,
+          results: [],
+        });
       }
-    );
+    } catch (error) {
+      console.error("Error uploading images:", error);
 
-    const { finalPrediction, results } = response.data;
-    console.log("Data:", response.data);
-
-    if (finalPrediction) {
-      setClassificationResults({
-        label: finalPrediction.label,
-        confidence: finalPrediction.confidence,
-        results,
-      });
-    } else {
-      console.warn("No valid classifications received");
-      setClassificationResults({
-        label: "Unknown",
-        confidence: 0,
-        results: [],
+      await Swal.fire({
+        title: "Error!",
+        text: "Something went wrong.",
+        icon: "error",
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
       });
     }
-  } catch (error) {
-    console.error("Error uploading images:", error);
-    alert("Error during classification. Please try again.");
-  }
-};
-
+  };
 
   useEffect(() => {
     const fetchResults = async () => {
