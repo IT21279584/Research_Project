@@ -5,6 +5,8 @@ import backgroundImage from "./assets/R3.jpeg";
 import Footer from "./Footer";
 import Header from "./Header";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import { BASE_URL_SOYBEAN } from "./constants";
 
 function SoybeanSeedsPrediction() {
@@ -31,8 +33,17 @@ function SoybeanSeedsPrediction() {
 
   const onAnalyze = async () => {
     if (filesToUpload.length === 0) {
-      alert("Please upload images before analysis.");
-      return;
+      await Swal.fire({
+        title: "No Images Uploaded",
+        text: "Please upload images before proceeding with analysis.",
+        icon: "info", // Use 'info' for a more neutral tone
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
+      });      return;
     }
 
     await uploadImages(filesToUpload);
@@ -70,8 +81,17 @@ function SoybeanSeedsPrediction() {
       }
     } catch (error) {
       console.error("Error uploading images:", error);
-      alert("Error during classification. Please try again.");
-    }
+      await Swal.fire({
+        title: "Error!",
+        text: "Something went wrong.",
+        icon: "error",
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
+      });    }
   };
 
   useEffect(() => {
