@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
+import Swal from "sweetalert2";
+
 import { BASE_URL_EGG } from "./constants";
 
 
@@ -29,6 +31,23 @@ export default function EggClassification() {
   };
 
   const handleAnalyzeClick = async () => {
+    // Check if both images are uploaded
+    if (!image1File || !image2File) {
+      await Swal.fire({
+        title: "No Images Uploaded",
+        text: "Please upload images before proceeding with analysis.",
+        icon: "info", // Use 'info' for a more neutral tone
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
+      });
+      return; // Stop further execution if images are not uploaded
+    }
+
+    // Proceed with the image analysis if both images are uploaded
     const formData = new FormData();
     if (image1File) {
       formData.append("file1", image1File);
@@ -38,7 +57,7 @@ export default function EggClassification() {
     }
 
     try {
-      const response = await fetch( `${BASE_URL_EGG}/api/upload`, {
+      const response = await fetch(`${BASE_URL_EGG}/api/upload`, {
         method: "POST",
         body: formData,
       });
@@ -47,6 +66,17 @@ export default function EggClassification() {
       fetchPreviousResults();
     } catch (error) {
       console.error("Error uploading images:", error);
+      await Swal.fire({
+        title: "Error!",
+        text: "Something went wrong",
+        icon: "error",
+        background: "#ffffff",
+        color: "#333",
+        confirmButtonColor: "#2c6b2f",
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        padding: "20px",
+      });
     }
   };
 
