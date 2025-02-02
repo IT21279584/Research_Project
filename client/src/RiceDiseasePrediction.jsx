@@ -5,6 +5,8 @@ import image1 from "./assets/rice.png";
 import backgroundImage from "./assets/background.jpg"; // Import the background image
 import Footer from "./Footer"; // Import the Footer component
 import Header from "./Header";
+import Swal from "sweetalert2";
+
 import { BASE_URL_RICE } from "./constants";
 
 function DiseaseDetection() {
@@ -48,7 +50,18 @@ function DiseaseDetection() {
   // Handle analysis when the "Analyze" button is clicked
   const onAnalyze = async () => {
     if (!imageFile) {
-      alert("Please upload an image first.");
+      // Show a colorful modal alert
+      await Swal.fire({
+        title: "No Image Uploaded",
+        text: "Please upload image before proceeding with analysis.",
+        icon: "info", // Use 'info' for a more neutral tone
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
+      });
       return;
     }
 
@@ -83,6 +96,17 @@ function DiseaseDetection() {
     } catch (error) {
       console.error("Error uploading image:", error);
       setPrediction("Error in prediction");
+      await Swal.fire({
+        title: "Error!",
+        text: "Something went wrong.",
+        icon: "error",
+        background: "#ffffff", // Clean white background
+        color: "#333", // Dark text color for readability
+        confirmButtonColor: "#2c6b2f", // Dark green button for a professional look
+        confirmButtonText: "OK",
+        showCloseButton: true, // Show a close button for a cleaner look
+        padding: "20px", // Add padding for spacing
+      });
     }
   };
 
