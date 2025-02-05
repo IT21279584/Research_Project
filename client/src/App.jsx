@@ -29,6 +29,7 @@ import Signup from "./Signup.jsx";
 import Signin from "./Signin.jsx";
 import Profile from "./Profile.jsx";
 import NotFound from "./NotFound.jsx"; // Import the 404 page
+import AboutUs from "./AboutUs.jsx";
 
 // 🛠️ Authentication Context
 const AuthContext = createContext();
@@ -66,6 +67,7 @@ function App() {
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/sign-in" element={<Signin />} />
           <Route path="/" element={<Home />} />
+          <Route path="/about-us" element={<AboutUs />} />
 
           {/* ✅ Protected Routes */}
           <Route
