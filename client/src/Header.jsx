@@ -130,7 +130,7 @@ const Header = () => {
             Community
           </ScrollLink>
           <a
-            href="#about-us"
+            href="about-us"
             className="block py-2 text-gray-600 cursor-pointer md:inline hover:text-black md:py-0"
           >
             About Us
