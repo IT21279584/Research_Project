@@ -108,6 +108,13 @@ services:
     depends_on:
       - egg-flask-service
 
+  user-service:
+    build:
+      context: ./user-management-service
+    ports:
+      - "5012:5012"
+    networks:
+      - backend
 
   client:
     build:
@@ -121,6 +128,7 @@ services:
       - guava-express-service
       - tomato-express-service
       - egg-express-service
+      - user-service
 
     networks:
       - backend
