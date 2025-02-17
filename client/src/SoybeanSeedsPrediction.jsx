@@ -225,7 +225,7 @@ function SoybeanSeedsPrediction() {
                       />
                     ))}
                   </div>
-                  <p className="pt-4 text-gray-600">
+                  <p className="pt-4 text-black">
                     {result.finalPrediction.label &&
                       result.finalPrediction.label.charAt(0).toUpperCase() +
                         result.finalPrediction.label.slice(1)}{" "}

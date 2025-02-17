@@ -204,7 +204,7 @@ export default function EggClassification() {
                 className="object-cover w-64 h-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
               />
             </div>
-            <p className="text-sm font-bold sm:text-base md:text-lg">
+            <p className="font-bold sm:text-base md:text-lg">
               {result.result}
             </p>
           </div>

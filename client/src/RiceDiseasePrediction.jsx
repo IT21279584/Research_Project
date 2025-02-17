@@ -262,7 +262,7 @@ function DiseaseDetection() {
                   />
 
                   {/* Render prediction */}
-                  <p className="text-gray-700">
+                  <p className="text-black">
                     {result.predictions && result.predictions.length > 0
                       ? result.predictions[0]
                       : "No prediction available"}
