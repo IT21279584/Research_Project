@@ -177,6 +177,14 @@ const prevFeedback = () => {
   return (
     <div className="font-archivo">
       <Header />
+      {/* <div className="absolute z-10 top-4 right-40">
+        <button
+          onClick={() => navigate("/monitor")}
+          className="px-6 py-3 text-white bg-gray-600 rounded-lg shadow-md hover:bg-blue-700"
+        >
+          Real-Time Monitoring
+        </button>
+      </div> */}
       {/* Hero Section - Slideshow */}
       <section className="relative bg-cover bg-center h-[80vh]">
         <div
@@ -259,7 +267,7 @@ const prevFeedback = () => {
 
               <div className="p-6 mt-auto">
                 <button
-                  className="w-full px-4 py-2 mt-6 text-green-800 bg-white border-2 border-green-800 rounded-lg"
+                  className="w-full px-4 py-2 mt-12 text-green-800 bg-white border-2 border-green-800 rounded-lg"
                   onClick={() => navigate("/corn-soybean")}
                 >
                   Get Started

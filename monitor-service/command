@@ -1,0 +1,5 @@
+.\web-sockets\run.bat
+
+pip install -r requirements.txt
+
+Python 3.10.7 (tags/v3.10.7:6cc6b13, Sep  5 2022, 14:08:36)

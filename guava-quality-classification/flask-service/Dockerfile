@@ -21,4 +21,4 @@ WORKDIR /app
 COPY . .
 
 EXPOSE 5005
-CMD ["python", "app.py", "--host=0.0.0.0"]
+CMD ["python", "-u", "app.py", "--host=0.0.0.0"]

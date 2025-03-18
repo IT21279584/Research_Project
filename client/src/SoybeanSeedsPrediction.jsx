@@ -151,8 +151,11 @@ function SoybeanSeedsPrediction() {
             <div className="mb-4 text-center md:w-1/2 md:text-left md:mb-0">
               <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl">
                 The Soybean Seeds are Classified as{" "}
-                <span className="leading-10 text-green-700">
-                  {classificationResults.label || "Waiting for Result"}
+                <span className="text-6xl leading-10 text-green-700">
+                  {classificationResults.label
+                    ? classificationResults.label.charAt(0).toUpperCase() +
+                      classificationResults.label.slice(1).toLowerCase()
+                    : "Waiting for Result"}
                 </span>
               </h1>
               <hr className="w-11/12 mt-10 mb-8 border-t border-gray-800" />

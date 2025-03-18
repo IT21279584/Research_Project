@@ -105,18 +105,30 @@ export default function EggClassification() {
         </h1>
       </div>
 
-      <div className="flex flex-col justify-around max-w-screen-xl px-4 mx-auto mt-8 md:flex-row md:px-8 lg:px-12">
-        <div className="flex-1 mb-8 text-left md:mb-0">
+      <div className="flex flex-col justify-between max-w-screen-xl px-4 mx-auto mt-8 md:flex-row md:px-8 lg:px-12">
+        {/* Left Section (Text) */}
+        <div className="flex-1 mb-8 text-left md:mb-0 md:w-2/3">
           <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
             The Egg is Classified as <br />
-            <span className="text-green-600">
-              {response?.predictionResult?.result?.toUpperCase() ??
-                "Waiting for Result"}
+            <span className="text-5xl text-green-600">
+              {response?.predictionResult?.result
+                ? response.predictionResult.result.charAt(0).toUpperCase() +
+                  response.predictionResult.result.slice(1).toLowerCase()
+                : "Waiting for Result"}
             </span>
           </h1>
+
+          {/* Button for Large Screens */}
+          <button
+            onClick={handleAnalyzeClick}
+            className="hidden px-6 py-2 mt-8 text-white bg-green-600 border border-green-600 rounded-md md:block"
+          >
+            Analyze
+          </button>
         </div>
 
-        <div className="flex flex-col items-center justify-center flex-1 space-y-4">
+        {/* Right Section (Image Upload) */}
+        <div className="flex flex-col items-center justify-center flex-1 space-y-4 md:w-1/3">
           <div className="flex flex-col items-center justify-center space-x-0 sm:flex-row sm:space-x-6 md:space-x-8">
             <div className="flex flex-col items-center mx-auto">
               {image1 ? (
@@ -144,6 +156,7 @@ export default function EggClassification() {
                 Upload Image
               </label>
             </div>
+
             <div className="flex flex-col items-center mx-auto mt-4 sm:mt-0">
               {image2 ? (
                 <img
@@ -154,7 +167,7 @@ export default function EggClassification() {
               ) : (
                 <img
                   src="/images/egg-two.jpg"
-                  alt="Uploaded Image 1"
+                  alt="Uploaded Image 2"
                   className="object-cover w-64 h-64 mb-4 border sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72 sm:mb-2"
                 />
               )}
@@ -171,16 +184,18 @@ export default function EggClassification() {
               </label>
             </div>
           </div>
+
+          {/* Button for Small Screens */}
           <button
             onClick={handleAnalyzeClick}
-            className="px-6 py-2 mx-auto mt-4 font-bold bg-white border border-gray-400 rounded-md"
+            className="px-6 py-2 mt-4 font-bold bg-white border border-gray-400 rounded-md md:hidden"
           >
             Analyze
           </button>
         </div>
       </div>
 
-      <div className="max-w-screen-xl px-4 mx-auto mt-10 mb-6 md:px-8 lg:px-12 xl:px-12 ">
+      <div className="max-w-screen-xl px-4 mx-auto mt-10 mb-6 md:px-8 lg:px-12 xl:px-12">
         <h2 className="ml-1 text-xl font-bold sm:text-2xl md:text-3xl">
           Previous Results
         </h2>
@@ -188,10 +203,7 @@ export default function EggClassification() {
 
       <div className="grid justify-center max-w-screen-xl grid-cols-1 gap-4 px-4 pb-8 mx-auto mb-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 sm:gap-6 md:gap-8 md:px-8 lg:px-12">
         {previousResults.map((result) => (
-          <div
-            key={result._id}
-            className="text-center" // Minimal styling for layout
-          >
+          <div key={result._id} className="text-center">
             <div className="flex flex-col items-center justify-around mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
               <img
                 src={result.image1}
@@ -204,13 +216,20 @@ export default function EggClassification() {
                 className="object-cover w-64 h-64 sm:w-36 md:w-48 lg:w-48 xl:w-64 2xl:w-72 sm:h-36 md:h-48 lg:h-48 xl:h-64 2xl:h-72"
               />
             </div>
-            <p className="font-bold sm:text-base md:text-lg">
-              {result.result}
+
+            <p
+              className="font-bold sm:text-base md:text-lg"
+              style={{ fontSize: "1.45rem" }} // This is equivalent to 'text-xl'
+            >
+              {result.result.charAt(0).toUpperCase() +
+                result.result.slice(1).toLowerCase()}{" "}
             </p>
           </div>
         ))}
       </div>
+
       <Footer />
     </div>
   );
+
 }

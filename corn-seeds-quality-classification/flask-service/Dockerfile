@@ -1,6 +1,7 @@
-# Stage 1: Build
+# Stage 1: Build Dependencies
 FROM python:3.10-slim AS builder
 
+# Install necessary build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libopenblas-dev \
@@ -10,17 +11,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+# Copy requirements file first for better caching
 COPY requirements.txt ./
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# Pre-build wheels for faster installation
+RUN pip wheel --no-cache-dir --wheel-dir=/wheels -r requirements.txt
 
 # Stage 2: Runtime
 FROM python:3.10-slim
 
-COPY --from=builder /install /usr/local
+# Copy only necessary files to minimize final image size
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache-dir --find-links=/wheels -r /wheels/requirements.txt
+
 WORKDIR /app
 COPY . .
 
 EXPOSE 5003
 
 CMD ["python", "app.py", "--host=0.0.0.0"]
-

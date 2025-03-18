@@ -17,7 +17,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   const [user, setUser] = useState({
     name: "",
@@ -37,32 +37,26 @@ const Header = () => {
     }
   }, []);
 
+  const fetchProfile = async () => {
+    if (!token) {
+      setError("Authentication required. Please log in.");
+      return;
+    }
+    try {
+      const response = await axios.get(`${BASE_URL_USER}/api/users/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-
-      const fetchProfile = async () => {
-        if (!token) {
-          setError("Authentication required. Please log in.");
-          return;
-        }
-        try {
-          const response = await axios.get(
-             `${BASE_URL_USER}/api/users/profile`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
-
-          if (response.data && response.data.profilePicture) {
-            setProfilePic(response.data.profilePicture);
-          } else {
-            setProfilePic(profile);
-          }
-          
-        } catch (error) {
-          console.error("Error fetching profile pic", error);
-          setError("Error fetching profile pic.");
-        }
-      };
+      if (response.data && response.data.profilePicture) {
+        setProfilePic(response.data.profilePicture);
+      } else {
+        setProfilePic(profile);
+      }
+    } catch (error) {
+      console.error("Error fetching profile pic", error);
+      setError("Error fetching profile pic.");
+    }
+  };
 
   // Toggle Menu
   const toggleMenu = () => {
@@ -135,13 +129,19 @@ const Header = () => {
           >
             About Us
           </a>
+          <a
+            href="/monitor"
+            className="block py-2 text-gray-600 cursor-pointer md:inline hover:text-black md:py-0"
+          >
+            Real-Time Monitor
+          </a>
         </nav>
 
         {/* Right-side Icons */}
         <div className="flex items-center space-x-6">
           {/* Search Icon */}
           <a href="#" className="text-gray-600 hover:text-black">
-            <FontAwesomeIcon icon={faSearch} size="lg" />
+            {/* <FontAwesomeIcon icon={faSearch} size="lg" /> */}
           </a>
 
           {/* Conditional Rendering for Profile Picture */}

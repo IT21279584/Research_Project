@@ -169,7 +169,7 @@ function DiseaseDetection() {
             <div className="mb-4 text-center md:w-1/2 md:text-left md:mb-0">
               <h1 className="text-4xl font-bold leading-10 text-gray-800 md:text-7xl ">
                 The Plant is Infected with{" "}
-                <span className="leading-10 text-green-700">
+                <span className="text-6xl leading-10 text-green-700">
                   {prediction ? prediction : "Waiting for Result"}
                 </span>
               </h1>
@@ -206,7 +206,7 @@ function DiseaseDetection() {
                 Treatments
               </button>
               <button
-                onClick={onTreatmentClick}
+                onClick={onReadMoreClick}
                 className={`w-full px-8 py-2 mb-4 text-gray-800 border border-gray-400 rounded-lg hover:bg-gray-200 md:w-auto ${
                   !prediction ||
                   (prediction !== "Brown Spot" &&

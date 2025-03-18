@@ -71,7 +71,7 @@ function CornSoybean() {
                   className="absolute inset-0 object-cover w-full h-full"
                 />
                 <h2 className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-white bg-black bg-opacity-50">
-                  Soya Beans
+                  SoyBeans
                 </h2>
               </div>
             </Link>
